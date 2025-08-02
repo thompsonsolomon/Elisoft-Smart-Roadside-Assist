@@ -1,4 +1,4 @@
-// import teamImg from "../../Asset/team.jpg"; // Replace with your actual image path
+import teamImg  from "../../Asset/about.png"
 
 export default function AboutPage() {
   return (
@@ -34,7 +34,7 @@ export default function AboutPage() {
 
           {/* Image */}
           <div className="rounded-xl overflow-hidden shadow-xl">
-            {/* <img src={teamImg} alt="Our Team" className="w-full h-auto object-cover" /> */}
+            <img src={teamImg} alt="Our Team" className="w-full h-auto object-cover" />
           </div>
         </div>
 
