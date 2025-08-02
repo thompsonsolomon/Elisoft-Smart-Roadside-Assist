@@ -11,8 +11,8 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className={`py-24transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"} h-[100dvh] flex justify-center items-center`} id="home">
-      <div className="container mx-auto px-4  max-md:pt-[20dvh] ">
+    <section className={`py-24 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"} h-[100dvh] flex justify-center items-center`} id="home">
+      <div className="container mx-auto px-4  pt-5 ">
         <div className="grid md:grid-cols-2 items-center gap-16 ">
           {/* Text content */}
           <div className="space-y-8">
