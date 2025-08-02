@@ -2,7 +2,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function ContactPage() {
   return (
-    <section className="pt-24 pb-16 px-4 md:px-12 bg-gray-900/50 min-h-screen">
+    <section className="pt-24 pb-16 px-4 md:px-12 bg-gray-900/50 min-h-screen" id="contact">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
