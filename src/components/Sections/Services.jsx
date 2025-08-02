@@ -55,19 +55,6 @@ export default function ServicesPage() {
             </div>
           ))}
         </div>
-
-        {/* Call to Action
-        <div className="mt-20 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">
-            Need help now?
-          </h3>
-          <a
-            href="/register"
-            className="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-8 py-4 rounded-lg transition"
-          >
-            Book a Mechanic
-          </a>
-        </div> */}
       </div>
     </section>
   );

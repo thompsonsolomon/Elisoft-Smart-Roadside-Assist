@@ -1,10 +1,12 @@
 "use client"
 
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export default function AdminDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState("dashboard")
   const [searchTerm, setSearchTerm] = useState("")
+  const navigate = useNavigate()
 
   const stats = {
     totalUsers: 1250,
@@ -15,30 +17,9 @@ export default function AdminDashboard({ user, onLogout }) {
 
   const users = [
     { id: 1, name: "John Smith", email: "john@email.com", role: "Customer", status: "Active", joinDate: "2024-01-01" },
-    {
-      id: 2,
-      name: "Mike Johnson",
-      email: "mike@email.com",
-      role: "Mechanic",
-      status: "Active",
-      joinDate: "2024-01-02",
-    },
-    {
-      id: 3,
-      name: "Sarah Wilson",
-      email: "sarah@email.com",
-      role: "Customer",
-      status: "Blocked",
-      joinDate: "2024-01-03",
-    },
-    {
-      id: 4,
-      name: "David Brown",
-      email: "david@email.com",
-      role: "Mechanic",
-      status: "Active",
-      joinDate: "2024-01-04",
-    },
+    { id: 2, name: "Mike Johnson", email: "mike@email.com", role: "Mechanic", status: "Active", joinDate: "2024-01-02" },
+    { id: 3, name: "Sarah Wilson", email: "sarah@email.com", role: "Customer", status: "Blocked", joinDate: "2024-01-03" },
+    { id: 4, name: "David Brown", email: "david@email.com", role: "Mechanic", status: "Active", joinDate: "2024-01-04" },
   ]
 
   const bookings = [
@@ -71,207 +52,162 @@ export default function AdminDashboard({ user, onLogout }) {
     },
   ]
 
-  const handleUserAction = (userId, action) => {
-    alert(`User ${userId} ${action}!`)
-  }
-
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
+  const handleUserAction = (userId, action) => {
+    alert(`User ${userId} ${action}!`)
+  }
+
+  const tabList = [
+    { id: "dashboard", label: "📊 Dashboard" },
+    { id: "users", label: "👥 Users" },
+    { id: "bookings", label: "📅 Bookings" },
+  ]
+
   const renderContent = () => {
     switch (activeTab) {
       case "dashboard":
         return (
-          <div>
-            <h2 style={{ fontSize: "2.5rem", marginBottom: "30px", color: "#FFD700" }}>📊 Dashboard Overview</h2>
-            <div className="grid-2" style={{ marginBottom: "40px" }}>
-              <div className="card text-center">
-                <div style={{ fontSize: "3rem", color: "#FFD700", marginBottom: "10px" }}>{stats.totalUsers}</div>
-                <h3 style={{ color: "#ccc", fontSize: "1.2rem" }}>Total Users</h3>
-              </div>
-              <div className="card text-center">
-                <div style={{ fontSize: "3rem", color: "#FFD700", marginBottom: "10px" }}>{stats.totalBookings}</div>
-                <h3 style={{ color: "#ccc", fontSize: "1.2rem" }}>Total Bookings</h3>
-              </div>
-              <div className="card text-center">
-                <div style={{ fontSize: "3rem", color: "#FFD700", marginBottom: "10px" }}>{stats.activeMechanics}</div>
-                <h3 style={{ color: "#ccc", fontSize: "1.2rem" }}>Active Mechanics</h3>
-              </div>
-              <div className="card text-center">
-                <div style={{ fontSize: "3rem", color: "#FFD700", marginBottom: "10px" }}>{stats.revenue}</div>
-                <h3 style={{ color: "#ccc", fontSize: "1.2rem" }}>Monthly Revenue</h3>
-              </div>
+          <>
+            <h2 className="text-3xl font-semibold text-yellow-400 mb-6">Dashboard Overview</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              {Object.entries(stats).map(([key, value]) => (
+                <div key={key} className="bg-gray-800 p-6 rounded-lg shadow text-center">
+                  <div className="text-4xl font-bold text-yellow-400 mb-2">{value}</div>
+                  <div className="text-sm text-gray-300 capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                </div>
+              ))}
             </div>
-
-            <div className="card">
-              <h3 style={{ color: "#FFD700", marginBottom: "20px", fontSize: "1.5rem" }}>📈 Recent Activity</h3>
-              <div style={{ color: "#ccc" }}>
-                <p style={{ marginBottom: "10px" }}>• 15 new user registrations today</p>
-                <p style={{ marginBottom: "10px" }}>• 23 bookings completed this week</p>
-                <p style={{ marginBottom: "10px" }}>• 5 new mechanics joined the platform</p>
-                <p>• Average rating: 4.8/5 stars</p>
-              </div>
+            <div className="bg-gray-800 p-6 rounded-lg shadow">
+              <h3 className="text-xl font-semibold text-yellow-400 mb-4">📈 Recent Activity</h3>
+              <ul className="text-gray-300 space-y-2 text-sm">
+                <li>• 15 new user registrations today</li>
+                <li>• 23 bookings completed this week</li>
+                <li>• 5 new mechanics joined the platform</li>
+                <li>• Average rating: 4.8/5 stars</li>
+              </ul>
             </div>
-          </div>
+          </>
         )
 
       case "users":
         return (
-          <div>
-            <div className="flex-between" style={{ marginBottom: "30px" }}>
-              <h2 style={{ fontSize: "2.5rem", color: "#FFD700" }}>👥 User Management</h2>
+          <>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-3xl font-semibold text-yellow-400">User Management</h2>
               <input
                 type="text"
-                className="input"
-                placeholder="🔍 Search users..."
+                placeholder="Search users..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ maxWidth: "300px" }}
+                className="px-4 py-2 rounded bg-gray-700 text-white placeholder-gray-400 w-72"
               />
             </div>
-
-            <div className="grid">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {filteredUsers.map((user) => (
-                <div key={user.id} className="card">
-                  <div className="flex-between" style={{ marginBottom: "15px" }}>
+                <div key={user.id} className="bg-gray-800 p-5 rounded-lg shadow">
+                  <div className="flex justify-between items-center mb-2">
                     <div>
-                      <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{user.name}</h3>
-                      <p style={{ color: "#ccc", fontSize: "0.9rem" }}>{user.email}</p>
+                      <h4 className="text-yellow-400 font-medium text-lg">{user.name}</h4>
+                      <p className="text-gray-400 text-sm">{user.email}</p>
                     </div>
-                    <span className={`status-badge ${user.status === "Active" ? "status-active" : "status-blocked"}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs ${
+                        user.status === "Active" ? "bg-green-600 text-white" : "bg-red-600 text-white"
+                      }`}
+                    >
                       {user.status}
                     </span>
                   </div>
-                  <div style={{ marginBottom: "20px" }}>
-                    <p style={{ color: "#ccc", marginBottom: "5px" }}>Role: {user.role}</p>
-                    <p style={{ color: "#ccc" }}>Joined: {user.joinDate}</p>
-                  </div>
-                  <div className="flex" style={{ gap: "12px" }}>
+                  <p className="text-gray-400 text-sm mb-2">Role: {user.role} | Joined: {user.joinDate}</p>
+                  <div className="flex gap-3">
                     <button
                       onClick={() => handleUserAction(user.id, user.status === "Active" ? "blocked" : "unblocked")}
-                      className={`btn ${user.status === "Active" ? "btn-secondary" : "btn-primary"}`}
-                      style={{ flex: 1 }}
+                      className={`btn ${
+                        user.status === "Active" ? "btn-secondary" : "btn-primary"
+                      } flex-1`}
                     >
-                      {user.status === "Active" ? "Block User" : "Unblock User"}
+                      {user.status === "Active" ? "Block" : "Unblock"}
                     </button>
                     <button
                       onClick={() => handleUserAction(user.id, "removed")}
-                      className="btn btn-danger"
-                      style={{ flex: 1 }}
+                      className="btn btn-danger flex-1"
                     >
-                      Remove User
+                      Remove
                     </button>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
+          </>
         )
 
       case "bookings":
         return (
-          <div>
-            <h2 style={{ fontSize: "2.5rem", marginBottom: "30px", color: "#FFD700" }}>📅 Booking Management</h2>
-            <div className="grid">
-              {bookings.map((booking) => (
-                <div key={booking.id} className="card">
-                  <div className="flex-between" style={{ marginBottom: "15px" }}>
-                    <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>Booking #{booking.id}</h3>
+          <>
+            <h2 className="text-3xl font-semibold text-yellow-400 mb-6">Booking Management</h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">              {bookings.map((booking) => (
+                <div key={booking.id} className="bg-gray-800 p-5 rounded-lg shadow">
+                  <div className="flex justify-between items-center mb-2">
+                    <h4 className="text-yellow-400 font-medium">Booking #{booking.id}</h4>
                     <span
-                      className={`status-badge ${
+                      className={`text-xs px-3 py-1 rounded-full ${
                         booking.status === "Completed"
-                          ? "status-completed"
-                          : booking.status === "In Progress"
-                            ? "status-pending"
-                            : "status-active"
+                          ? "bg-green-600 text-white"
+                          : booking.status === "Pending"
+                          ? "bg-yellow-500 text-black"
+                          : "bg-blue-500 text-white"
                       }`}
                     >
                       {booking.status}
                     </span>
                   </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "15px" }}>
-                    <p style={{ color: "#ccc" }}>Customer: {booking.customer}</p>
-                    <p style={{ color: "#ccc" }}>Mechanic: {booking.mechanic}</p>
-                    <p style={{ color: "#ccc" }}>Service: {booking.service}</p>
-                    <p style={{ color: "#ccc" }}>Date: {booking.date}</p>
+                  <div className="text-sm text-gray-400 grid grid-cols-2 gap-1 mb-3">
+                    <p>Customer: {booking.customer}</p>
+                    <p>Mechanic: {booking.mechanic}</p>
+                    <p>Service: {booking.service}</p>
+                    <p>Date: {booking.date}</p>
                   </div>
-                  <div className="flex-between">
-                    <span style={{ color: "#FFD700", fontWeight: "600", fontSize: "1.1rem" }}>{booking.amount}</span>
-                    <button className="btn btn-secondary" style={{ padding: "6px 12px", fontSize: "0.9rem" }}>
-                      View Details
-                    </button>
+                  <div className="flex justify-between items-center">
+                    <span className="text-yellow-400 font-semibold">{booking.amount}</span>
+                    <button className="btn btn-secondary px-4 py-2 text-sm">View Details</button>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
+          </>
         )
-
       default:
         return null
     }
   }
 
   return (
-    <div className="admin-dashboard fade-in" style={{ minHeight: "100vh" }}>
-      {/* Header */}
-      <header
-        className="bg-dark"
-        style={{ padding: "20px 0", borderBottom: "1px solid #333", position: "sticky", top: 0, zIndex: 100 }}
-      >
-        <div className="container flex-between">
-          <div>
-            <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft Admin</h1>
-            <p style={{ color: "#ccc" }}>Welcome back, {user?.name}!</p>
-          </div>
-          <button onClick={onLogout} className="btn btn-secondary">
-            Logout
-          </button>
-        </div>
-      </header>
-
-      <div style={{ display: "flex", minHeight: "calc(100vh - 80px)" }}>
+    <div className="bg-gray-900 text-white min-h-screen">
+      <div className="flex">
         {/* Sidebar */}
-        <aside
-          style={{ width: "280px", backgroundColor: "#1a1a1a", padding: "30px 20px", borderRight: "1px solid #333" }}
-        >
-          <nav>
-            <ul style={{ listStyle: "none" }}>
-              {[
-                { id: "dashboard", label: "📊 Dashboard", icon: "📊" },
-                { id: "users", label: "👥 Users", icon: "👥" },
-                { id: "bookings", label: "📅 Bookings", icon: "📅" },
-              ].map((item) => (
-                <li key={item.id} style={{ marginBottom: "15px" }}>
-                  <button
-                    onClick={() => setActiveTab(item.id)}
-                    style={{
-                      width: "100%",
-                      padding: "15px 20px",
-                      backgroundColor: activeTab === item.id ? "#FFD700" : "transparent",
-                      color: activeTab === item.id ? "#000" : "#ccc",
-                      border: "none",
-                      borderRadius: "10px",
-                      cursor: "pointer",
-                      textAlign: "left",
-                      transition: "all 0.3s ease",
-                      fontSize: "1rem",
-                      fontWeight: activeTab === item.id ? "600" : "400",
-                    }}
-                  >
-                    {item.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
+        <aside className="w-64 bg-gray-800 border-r h-[100dvh] border-gray-700 p-5 space-y-4">
+          {tabList.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition ${
+                activeTab === tab.id
+                  ? "bg-yellow-400 text-black"
+                  : "hover:bg-gray-700 text-gray-300"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </aside>
 
-        {/* Main Content */}
-        <main style={{ flex: 1, padding: "40px" }}>{renderContent()}</main>
+        {/* Main */}
+        <main className="flex-1 p-8 overflow-y-auto">{renderContent()}</main>
       </div>
     </div>
   )

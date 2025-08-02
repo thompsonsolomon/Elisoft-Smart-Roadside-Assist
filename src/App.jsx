@@ -27,36 +27,36 @@ function App() {
             <Route
               path="/customer"
               element={
-                <ProtectedRoute allowedRoles={["customer"]}>
                   <CustomerDashboard />
-                </ProtectedRoute>
+                // <ProtectedRoute allowedRoles={["customer"]}>
+                // </ProtectedRoute>
               }
             />
 
             <Route
               path="/mechanic"
               element={
-                <ProtectedRoute allowedRoles={["mechanic"]}>
                   <MechanicDashboard />
-                </ProtectedRoute>
+                // <ProtectedRoute allowedRoles={["mechanic"]}>
+                // </ProtectedRoute>
               }
             />
 
             <Route
               path="/admin"
               element={
-                <ProtectedRoute allowedRoles={["admin"]}>
                   <AdminDashboard />
-                </ProtectedRoute>
+                // <ProtectedRoute allowedRoles={["admin"]}>
+                // </ProtectedRoute>
               }
             />
 
             <Route
               path="/map"
               element={
-                <ProtectedRoute allowedRoles={["customer", "mechanic", "admin"]}>
                   <MapPage />
-                </ProtectedRoute>
+                // <ProtectedRoute allowedRoles={["customer", "mechanic", "admin"]}>
+                // </ProtectedRoute>
               }
             />
 

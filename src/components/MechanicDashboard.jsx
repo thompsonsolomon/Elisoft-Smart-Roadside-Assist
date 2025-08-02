@@ -68,19 +68,17 @@ export default function MechanicDashboard({ user, navigate, onLogout }) {
   }
 
   return (
-    <div className="mechanic-dashboard fade-in" style={{ minHeight: "100vh" }}>
+    <div className=" fade-in flex justify-center items-center flex-col w-full ">
       {/* Header */}
       <header
-        className="bg-dark"
-        style={{ padding: "20px 0", borderBottom: "1px solid #333", position: "sticky", top: 0, zIndex: 100 }}
+        className="bg-dark flex w-full justify-center mt-4"
       >
-        <div className="container flex-between">
+        <div className="container  flex justify-between">
           <div>
             <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft</h1>
-            <p style={{ color: "#ccc" }}>Welcome back, {user?.name}!</p>
           </div>
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-            <button onClick={() => navigate("map")} className="btn btn-primary" style={{ padding: "8px 16px" }}>
+            <button onClick={() => navigate("/map")} className="btn btn-primary" style={{ padding: "8px 16px" }}>
               🗺️ View Map
             </button>
             <button onClick={onLogout} className="btn btn-secondary">
@@ -93,10 +91,10 @@ export default function MechanicDashboard({ user, navigate, onLogout }) {
       <div className="container" style={{ padding: "40px 20px" }}>
         {/* Status and Map Section */}
         <section style={{ marginBottom: "60px" }}>
-          <div className="grid-2">
-            <div className="card">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="card">
               <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "#FFD700" }}>🔄 Availability Status</h2>
-              <div className="flex-between" style={{ alignItems: "center", marginBottom: "20px" }}>
+              <div className="flex justify-between " style={{ alignItems: "center", marginBottom: "20px" }}>
                 <span style={{ color: "#ccc", fontSize: "1.1rem" }}>
                   Currently:{" "}
                   <strong style={{ color: isAvailable ? "#00FF00" : "#FF4444" }}>
@@ -139,8 +137,8 @@ export default function MechanicDashboard({ user, navigate, onLogout }) {
         <section style={{ marginBottom: "60px" }}>
           <h2 style={{ fontSize: "2rem", marginBottom: "30px", color: "#FFD700" }}>📨 New Job Requests</h2>
 
-          <div className="grid">
-            {jobRequests.map((job) => (
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+          {jobRequests.map((job) => (
               <div key={job.id} className="card">
                 <div className="flex-between" style={{ marginBottom: "15px" }}>
                   <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job.customer}</h3>
@@ -173,8 +171,8 @@ export default function MechanicDashboard({ user, navigate, onLogout }) {
         <section style={{ marginBottom: "60px" }}>
           <h2 style={{ fontSize: "2rem", marginBottom: "30px", color: "#FFD700" }}>✅ Your Active Jobs</h2>
 
-          <div className="grid">
-            {acceptedJobs.map((job) => (
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+          {acceptedJobs.map((job) => (
               <div key={job.id} className="card">
                 <div className="flex-between" style={{ marginBottom: "15px" }}>
                   <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job.customer}</h3>

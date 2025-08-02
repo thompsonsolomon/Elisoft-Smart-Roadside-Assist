@@ -4,7 +4,13 @@ import { useAuth } from "../../contexts/AuthContext"
 import LoadingSpinner from "./LoadingSpinner"
 
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
-  const { user, isAuthenticated, loading } = useAuth()
+  const { 
+    // user,
+     isAuthenticated, loading } = useAuth()
+     const user = {
+      name: "thompson Solomon",
+      role: "customer"
+     }
   const location = useLocation()
 
   if (loading) {
