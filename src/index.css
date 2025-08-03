@@ -195,6 +195,7 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: inherit !important;
   /* Adds a 1px black border and removes the outline */
   outline: none;
+  color: inherit;
 
 }
 
@@ -204,4 +205,5 @@ input:-moz-autofill {
   -moz-text-fill-color: inherit !important;
   /* Adds a 1px black border and removes the outline */
   outline: none;
+  color: inherit;
 }
