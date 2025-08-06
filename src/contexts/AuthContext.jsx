@@ -1,5 +1,3 @@
-"use client"
-
 import { createContext, useContext, useReducer, useEffect } from "react"
 
 const AuthContext = createContext()
@@ -85,7 +83,6 @@ export function AuthProvider({ children }) {
           credentials.role === "admin" ? "Admin User" : credentials.role === "mechanic" ? "Mike Johnson" : "John Doe",
         email: credentials.email,
         role: credentials.role,
-        avatar: "/api/placeholder/40/40",
         joinDate: new Date().toISOString(),
         isVerified: true,
       }

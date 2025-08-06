@@ -15,6 +15,7 @@ const MapPage = lazy(() => import("./pages/MapPage"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
 function App() {
+  const allowedRoles = "customer"
   return (
     <AuthProvider>
       <div className="min-h-screen bg-black text-white">
@@ -27,39 +28,38 @@ function App() {
             <Route
               path="/customer"
               element={
+                <ProtectedRoute allowedRoles={["customer"]}>
                   <CustomerDashboard />
-                // <ProtectedRoute allowedRoles={["customer"]}>
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
 
             <Route
               path="/mechanic"
               element={
+                <ProtectedRoute allowedRoles={["mechanic"]}>
                   <MechanicDashboard />
-                // <ProtectedRoute allowedRoles={["mechanic"]}>
-                // </ProtectedRoute>
+                 </ProtectedRoute>
               }
             />
 
             <Route
               path="/admin"
               element={
+                <ProtectedRoute allowedRoles={["admin"]}>
                   <AdminDashboard />
-                // <ProtectedRoute allowedRoles={["admin"]}>
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
 
             <Route
               path="/map"
               element={
+                <ProtectedRoute allowedRoles={["customer", "mechanic", "admin"]}>
                   <MapPage />
-                // <ProtectedRoute allowedRoles={["customer", "mechanic", "admin"]}>
-                // </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
-
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
