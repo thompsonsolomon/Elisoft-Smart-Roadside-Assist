@@ -182,7 +182,9 @@
 }
 
 
-
+input{
+  color: black;
+}
 
 /* * Works for Chrome, Edge, and Safari  */
 input:-webkit-autofill,

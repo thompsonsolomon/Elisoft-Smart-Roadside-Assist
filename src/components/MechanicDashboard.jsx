@@ -1,10 +1,9 @@
-"use client"
-
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-export default function MechanicDashboard({ user, navigate, onLogout }) {
+export default function MechanicDashboard({ user, onLogout }) {
   const [isAvailable, setIsAvailable] = useState(true)
-
+  const navigate = useNavigate()
   const jobRequests = [
     {
       id: 1,
@@ -78,12 +77,10 @@ export default function MechanicDashboard({ user, navigate, onLogout }) {
             <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft</h1>
           </div>
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-            <button onClick={() => navigate("/map")} className="btn btn-primary" style={{ padding: "8px 16px" }}>
-              🗺️ View Map
+          <button onClick={() => navigate("/profile")} className="btn btn-primary">
+              Profile
             </button>
-            <button onClick={onLogout} className="btn btn-secondary">
-              Logout
-            </button>
+          
           </div>
         </div>
       </header>
@@ -123,7 +120,7 @@ export default function MechanicDashboard({ user, navigate, onLogout }) {
               <h3 style={{ marginBottom: "15px", fontSize: "1.3rem" }}>Customer Locations</h3>
               <p style={{ marginBottom: "20px", opacity: 0.8 }}>View customer requests on the interactive map</p>
               <button
-                onClick={() => navigate("map")}
+                onClick={() => navigate("/map")}
                 className="btn"
                 style={{ backgroundColor: "#000", color: "#FFD700", border: "none" }}
               >

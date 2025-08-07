@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+const {  user,isAuthenticated, loading } = useAuth()
+console.log(user);
 
   return (
     <header className="bg-black shadow-md fixed w-full z-50">
@@ -20,8 +23,17 @@ export default function Navbar() {
           <a href="#services" className="hover:text-yellow-500 transition">Services</a>
           <a href="#testimonials" className="hover:text-yellow-500 transition">Testimonials</a>
           <a href="#contact" className="hover:text-yellow-500 transition">Contact</a>
-          <Link to="/login" className="btn btn-ghost">Login</Link>
-          <Link to="/register" className="btn btn-primary">Get Started</Link>
+          {/* Conditional Links based on Authentication */}
+          {
+            isAuthenticated ? (
+              <Link to={`/${user?.role}`} className="btn btn-primary">Dashboard</Link>
+            ) : (
+              <>
+                <Link to="/login" className="btn btn-ghost">Login</Link>
+                <Link to="/register" className="btn btn-primary">Get Started</Link>
+              </>
+            )
+          }
         </nav>
 
         {/* Hamburger Icon */}

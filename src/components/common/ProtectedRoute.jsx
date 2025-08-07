@@ -5,12 +5,9 @@ import LoadingSpinner from "./LoadingSpinner"
 
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const { 
-    // user,
+    user,
      isAuthenticated, loading } = useAuth()
-     const user = {
-      name: "thompson Solomon",
-      role: "customer"
-     }
+  console.log(isAuthenticated)
   const location = useLocation()
 
   if (loading) {

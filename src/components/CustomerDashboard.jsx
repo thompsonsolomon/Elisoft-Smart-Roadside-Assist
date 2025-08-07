@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-export default function CustomerDashboard({ user, onLogout }) {
+export default function CustomerDashboard() {
+  const { user, logout } = useAuth()
+
   const [searchLocation, setSearchLocation] = useState("");
   const navigate = useNavigate();
+  console.log(user)
 
   const mechanics = [
     {
@@ -80,12 +84,12 @@ export default function CustomerDashboard({ user, onLogout }) {
         <div className="container mx-auto flex justify-between items-center px-4">
           <h1 className="text-yellow-400 text-2xl font-semibold">🔧 Elisoft</h1>
           <div className="flex gap-3">
-            <button onClick={() => navigate("/map")} className="btn btn-primary">
-              🗺️ View Map
+            <button onClick={() => navigate("/profile")} className="btn btn-primary">
+              Profile
             </button>
-            <button onClick={onLogout} className="btn btn-secondary">
+            {/* <button onClick={logout} className="btn btn-secondary">
               Logout
-            </button>
+            </button> */}
           </div>
         </div>
       </header>
@@ -132,9 +136,8 @@ export default function CustomerDashboard({ user, onLogout }) {
                 <div className="flex justify-between items-center mb-3">
                   <h3 className="text-yellow-400 font-semibold text-lg">{mechanic.name}</h3>
                   <span
-                    className={`text-sm px-3 py-1 rounded-full ${
-                      mechanic.available ? "bg-green-600" : "bg-red-600"
-                    }`}
+                    className={`text-sm px-3 py-1 rounded-full ${mechanic.available ? "bg-green-600" : "bg-red-600"
+                      }`}
                   >
                     {mechanic.available ? "Available" : "Busy"}
                   </span>
@@ -193,9 +196,8 @@ export default function CustomerDashboard({ user, onLogout }) {
                 <div className="flex justify-between mb-3">
                   <h3 className="text-yellow-400 font-semibold">{appt.mechanic}</h3>
                   <span
-                    className={`text-sm px-3 py-1 rounded-full ${
-                      appt.status === "Completed" ? "bg-green-600" : "bg-yellow-500 text-black"
-                    }`}
+                    className={`text-sm px-3 py-1 rounded-full ${appt.status === "Completed" ? "bg-green-600" : "bg-yellow-500 text-black"
+                      }`}
                   >
                     {appt.status}
                   </span>

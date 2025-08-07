@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import { AuthProvider } from "./contexts/AuthContext"
 import LoadingSpinner from "./components/common/LoadingSpinner"
 import ProtectedRoute from "./components/common/ProtectedRoute"
+import ProfilePage from "./components/common/Profile"
 
 // Lazy load components for better performance
 const LandingPage = lazy(() => import("./pages/LandingPage"))
@@ -15,7 +16,6 @@ const MapPage = lazy(() => import("./pages/MapPage"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
 function App() {
-  const allowedRoles = "customer"
   return (
     <AuthProvider>
       <div className="min-h-screen bg-black text-white">
@@ -39,7 +39,7 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["mechanic"]}>
                   <MechanicDashboard />
-                 </ProtectedRoute>
+                </ProtectedRoute>
               }
             />
 
@@ -60,6 +60,16 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute allowedRoles={["customer", "mechanic"]}>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

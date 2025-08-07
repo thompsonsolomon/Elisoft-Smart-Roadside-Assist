@@ -2,8 +2,10 @@
 
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext"
 
-export default function LoginPage({ onLogin }) {
+export default function LoginPage() {
+  const { login } = useAuth()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -11,14 +13,24 @@ export default function LoginPage({ onLogin }) {
   })
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    onLogin({
-      name: formData.role === "admin" ? "Admin User" : formData.role === "mechanic" ? "Mike Johnson" : "John Doe",
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const credentials = {
       email: formData.email,
+      password: formData.password,
       role: formData.role,
-    })
-  }
+    };
+
+    const result = await login(credentials); // 👈 now this will call your real login API
+
+    if (result.success) {
+      navigate( `/` + result.user.role); // Redirect based on role`);
+    } else {
+      console.error(result.error);
+      // Optionally show error to user
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({

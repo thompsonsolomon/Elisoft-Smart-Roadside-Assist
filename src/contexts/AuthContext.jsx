@@ -1,10 +1,40 @@
 import { createContext, useContext, useReducer, useEffect } from "react"
-
+import { useNavigate } from "react-router-dom"
+const fetchedDummeryUserRole = JSON.parse(localStorage.getItem("Elisoft_usercred"))
 const AuthContext = createContext()
-
 const initialState = {
-  user: null,
-  isAuthenticated: false,
+  user: {
+    accountName: "thompson Solomon",
+    accountNumber: "",
+    address: "5 State line road duration south gate Akure",
+    bankCode: "565",
+    bankName: "9mobile 9Payment Service Bank",
+    email: "thompsonsolomon123@gmail.com",
+    latitude: 6.5243793,
+    licenseNumber: "dfhdfgh",
+    longitude: 3.3792057,
+    phone: "09124919117",
+    priceRates: [],
+    // role: "mechanic",
+    role: fetchedDummeryUserRole?.role,
+    services: [
+      { name: "Roadside Assistant", price: "400" },
+      { name: "Towing Service", price: "1000" },
+      { name: "Wheel Alignment", price: "15000" },
+      { name: "Flat Tyre", price: "10000" }
+    ],
+    yearsOfExperience: "13",
+    name: "thompson Solomon",
+    currentPlan: "basic",
+    isVerified: true,
+    subscribed: true,
+    firstAssistance: 0,
+    isAvailable: true,
+    createdAt: "2023-07-20",
+    car: "Toyota 2025"
+  },
+  isAuthenticated: fetchedDummeryUserRole ? true : false,
+  // isAuthenticated: true,
   loading: true,
   error: null,
 }
@@ -47,6 +77,7 @@ function authReducer(state, action) {
 }
 
 export function AuthProvider({ children }) {
+  const navigate = useNavigate()
   const [state, dispatch] = useReducer(authReducer, initialState)
 
   useEffect(() => {
@@ -69,70 +100,143 @@ export function AuthProvider({ children }) {
     checkAuthStatus()
   }, [])
 
+  // const login = async (credentials) => {
+  //   dispatch({ type: "LOGIN_START" })
+
+  //   try {
+  //     // Simulate API call delay
+  //     await new Promise((resolve) => setTimeout(resolve, 1000))
+
+  //     // Mock authentication logic
+  //     const mockUser = {
+  //       id: Date.now(),
+  //       name:
+  //         credentials.role === "admin" ? "Admin User" : credentials.role === "mechanic" ? "Mike Johnson" : "John Doe",
+  //       email: credentials.email,
+  //       role: credentials.role,
+  //       joinDate: new Date().toISOString(),
+  //       isVerified: true,
+  //     }
+
+  //     // Store in localStorage for persistence
+  //     localStorage.setItem(" Elisoft_user", JSON.stringify(mockUser))
+
+  //     dispatch({ type: "LOGIN_SUCCESS", payload: mockUser })
+  //     return { success: true, user: mockUser }
+  //   } catch (error) {
+  //     const errorMessage = error.message || "Login failed"
+  //     dispatch({ type: "LOGIN_FAILURE", payload: errorMessage })
+  //     return { success: false, error: errorMessage }
+  //   }
+  // }
+
+
   const login = async (credentials) => {
+    console.log(credentials)
     dispatch({ type: "LOGIN_START" })
 
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // const res = await fetch("https://api.elisoft.com/auth/login", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(credentials),
+      // })
 
-      // Mock authentication logic
-      const mockUser = {
-        id: Date.now(),
-        name:
-          credentials.role === "admin" ? "Admin User" : credentials.role === "mechanic" ? "Mike Johnson" : "John Doe",
-        email: credentials.email,
-        role: credentials.role,
-        joinDate: new Date().toISOString(),
-        isVerified: true,
-      }
+      // if (!res.ok) throw new Error("Invalid credentials")
 
-      // Store in localStorage for persistence
-      localStorage.setItem(" Elisoft_user", JSON.stringify(mockUser))
+      // const data = await res.json()
 
-      dispatch({ type: "LOGIN_SUCCESS", payload: mockUser })
-      return { success: true, user: mockUser }
+      // // Assuming you get token and user from the API
+      // const { token, user } = data
+
+      // Store token and user
+      // localStorage.setItem("Elisoft_user", JSON.stringify(user))
+      // localStorage.setItem("Elisoft_token", token)
+
+
+      // dispatch({ type: "LOGIN_SUCCESS", payload: user })
+      // return { success: true, user }
+
+      localStorage.setItem("Elisoft_usercred", JSON.stringify(credentials))
+      dispatch({ type: "LOGIN_SUCCESS", payload: credentials })
+      return { success: true, user: credentials }
     } catch (error) {
-      const errorMessage = error.message || "Login failed"
-      dispatch({ type: "LOGIN_FAILURE", payload: errorMessage })
-      return { success: false, error: errorMessage }
+      dispatch({ type: "LOGIN_FAILURE", payload: error.message })
+      return { success: false, error: error.message }
     }
   }
+
+
+  // const register = async (userData) => {
+  //   dispatch({ type: "LOGIN_START" })
+
+  //   try {
+  //     // Simulate API call delay
+  //     await new Promise((resolve) => setTimeout(resolve, 1200))
+
+  //     // Mock registration logic
+  //     const newUser = {
+  //       id: Date.now(),
+  //       name: userData.fullName,
+  //       email: userData.email,
+  //       role: userData.role,
+  //       avatar: "/api/placeholder/40/40",
+  //       joinDate: new Date().toISOString(),
+  //       isVerified: false,
+  //       location: userData.location,
+  //     }
+
+  //     // Store in localStorage for persistence
+  //     localStorage.setItem(" Elisoft_user", JSON.stringify(newUser))
+
+  //     dispatch({ type: "LOGIN_SUCCESS", payload: newUser })
+  //     return { success: true, user: newUser }
+  //   } catch (error) {
+  //     const errorMessage = error.message || "Registration failed"
+  //     dispatch({ type: "LOGIN_FAILURE", payload: errorMessage })
+  //     return { success: false, error: errorMessage }
+  //   }
+  // }
+
 
   const register = async (userData) => {
     dispatch({ type: "LOGIN_START" })
 
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1200))
+      const res = await fetch("https://api.elisoft.com/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      })
 
-      // Mock registration logic
-      const newUser = {
-        id: Date.now(),
-        name: userData.fullName,
-        email: userData.email,
-        role: userData.role,
-        avatar: "/api/placeholder/40/40",
-        joinDate: new Date().toISOString(),
-        isVerified: false,
-        location: userData.location,
-      }
+      if (!res.ok) throw new Error("Registration failed")
 
-      // Store in localStorage for persistence
-      localStorage.setItem(" Elisoft_user", JSON.stringify(newUser))
+      const data = await res.json()
+      const { token, user } = data
 
-      dispatch({ type: "LOGIN_SUCCESS", payload: newUser })
-      return { success: true, user: newUser }
+      localStorage.setItem("Elisoft_user", JSON.stringify(user))
+      localStorage.setItem("Elisoft_token", token)
+
+      dispatch({ type: "LOGIN_SUCCESS", payload: user })
+
+      return { success: true, user }
     } catch (error) {
-      const errorMessage = error.message || "Registration failed"
-      dispatch({ type: "LOGIN_FAILURE", payload: errorMessage })
-      return { success: false, error: errorMessage }
+      dispatch({ type: "LOGIN_FAILURE", payload: error.message })
+      return { success: false, error: error.message }
     }
   }
 
+
   const logout = () => {
-    localStorage.removeItem(" Elisoft_user")
+    localStorage.removeItem("Elisoft_user")
+    localStorage.removeItem("Elisoft_token")
+    localStorage.removeItem("Elisoft_usercred")
     dispatch({ type: "LOGOUT" })
+    navigate("/", { replace: true })
   }
 
   const clearError = () => {
