@@ -7,8 +7,8 @@ import { useAuth } from "../contexts/AuthContext"
 export default function LoginPage() {
   const { login } = useAuth()
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    phoneNumber: "",
+    pin: "",
     role: "customer",
   })
   const navigate = useNavigate()
@@ -17,8 +17,8 @@ export default function LoginPage() {
     e.preventDefault();
 
     const credentials = {
-      email: formData.email,
-      password: formData.password,
+      phoneNumber: formData.phoneNumber,
+      pin: formData.pin,
       role: formData.role,
     };
 
@@ -54,14 +54,14 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: "20px" }}>
               <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
-                📧 Email Address
+                📧 Phone Number
               </label>
               <input
-                type="email"
-                name="email"
+                type="number"
+                name="phoneNumber"
                 className="input"
-                placeholder="Enter your email"
-                value={formData.email}
+                placeholder="Enter your phoneNumber"
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 required
               />
@@ -69,16 +69,17 @@ export default function LoginPage() {
 
             <div style={{ marginBottom: "20px" }}>
               <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
-                🔒 Password
+                🔒 Pin
               </label>
               <input
-                type="password"
-                name="password"
+                type="number"
+                name="pin"
                 className="input"
-                placeholder="Enter your password"
-                value={formData.password}
+                placeholder="Enter your pin"
+                value={formData.pin}
                 onChange={handleChange}
                 required
+                maxLength="7"
               />
             </div>
 

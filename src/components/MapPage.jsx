@@ -1,11 +1,12 @@
-"use client"
-
 import { useState } from "react"
+import { useAuth } from "../contexts/AuthContext"
+import { useNavigate } from "react-router-dom"
 
-export default function MapPage({ user, navigate }) {
+export default function MapPage() {
   const [selectedMarker, setSelectedMarker] = useState(null)
   const [tooltip, setTooltip] = useState({ show: false, x: 0, y: 0, content: "" })
-
+  const { user, logout } = useAuth()
+  const navigate = useNavigate()
   // Sample data for mechanics and customers
   const mechanics = [
     { id: 1, name: "Mike's Auto Repair", lat: 40.7128, lng: -74.006, available: true, rating: 4.8 },

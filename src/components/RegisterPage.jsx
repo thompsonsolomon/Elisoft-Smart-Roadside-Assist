@@ -1,30 +1,41 @@
-"use client"
-
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../contexts/AuthContext"
 
-export default function RegisterPage({ onLogin }) {
+export default function RegisterPage() {
+    const { register } = useAuth()
+  
   const [formData, setFormData] = useState({
     fullName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    PhoneNumber: "",
+    pin: "",
+    confirmPin: "",
     role: "customer",
-    location: "",
   })
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.pin !== formData.confirmPin) {
       alert("Passwords do not match!")
       return
     }
-    onLogin({
-      name: formData.fullName,
-      email: formData.email,
-      role: formData.role,
-    })
+    const credentials = {
+        "fullName": formData.fullName,
+        "phone": formData.PhoneNumber,
+        "pin": formData.pin,
+        "role": formData.role,
+        "email": "john.doe@example.com"
+    }
+    console.log(credentials)
+    const result = await register(credentials); // 👈 now this will call your real login API
+    console.log(result)
+    if (result.success) {
+      navigate( `/` + result.user.role); // Redirect based on role`);
+    } else {
+      console.error(result.error);
+      // Optionally show error to user
+    }
   }
 
   const handleChange = (e) => {
@@ -68,11 +79,11 @@ export default function RegisterPage({ onLogin }) {
                 📧 Email Address
               </label>
               <input
-                type="email"
-                name="email"
+                type="number"
+                name="PhoneNumber"
                 className="input"
-                placeholder="Enter your email"
-                value={formData.email}
+                placeholder="Enter your PhoneNumber"
+                value={formData.PhoneNumber}
                 onChange={handleChange}
                 required
               />
@@ -83,11 +94,11 @@ export default function RegisterPage({ onLogin }) {
                 🔒 Password
               </label>
               <input
-                type="password"
-                name="password"
+                type="number"
+                name="pin"
                 className="input"
-                placeholder="Create a strong password"
-                value={formData.password}
+                placeholder="Create a strong pin"
+                value={formData.pin}
                 onChange={handleChange}
                 required
               />
@@ -98,11 +109,11 @@ export default function RegisterPage({ onLogin }) {
                 🔒 Confirm Password
               </label>
               <input
-                type="password"
-                name="confirmPassword"
+                type="number"
+                name="confirmPin"
                 className="input"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
+                placeholder="Confirm your pin"
+                value={formData.confirmPin}
                 onChange={handleChange}
                 required
               />
@@ -118,20 +129,7 @@ export default function RegisterPage({ onLogin }) {
               </select>
             </div>
 
-            <div style={{ marginBottom: "30px" }}>
-              <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
-                📍 Location
-              </label>
-              <input
-                type="text"
-                name="location"
-                className="input"
-                placeholder="Enter your city"
-                value={formData.location}
-                onChange={handleChange}
-                required
-              />
-            </div>
+           
 
             <button
               type="submit"

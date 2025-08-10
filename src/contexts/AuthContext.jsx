@@ -1,38 +1,41 @@
 import { createContext, useContext, useReducer, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 const fetchedDummeryUserRole = JSON.parse(localStorage.getItem("Elisoft_usercred"))
+const Baseurl = import.meta.env.VITE_Base_Url;
+
 const AuthContext = createContext()
 const initialState = {
-  user: {
-    accountName: "thompson Solomon",
-    accountNumber: "",
-    address: "5 State line road duration south gate Akure",
-    bankCode: "565",
-    bankName: "9mobile 9Payment Service Bank",
-    email: "thompsonsolomon123@gmail.com",
-    latitude: 6.5243793,
-    licenseNumber: "dfhdfgh",
-    longitude: 3.3792057,
-    phone: "09124919117",
-    priceRates: [],
-    // role: "mechanic",
-    role: fetchedDummeryUserRole?.role,
-    services: [
-      { name: "Roadside Assistant", price: "400" },
-      { name: "Towing Service", price: "1000" },
-      { name: "Wheel Alignment", price: "15000" },
-      { name: "Flat Tyre", price: "10000" }
-    ],
-    yearsOfExperience: "13",
-    name: "thompson Solomon",
-    currentPlan: "basic",
-    isVerified: true,
-    subscribed: true,
-    firstAssistance: 0,
-    isAvailable: true,
-    createdAt: "2023-07-20",
-    car: "Toyota 2025"
-  },
+  // user: {
+  //   accountName: "thompson Solomon",
+  //   accountNumber: "",
+  //   address: "5 State line road duration south gate Akure",
+  //   bankCode: "565",
+  //   bankName: "9mobile 9Payment Service Bank",
+  //   email: "thompsonsolomon123@gmail.com",
+  //   latitude: 6.5243793,
+  //   licenseNumber: "12345",
+  //   longitude: 3.3792057,
+  //   phone: "09124919117",
+  //   priceRates: [],
+  //   // role: "mechanic",
+  //   role: fetchedDummeryUserRole?.role,
+  //   services: [
+  //     { name: "Roadside Assistant", price: "400" },
+  //     { name: "Towing Service", price: "1000" },
+  //     { name: "Wheel Alignment", price: "15000" },
+  //     { name: "Flat Tyre", price: "10000" }
+  //   ],
+  //   yearsOfExperience: "13",
+  //   name: "thompson Solomon",
+  //   currentPlan: "basic",
+  //   isVerified: true,
+  //   subscribed: true,
+  //   firstAssistance: 0,
+  //   isAvailable: true,
+  //   createdAt: "2023-07-20",
+  //   car: "Toyota 2025"
+  // },
+  user: {},
   isAuthenticated: fetchedDummeryUserRole ? true : false,
   // isAuthenticated: true,
   loading: true,
@@ -205,7 +208,7 @@ export function AuthProvider({ children }) {
     dispatch({ type: "LOGIN_START" })
 
     try {
-      const res = await fetch("https://api.elisoft.com/auth/register", {
+      const res = await fetch(`${Baseurl}auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
