@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 const fetchedDummeryUserRole = JSON.parse(localStorage.getItem("Elisoft_usercred"))
 const Baseurl = import.meta.env.VITE_Base_Url;
-
+console.log("Baseurl", Baseurl)
 const AuthContext = createContext()
 const initialState = {
   // user: {
@@ -103,35 +103,6 @@ export function AuthProvider({ children }) {
     checkAuthStatus()
   }, [])
 
-  // const login = async (credentials) => {
-  //   dispatch({ type: "LOGIN_START" })
-
-  //   try {
-  //     // Simulate API call delay
-  //     await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  //     // Mock authentication logic
-  //     const mockUser = {
-  //       id: Date.now(),
-  //       name:
-  //         credentials.role === "admin" ? "Admin User" : credentials.role === "mechanic" ? "Mike Johnson" : "John Doe",
-  //       email: credentials.email,
-  //       role: credentials.role,
-  //       joinDate: new Date().toISOString(),
-  //       isVerified: true,
-  //     }
-
-  //     // Store in localStorage for persistence
-  //     localStorage.setItem(" Elisoft_user", JSON.stringify(mockUser))
-
-  //     dispatch({ type: "LOGIN_SUCCESS", payload: mockUser })
-  //     return { success: true, user: mockUser }
-  //   } catch (error) {
-  //     const errorMessage = error.message || "Login failed"
-  //     dispatch({ type: "LOGIN_FAILURE", payload: errorMessage })
-  //     return { success: false, error: errorMessage }
-  //   }
-  // }
 
 
   const login = async (credentials) => {
@@ -206,15 +177,15 @@ export function AuthProvider({ children }) {
 
   const register = async (userData) => {
     dispatch({ type: "LOGIN_START" })
-
     try {
-      const res = await fetch(`${Baseurl}auth/register`, {
+      const res = await fetch('https://elisoft-backend.onrender.com/api/auth/register', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
       })
+      console.log(res)
 
       if (!res.ok) throw new Error("Registration failed")
 
@@ -223,13 +194,11 @@ export function AuthProvider({ children }) {
 
       localStorage.setItem("Elisoft_user", JSON.stringify(user))
       localStorage.setItem("Elisoft_token", token)
-
       dispatch({ type: "LOGIN_SUCCESS", payload: user })
-
       return { success: true, user }
     } catch (error) {
       dispatch({ type: "LOGIN_FAILURE", payload: error.message })
-      return { success: false, error: error.message }
+      return { success: false, error: error }
     }
   }
 

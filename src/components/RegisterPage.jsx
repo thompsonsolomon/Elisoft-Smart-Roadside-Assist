@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 
 export default function RegisterPage() {
-    const { register } = useAuth()
-  
+  const { register, loading } = useAuth()
+
+
   const [formData, setFormData] = useState({
     fullName: "",
     PhoneNumber: "",
@@ -14,24 +15,24 @@ export default function RegisterPage() {
   })
   const navigate = useNavigate()
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (formData.pin !== formData.confirmPin) {
       alert("Passwords do not match!")
       return
     }
     const credentials = {
-        "fullName": formData.fullName,
-        "phone": formData.PhoneNumber,
-        "pin": formData.pin,
-        "role": formData.role,
-        "email": "john.doe@example.com"
+      "fullName": formData.fullName,
+      "phone": formData.PhoneNumber,
+      "pin": formData.pin,
+      "role": formData.role,
+      "email": "john.doe@example.com"
     }
     console.log(credentials)
     const result = await register(credentials); // 👈 now this will call your real login API
     console.log(result)
     if (result.success) {
-      navigate( `/` + result.user.role); // Redirect based on role`);
+      navigate(`/` + result.user.role); // Redirect based on role`);
     } else {
       console.error(result.error);
       // Optionally show error to user
@@ -48,7 +49,7 @@ export default function RegisterPage() {
   return (
     <div
       className="register-page flex-center flex justify-center items-center p-4"
-      // style={{ minHeight: "100vh", padding: "20px", background: "linear-gradient(135deg, #000000, #1a1a1a)" }}
+    // style={{ minHeight: "100vh", padding: "20px", background: "linear-gradient(135deg, #000000, #1a1a1a)" }}
     >
       <div className="register-container fade-in">
         <div className="card" style={{ maxWidth: "450px", width: "100%" }}>
@@ -76,7 +77,7 @@ export default function RegisterPage() {
 
             <div style={{ marginBottom: "20px" }}>
               <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
-                📧 Email Address
+                Phone Number
               </label>
               <input
                 type="number"
@@ -91,7 +92,7 @@ export default function RegisterPage() {
 
             <div style={{ marginBottom: "20px" }}>
               <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
-                🔒 Password
+                🔒 Pin
               </label>
               <input
                 type="number"
@@ -106,7 +107,7 @@ export default function RegisterPage() {
 
             <div style={{ marginBottom: "20px" }}>
               <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
-                🔒 Confirm Password
+                🔒 Confirm Pin
               </label>
               <input
                 type="number"
@@ -129,23 +130,20 @@ export default function RegisterPage() {
               </select>
             </div>
 
-           
+
 
             <button
               type="submit"
               className="btn btn-primary"
               style={{ width: "100%", marginBottom: "15px", fontSize: "1.1rem" }}
             >
-              Create Account
+              {
+                loading ? "Loading..." :
+                  "Create Account"
+              }
             </button>
 
-            <button
-              type="button"
-              className="btn btn-secondary"
-              style={{ width: "100%", marginBottom: "20px", fontSize: "1.1rem" }}
-            >
-              Continue with Google
-            </button>
+
           </form>
 
           <div className="text-center">
