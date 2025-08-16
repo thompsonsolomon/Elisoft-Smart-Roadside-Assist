@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useMemo } from "react"
 import { Link } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
@@ -19,11 +17,11 @@ const MapPage = () => {
     const markerData = []
 
     // Show mechanics for customers and admins
-    if (user?.role === "customer" || user?.role === "admin") {
+    if (user?.role === "Customer" || user?.role === "admin") {
       mechanics.forEach((mechanic) => {
         markerData.push({
-          id: `mechanic-${mechanic.id}`,
-          type: "mechanic",
+          id: `Mechanic-${mechanic.id}`,
+          type: "Mechanic",
           position: mechanic.location.coordinates,
           title: mechanic.name,
           data: mechanic,
@@ -34,11 +32,11 @@ const MapPage = () => {
     }
 
     // Show customers for mechanics and admins
-    if (user?.role === "mechanic" || user?.role === "admin") {
+    if (user?.role === "Mechanic" || user?.role === "admin") {
       customers.forEach((customer) => {
         markerData.push({
-          id: `customer-${customer.id}`,
-          type: "customer",
+          id: `Customer-${customer.id}`,
+          type: "Customer",
           position: customer.location.coordinates,
           title: customer.name,
           data: customer,
@@ -57,10 +55,10 @@ const MapPage = () => {
 
   const getBackRoute = () => {
     switch (user?.role) {
-      case "customer":
-        return "/customer"
-      case "mechanic":
-        return "/mechanic"
+      case "Customer":
+        return "/Customer"
+      case "Mechanic":
+        return "/Mechanic"
       case "admin":
         return "/admin"
       default:
@@ -83,7 +81,7 @@ const MapPage = () => {
 
     const { type, data } = selectedMarker
 
-    if (type === "mechanic") {
+    if (type === "Mechanic") {
       return (
         <div className="card">
           <div className="flex items-start justify-between mb-4">
@@ -116,7 +114,7 @@ const MapPage = () => {
             </div>
           </div>
 
-          {user?.role === "customer" && data.available && (
+          {user?.role === "Customer" && data.available && (
             <div className="grid grid-cols-2 gap-3">
               <button className="btn btn-primary">Book Now</button>
               <button className="btn btn-secondary">Get Directions</button>
@@ -140,7 +138,7 @@ const MapPage = () => {
       )
     }
 
-    if (type === "customer") {
+    if (type === "Customer") {
       return (
         <div className="card">
           <div className="flex items-start justify-between mb-4">
@@ -186,7 +184,7 @@ const MapPage = () => {
             </div>
           )}
 
-          {user?.role === "mechanic" && (
+          {user?.role === "Mechanic" && (
             <div className="grid grid-cols-2 gap-3">
               <button className="btn btn-primary">Accept Job</button>
               <button className="btn btn-secondary">Get Directions</button>
@@ -200,7 +198,7 @@ const MapPage = () => {
   }
 
   const getStatsData = () => {
-    if (user?.role === "customer") {
+    if (user?.role === "Customer") {
       const availableMechanics = mechanics.filter((m) => m.available).length
       return {
         title: "Available Mechanics",
@@ -232,7 +230,7 @@ const MapPage = () => {
                 <span> Elisoft Map</span>
               </h1>
               <p className="text-gray-400">
-                {user?.role === "customer" ? "Find mechanics near you" : "Locate customer requests"}
+                {user?.role === "Customer" ? "Find mechanics near you" : "Locate Customer requests"}
               </p>
             </div>
             <div className="flex space-x-3">
@@ -252,7 +250,7 @@ const MapPage = () => {
             <div className="card p-0 overflow-hidden">
               <div className="p-4 border-b border-gray-800">
                 <h2 className="text-lg font-semibold text-gold">
-                  {user?.role === "customer" ? "🔧 Available Mechanics" : "📍 Customer Requests"}
+                  {user?.role === "Customer" ? "🔧 Available Mechanics" : "📍 Customer Requests"}
                 </h2>
               </div>
               <div className="p-4">
@@ -270,7 +268,7 @@ const MapPage = () => {
             <div className="card">
               <h3 className="text-lg font-semibold text-gold mb-4">Map Legend</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {(user?.role === "customer" || user?.role === "admin") && (
+                {(user?.role === "Customer" || user?.role === "admin") && (
                   <>
                     <div className="flex items-center space-x-3">
                       <div className="w-6 h-6 bg-gold rounded-full flex items-center justify-center text-black text-xs font-bold">
@@ -286,7 +284,7 @@ const MapPage = () => {
                     </div>
                   </>
                 )}
-                {(user?.role === "mechanic" || user?.role === "admin") && (
+                {(user?.role === "Mechanic" || user?.role === "admin") && (
                   <div className="flex items-center space-x-3">
                     <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
                       👤
@@ -328,13 +326,13 @@ const MapPage = () => {
             <div className="card">
               <h3 className="text-lg font-semibold text-gold mb-4">⚡ Quick Actions</h3>
               <div className="space-y-3">
-                {user?.role === "customer" && (
+                {user?.role === "Customer" && (
                   <>
                     <button className="btn btn-primary w-full">Request Emergency Service</button>
                     <button className="btn btn-secondary w-full">Schedule Appointment</button>
                   </>
                 )}
-                {user?.role === "mechanic" && (
+                {user?.role === "Mechanic" && (
                   <>
                     <button className="btn btn-primary w-full">Toggle Availability</button>
                     <button className="btn btn-secondary w-full">View All Requests</button>

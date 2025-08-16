@@ -1,8 +1,7 @@
 import { createContext, useContext, useReducer, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import { loginUser, registerUser } from "../utils/api";
 const fetchedDummeryUserRole = JSON.parse(localStorage.getItem("Elisoft_usercred"))
-const Baseurl = import.meta.env.VITE_Base_Url;
-console.log("Baseurl", Baseurl)
 const AuthContext = createContext()
 const initialState = {
   // user: {
@@ -87,7 +86,7 @@ export function AuthProvider({ children }) {
     // Check for existing session on app load
     const checkAuthStatus = () => {
       try {
-        const userData = localStorage.getItem(" Elisoft_user")
+        const userData = localStorage.getItem("Elisoft_user")
         if (userData) {
           const user = JSON.parse(userData)
           dispatch({ type: "LOGIN_SUCCESS", payload: user })
@@ -106,107 +105,53 @@ export function AuthProvider({ children }) {
 
 
   const login = async (credentials) => {
-    console.log(credentials)
     dispatch({ type: "LOGIN_START" })
-
     try {
-      // const res = await fetch("https://api.elisoft.com/auth/login", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(credentials),
-      // })
-
-      // if (!res.ok) throw new Error("Invalid credentials")
-
-      // const data = await res.json()
-
-      // // Assuming you get token and user from the API
-      // const { token, user } = data
-
-      // Store token and user
-      // localStorage.setItem("Elisoft_user", JSON.stringify(user))
-      // localStorage.setItem("Elisoft_token", token)
-
-
-      // dispatch({ type: "LOGIN_SUCCESS", payload: user })
-      // return { success: true, user }
-
-      localStorage.setItem("Elisoft_usercred", JSON.stringify(credentials))
-      dispatch({ type: "LOGIN_SUCCESS", payload: credentials })
-      return { success: true, user: credentials }
+      const response = await loginUser(credentials);
+      if (response.status === "success") {
+        const data = await response;
+        console.log("Registration successful response:", data);
+        // Correctly stringify the user object before storing it.
+        localStorage.setItem("Elisoft_user", JSON.stringify(data.data.user));
+        localStorage.setItem("token", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+        navigate(`/` + data.data.user.role);
+        dispatch({ type: "LOGIN_SUCCESS", payload: response.data.user })
+        return { success: true, user: data?.data?.user };
+      }
+      return response;
     } catch (error) {
       dispatch({ type: "LOGIN_FAILURE", payload: error.message })
       return { success: false, error: error.message }
     }
   }
-
-
-  // const register = async (userData) => {
-  //   dispatch({ type: "LOGIN_START" })
-
-  //   try {
-  //     // Simulate API call delay
-  //     await new Promise((resolve) => setTimeout(resolve, 1200))
-
-  //     // Mock registration logic
-  //     const newUser = {
-  //       id: Date.now(),
-  //       name: userData.fullName,
-  //       email: userData.email,
-  //       role: userData.role,
-  //       avatar: "/api/placeholder/40/40",
-  //       joinDate: new Date().toISOString(),
-  //       isVerified: false,
-  //       location: userData.location,
-  //     }
-
-  //     // Store in localStorage for persistence
-  //     localStorage.setItem(" Elisoft_user", JSON.stringify(newUser))
-
-  //     dispatch({ type: "LOGIN_SUCCESS", payload: newUser })
-  //     return { success: true, user: newUser }
-  //   } catch (error) {
-  //     const errorMessage = error.message || "Registration failed"
-  //     dispatch({ type: "LOGIN_FAILURE", payload: errorMessage })
-  //     return { success: false, error: errorMessage }
-  //   }
-  // }
-
-
-  const register = async (userData) => {
-    dispatch({ type: "LOGIN_START" })
+  //   const registerUser = async (credentials) => {
+  const register = async (credentials) => {
     try {
-      const res = await fetch('https://elisoft-backend.onrender.com/api/auth/register', {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      })
-      console.log(res)
-
-      if (!res.ok) throw new Error("Registration failed")
-
-      const data = await res.json()
-      const { token, user } = data
-
-      localStorage.setItem("Elisoft_user", JSON.stringify(user))
-      localStorage.setItem("Elisoft_token", token)
-      dispatch({ type: "LOGIN_SUCCESS", payload: user })
-      return { success: true, user }
+      const response = await registerUser(credentials);
+      if (response.status === "success") {
+        const data = await response;
+        console.log("Registration successful response:", data);
+        // Correctly stringify the user object before storing it.
+        localStorage.setItem("Elisoft_user", JSON.stringify(data.data.user));
+        localStorage.setItem("token", data.data.accessToken);
+        localStorage.setItem("refreshToken", data.data.refreshToken);
+        navigate(`/` + data.data.user.role);
+        return { success: true, user: data?.data?.user };
+      }
+      return response;
     } catch (error) {
-      dispatch({ type: "LOGIN_FAILURE", payload: error.message })
-      return { success: false, error: error }
+      console.error("Network error during registration:", error);
+      return { success: false, error: new Error('Network error. Please check your connection and try again.') };
     }
-  }
+  };
+
 
 
   const logout = () => {
     localStorage.removeItem("Elisoft_user")
-    localStorage.removeItem("Elisoft_token")
-    localStorage.removeItem("Elisoft_usercred")
+    localStorage.removeItem("token")
+    localStorage.removeItem("refreshToken")
     dispatch({ type: "LOGOUT" })
     navigate("/", { replace: true })
   }

@@ -1,10 +1,9 @@
-"use client"
-
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App.jsx"
 import "./index.css"
+import { ToastContainer } from 'react-toastify'
 
 // Error boundary for production
 class ErrorBoundary extends React.Component {
@@ -45,6 +44,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ErrorBoundary>
       <BrowserRouter>
         <App />
+        <ToastContainer position="top-right" autoClose={3000} />
       </BrowserRouter>
     </ErrorBoundary>
   </React.StrictMode>,

@@ -1,5 +1,3 @@
-"use client"
-
 import { useCallback, useState, useRef, useEffect } from "react"
 import { Wrapper } from "@googlemaps/react-wrapper"
 
@@ -57,7 +55,7 @@ const MapComponent = ({ center, zoom, markers, onMarkerClick, className }) => {
   return <div ref={mapRef} className={className || "w-full h-96"} style={{ minHeight: "400px" }} />
 }
 
-const Map = ({ center, zoom = 13, markers, onMarkerClick, className }) => {
+const Map = ({ center, zoom, markers, onMarkerClick, className }) => {
   const mapRef = useRef(null)
 
   const onLoad = useCallback((map) => {
@@ -82,6 +80,8 @@ const Map = ({ center, zoom = 13, markers, onMarkerClick, className }) => {
 }
 
 const GoogleMap = (props) => {
+  console.log(props);
+  
   const render = (status) => {
     switch (status) {
       case "LOADING":
@@ -111,7 +111,7 @@ const GoogleMap = (props) => {
 
   return (
     <Wrapper
-      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "YOUR_API_KEY_HERE"}
+      apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
       render={render}
       libraries={["places"]}
     />

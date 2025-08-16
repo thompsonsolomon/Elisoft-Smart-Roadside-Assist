@@ -5,11 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function CustomerDashboard() {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
 
   const [searchLocation, setSearchLocation] = useState("");
   const navigate = useNavigate();
-  console.log(user)
 
   const mechanics = [
     {
@@ -87,9 +86,6 @@ export default function CustomerDashboard() {
             <button onClick={() => navigate("/profile")} className="btn btn-primary">
               Profile
             </button>
-            {/* <button onClick={logout} className="btn btn-secondary">
-              Logout
-            </button> */}
           </div>
         </div>
       </header>
@@ -188,7 +184,7 @@ export default function CustomerDashboard() {
         </section>
 
         {/* Appointments */}
-        <section>
+        {/* <section>
           <h2 className="text-2xl font-bold text-yellow-400 mb-6">📋 Your Appointments</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {appointments.map((appt) => (
@@ -217,7 +213,7 @@ export default function CustomerDashboard() {
               </div>
             ))}
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   );

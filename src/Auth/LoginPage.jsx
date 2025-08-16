@@ -1,34 +1,46 @@
-"use client"
-
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
+import { toast } from "react-toastify"
+import { Eye, EyeOff } from "lucide-react"
 
 export default function LoginPage() {
   const { login } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+
+  const HandleSee = () => {
+    setIsOpen(!isOpen)
+  }
   const [formData, setFormData] = useState({
     phoneNumber: "",
     pin: "",
-    role: "customer",
   })
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
+    setLoading(true)
     e.preventDefault();
-
-    const credentials = {
-      phoneNumber: formData.phoneNumber,
-      pin: formData.pin,
-      role: formData.role,
-    };
-
-    const result = await login(credentials); // 👈 now this will call your real login API
-
-    if (result.success) {
-      navigate( `/` + result.user.role); // Redirect based on role`);
-    } else {
-      console.error(result.error);
-      // Optionally show error to user
+    try {
+      const credentials = {
+        "phone": formData.phoneNumber,
+        "pin": formData.pin,
+      };
+      const result = await login(credentials);
+      console.log("Registration result:", result);
+      if (result.response?.data.status === "error") {
+        toast.error(result.response?.data.message);
+        setLoading(false);
+        return;
+      }
+      toast.success("Registration successful! Redirecting to login...");
+      return result
+    } catch (error) {
+      console.error("Error during registration:", error);
+      toast.error("An error occurred during registration. Please try again.");
+      return;
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -71,44 +83,59 @@ export default function LoginPage() {
               <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
                 🔒 Pin
               </label>
-              <input
-                type="number"
-                name="pin"
-                className="input"
-                placeholder="Enter your pin"
-                value={formData.pin}
-                onChange={handleChange}
-                required
-                maxLength="7"
-              />
-            </div>
+              <div className="input flex items-center gap-2 relative">
+                <input
+                  type={isOpen ? "text" : "password"}
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  onChange={(e) => {
+                    if (/^\d*$/.test(e.target.value)) {
+                      setFormData({
+                        ...formData,
+                        pin: e.target.value,
+                      })
+                    }
+                  }}
+                  name="pin"
+                  className="bg-transparent border-none outline-none w-full text-white placeholder:text-gray-400"
+                  placeholder="Enter your pin"
+                  value={formData.pin}
+                  required
+                />
+                {
+                  isOpen ?
+                    <Eye className="cursor-pointer" onClick={HandleSee} />
+                    :
+                    <EyeOff className="cursor-pointer" onClick={HandleSee} />
+                }
 
-            <div style={{ marginBottom: "30px" }}>
-              <label style={{ display: "block", marginBottom: "8px", color: "#FFD700", fontWeight: "500" }}>
-                👤 Login as
-              </label>
-              <select name="role" className="input" value={formData.role} onChange={handleChange}>
-                <option value="customer">Customer</option>
-                <option value="mechanic">Mechanic</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
+              </div>
 
+            </div>
             <button
               type="submit"
               className="btn btn-primary"
-              style={{ width: "100%", marginBottom: "15px", fontSize: "1.1rem" }}
+              style={{ width: "100%", marginBottom: "5px", fontSize: "1.1rem" }}
             >
-              Sign In
+              {
+                loading ? "Loading..." :
+                  "Sign In"
+              }
             </button>
 
-            <button
-              type="button"
-              className="btn btn-secondary"
-              style={{ width: "100%", marginBottom: "20px", fontSize: "1.1rem" }}
-            >
-              Continue with Google
-            </button>
+            <Link to="/forgot-pin"
+
+              style={{
+                color: "blue",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                textDecoration: "underline",
+                fontWeight: "400",
+                fontSize: "14px"
+              }}
+
+            >Forgotten pin</Link>
           </form>
 
           <div className="text-center">
