@@ -8,7 +8,6 @@ export default function Navbar() {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 const {  user,isAuthenticated, loading } = useAuth()
-console.log(user);
 
   return (
     <header className="bg-black shadow-md fixed w-full z-50">

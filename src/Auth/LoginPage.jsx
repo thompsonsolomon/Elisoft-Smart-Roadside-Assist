@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { toast } from "react-toastify"
 import { Eye, EyeOff } from "lucide-react"
+import { FormatPin } from "../helpers/lib"
 
 export default function LoginPage() {
   const { login } = useAuth()
@@ -21,19 +22,22 @@ export default function LoginPage() {
   const handleSubmit = async (e) => {
     setLoading(true)
     e.preventDefault();
+    const UnnformatedNumber = formData.phoneNumber || "";
+        const FinalNumber = FormatPin(UnnformatedNumber);
+
     try {
       const credentials = {
-        "phone": formData.phoneNumber,
+        "phone": Number(FinalNumber),
         "pin": formData.pin,
       };
       const result = await login(credentials);
-      console.log("Registration result:", result);
       if (result.response?.data.status === "error") {
         toast.error(result.response?.data.message);
         setLoading(false);
         return;
       }
       toast.success("Registration successful! Redirecting to login...");
+      navigate("/" + result.user.role);
       return result
     } catch (error) {
       console.error("Error during registration:", error);

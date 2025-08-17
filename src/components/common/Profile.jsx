@@ -66,7 +66,6 @@ export default function ProfilePage() {
       try {
         const data = await fetchUsers();
         setUserData(data?.data?.user?.user || user);
-        console.log(user)
       } catch (err) {
         console.error("Error fetching user:", err);
       }
@@ -141,7 +140,6 @@ export default function ProfilePage() {
         ],
       };
       const res = await updateUserLocation(Credentials);
-      console.log("Location updated:", res);
       setLoadAction(false);
       toast.success(res.message || "Location updated successfully!");
     } catch (err) {
@@ -169,7 +167,6 @@ export default function ProfilePage() {
       const res = await updateUserProfile(Credentials);
       toast.success(res.message || "Profile updated successfully!");
 
-      console.log("Profile updated:", res);
       setLoadAction(false);
     } catch (err) {
       console.error("Error updating profile:", err);

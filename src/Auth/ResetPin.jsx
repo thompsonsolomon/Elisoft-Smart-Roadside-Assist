@@ -7,7 +7,6 @@ import { resetPin } from '../utils/api';
 const  ResetPin = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
-  console.log(token);
   const [newPin, setNewPin] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);

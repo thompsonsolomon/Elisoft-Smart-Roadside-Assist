@@ -79,9 +79,7 @@ const Map = ({ center, zoom, markers, onMarkerClick, className }) => {
   )
 }
 
-const GoogleMap = (props) => {
-  console.log(props);
-  
+const GoogleMap = (props) => {  
   const render = (status) => {
     switch (status) {
       case "LOADING":

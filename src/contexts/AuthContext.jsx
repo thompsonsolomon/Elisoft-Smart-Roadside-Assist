@@ -110,7 +110,6 @@ export function AuthProvider({ children }) {
       const response = await loginUser(credentials);
       if (response.status === "success") {
         const data = await response;
-        console.log("Registration successful response:", data);
         // Correctly stringify the user object before storing it.
         localStorage.setItem("Elisoft_user", JSON.stringify(data.data.user));
         localStorage.setItem("token", data.data.accessToken);
@@ -131,7 +130,6 @@ export function AuthProvider({ children }) {
       const response = await registerUser(credentials);
       if (response.status === "success") {
         const data = await response;
-        console.log("Registration successful response:", data);
         // Correctly stringify the user object before storing it.
         localStorage.setItem("Elisoft_user", JSON.stringify(data.data.user));
         localStorage.setItem("token", data.data.accessToken);

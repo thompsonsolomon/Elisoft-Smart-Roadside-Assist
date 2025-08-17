@@ -19,7 +19,6 @@ const ForgotPin = () => {
                 "phone": phone
             }
             const response = await forgotPin(credentials);
-            console.log('Forgot Pin response:', response);
             setMessage({
                 type: 'success',
                 text: response.data.message || 'Pin reset email sent successfully. Please check your inbox.'

@@ -61,7 +61,6 @@ export default function RegisterPage() {
           ? MechanicCredentials
           : CustomerCredentials
       const result = await register(credentials)
-      console.log("Registration result:", result)
       if (result.response?.data.status === "error") {
         toast.error(result.response?.data.message)
         setLoading(false)
