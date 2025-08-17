@@ -31,6 +31,7 @@ export default function LoginPage() {
         "pin": formData.pin,
       };
       const result = await login(credentials);
+      console.log(result)
       if (result.response?.data.status === "error") {
         toast.error(result.response?.data.message);
         setLoading(false);
