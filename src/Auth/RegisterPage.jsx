@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { toast } from "react-toastify"
 import { Eye, EyeOff } from "lucide-react"
+import { FormatPin } from "../helpers/lib"
 
 export default function RegisterPage() {
   const { register } = useAuth()
@@ -22,6 +23,9 @@ export default function RegisterPage() {
   const handleSubmit = async (e) => {
     setLoading(true)
     e.preventDefault()
+    const UnnformatedNumber = formData.PhoneNumber || "";
+    const FinalNumber = FormatPin(UnnformatedNumber);
+
     try {
       if (formData.pin !== formData.confirmPin) {
         toast.error("Pins do not match!")
@@ -38,7 +42,7 @@ export default function RegisterPage() {
 
       const MechanicCredentials = {
         fullName: formData.fullName,
-        phone: formData.PhoneNumber,
+        phone: Number(FinalNumber),
         pin: formData.pin,
         role: "Mechanic",
         email: "mike.smith@example.com",
@@ -51,7 +55,7 @@ export default function RegisterPage() {
       }
       const CustomerCredentials = {
         fullName: formData.fullName,
-        phone: formData.PhoneNumber,
+        phone: Number(FinalNumber),
         pin: formData.pin,
         role: formData.role,
       }
