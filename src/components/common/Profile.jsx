@@ -238,13 +238,13 @@ export default function ProfilePage() {
         <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow">
           {/* Full Name */}
           <div>
-            <label className="block font-semibold">Full Name</label>
+            <label className="block text-black font-semibold">Full Name</label>
             <input type="text" name="name" value={formData.name} onChange={handleChange} className="w-full border px-3 py-2 rounded" />
           </div>
 
           {/* Phone */}
           <div>
-            <label className="block font-semibold">Phone Number</label>
+            <label className="block text-black font-semibold">Phone Number</label>
             <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full border px-3 py-2 rounded" />
           </div>
 
@@ -252,13 +252,13 @@ export default function ProfilePage() {
             <>
               {/* Services */}
               <div>
-                <label className="block font-semibold mb-2">Service Areas</label>
+                <label className="block text-black font-semibold mb-2">Service Areas</label>
                 <div className="grid sm:grid-cols-2 gap-2 border p-3 rounded max-h-60 overflow-y-auto">
                   {mechanicServices.map((service) => {
                     const selected = formData.services.find((s) => s.name === service);
                     return (
                       <div key={service} className="flex gap-3">
-                        <label className="flex items-center gap-2">
+                        <label className="flex text-black items-center gap-2">
                           <input type="checkbox" value={service} checked={!!selected} onChange={handleServiceChange} />
                           <span>{service}</span>
                         </label>
@@ -273,18 +273,18 @@ export default function ProfilePage() {
 
               {/* Years of Experience */}
               <div>
-                <label className="block font-semibold">Years of Experience</label>
+                <label className="block text-black font-semibold">Years of Experience</label>
                 <input type="number" name="yearsOfExperience" value={formData.yearsOfExperience} onChange={handleChange} className="w-full border px-3 py-2 rounded" />
               </div>
 
               {/* Bank Details */}
               <div>
-                <label className="block font-semibold">Account Number</label>
+                <label className="block text-black font-semibold">Account Number</label>
                 <input type="number" name="accountNumber" value={formData.accountNumber} onChange={handleChange} className="w-full border px-3 py-2 rounded" />
               </div>
 
               <div>
-                <label className="block font-semibold">Bank</label>
+                <label className="block text-black font-semibold">Bank</label>
                 <select
                   value={selectedBankCode}
                   onChange={(e) => {
@@ -305,7 +305,7 @@ export default function ProfilePage() {
               </div>
 
               <div>
-                <label className="block font-semibold">Account Name</label>
+                <label className="block text-black font-semibold">Account Name</label>
                 <input type="text" name="accountName" value={formData.accountName} onChange={handleChange} className="w-full border px-3 py-2 rounded" />
                 {loading && <p className="text-sm text-gray-500">Resolving account...</p>}
               </div>
@@ -313,12 +313,12 @@ export default function ProfilePage() {
 
           {/* Location */}
           <div>
-            <label className="block font-semibold">Address / Location</label>
+            <label className="block text-black font-semibold">Address / Location</label>
             <button onClick={handleChangeLocation} className="w-full text-black border rounded p-2">   Change Location</button>
           </div>
 
               <div>
-                <label className="block font-semibold">License Number</label>
+                <label className="block text-black font-semibold">License Number</label>
                 <input type="text" name="licenseNumber" value={formData.licenseNumber} onChange={handleChange} className="w-full border px-3 py-2 rounded" />
               </div>
             </>

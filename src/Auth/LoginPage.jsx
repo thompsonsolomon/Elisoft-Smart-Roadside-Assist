@@ -37,7 +37,9 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-      toast.success("Registration successful! Redirecting to login...");
+      else{
+        toast.success("Registration successful! Redirecting to login...");
+      }
       navigate("/" + result.user.role);
       return result
     } catch (error) {

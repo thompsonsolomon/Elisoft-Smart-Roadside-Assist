@@ -41,9 +41,9 @@ function App() {
             />
 
             <Route
-              path="/mechanic"
+              path="/Mechanic"
               element={
-                <ProtectedRoute allowedRoles={["mechanic"]}>
+                <ProtectedRoute allowedRoles={["Mechanic"]}>
                   <MechanicDashboard />
                 </ProtectedRoute>
               }
@@ -70,7 +70,7 @@ function App() {
             <Route
               path="/profile"
               element={
-                <ProtectedRoute allowedRoles={["Customer", "mechanic"]}>
+                <ProtectedRoute allowedRoles={["Customer", "Mechanic"]}>
                   <ProfilePage />
                 </ProtectedRoute>
               }

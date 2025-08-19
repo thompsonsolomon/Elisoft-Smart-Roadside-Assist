@@ -45,7 +45,7 @@ export default function RegisterPage() {
         phone: Number(FinalNumber),
         pin: formData.pin,
         role: "Mechanic",
-        email: "mike.smith@example.com",
+        email: "test@gmail.com",
         specialties: ["Engine Repair", "Tire Replacement"],
         experienceYears: 5,
         location: {
