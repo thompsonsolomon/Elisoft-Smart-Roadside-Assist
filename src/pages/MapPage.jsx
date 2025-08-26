@@ -3,14 +3,22 @@ import { Link } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { mechanics, customers } from "../../data"
 import GoogleMap from "../components/common/GoogleMap"
+import GoogleMapReact from 'google-map-react';
 import { ArrowLeft, MapPin, Star, Clock, DollarSign } from "lucide-react"
+import AnyReactComponent from "../components/map/marker"
+import NigeriaMap from "../components/map/marker"
+import { useLocalStorage } from "../helpers/UseLocalStorage"
+
+
 
 const MapPage = () => {
   const { user } = useAuth()
-  const [selectedMarker, setSelectedMarker] = useState(null)
+  const [MaPuser] = useLocalStorage("Elisoft_MapData", null);
 
   // Map center (New York City)
   const mapCenter = { lat: 40.7128, lng: -74.006 }
+
+  console.log("Map user data:", MaPuser)
 
   // Prepare markers based on user role
   const markers = useMemo(() => {
@@ -49,9 +57,6 @@ const MapPage = () => {
     return markerData
   }, [user?.role])
 
-  const handleMarkerClick = (markerData) => {
-    setSelectedMarker(markerData)
-  }
 
   const getBackRoute = () => {
     switch (user?.role) {
@@ -67,7 +72,7 @@ const MapPage = () => {
   }
 
   const renderMarkerDetails = () => {
-    if (!selectedMarker) {
+    if (!MaPuser) {
       return (
         <div className="card">
           <div className="text-center py-12">
@@ -79,14 +84,17 @@ const MapPage = () => {
       )
     }
 
-    const { type, data } = selectedMarker
+    const type = MaPuser.type
+    const data = MaPuser.user
+    console.log("Selected marker data:", data);
+
 
     if (type === "Mechanic") {
       return (
         <div className="card">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-xl font-semibold text-gold mb-1">{data.name}</h3>
+              <h3 className="text-xl font-semibold text-gold mb-1">{data.fullName}</h3>
               <p className="text-gray-400">{data.expertise.join(", ")}</p>
             </div>
             <span className={`status-badge ${data.available ? "status-active" : "status-blocked"}`}>
@@ -143,23 +151,20 @@ const MapPage = () => {
         <div className="card">
           <div className="flex items-start justify-between mb-4">
             <div>
-              <h3 className="text-xl font-semibold text-gold mb-1">{data.name}</h3>
+              <h3 className="text-xl font-semibold text-gold mb-1">{data.fullName}</h3>
               <p className="text-gray-400">{data.serviceRequested}</p>
             </div>
-            <span className={`status-badge ${data.urgency === "Urgent" ? "status-blocked" : "status-pending"}`}>
-              {data.urgency}
-            </span>
           </div>
 
           <div className="space-y-3 mb-6">
             <div className="flex items-center space-x-2">
               <MapPin className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-300">{data.location.address}</span>
+              <span className="text-gray-300">{data.location.address}Address </span>
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="w-4 h-4 text-gray-400" />
               <span className="text-gray-300">
-                {data.preferredDate} at {data.preferredTime}
+                {data.lastLocationUpdate} at {data.lastLocationUpdate}
               </span>
             </div>
             <div className="flex items-center space-x-2">
@@ -218,6 +223,15 @@ const MapPage = () => {
 
   const stats = getStatsData()
 
+
+  const defaultProps = {
+    center: {
+      lat: 10.99835602,
+      lng: 77.01502627
+    },
+    zoom: 11
+  };
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -254,14 +268,9 @@ const MapPage = () => {
                 </h2>
               </div>
               <div className="p-4">
-                <GoogleMap
-                  center={mapCenter}
-                  zoom={12}
-                  markers={markers}
-                  onMarkerClick={handleMarkerClick}
-                  className="w-full h-96 rounded-lg"
-                />
-              </div>
+                <div style={{ height: '50vh', width: '100%' }}>
+                  <NigeriaMap />
+                </div>              </div>
             </div>
 
             {/* Map Legend */}
@@ -301,7 +310,7 @@ const MapPage = () => {
             {/* Selected Marker Details */}
             <div>
               <h2 className="text-lg font-semibold text-gold mb-4">
-                {selectedMarker ? "📋 Details" : "ℹ️ Select a marker"}
+                {MaPuser ? "📋 Details" : "ℹ️ Select a marker"}
               </h2>
               {renderMarkerDetails()}
             </div>

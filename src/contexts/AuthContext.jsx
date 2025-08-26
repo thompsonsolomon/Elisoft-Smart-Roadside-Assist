@@ -145,7 +145,6 @@ export function AuthProvider({ children }) {
   };
 
 
-
   const logout = () => {
     localStorage.removeItem("Elisoft_user")
     localStorage.removeItem("token")

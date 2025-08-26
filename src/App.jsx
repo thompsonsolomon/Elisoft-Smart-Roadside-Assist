@@ -61,7 +61,7 @@ function App() {
             <Route
               path="/map"
               element={
-                <ProtectedRoute allowedRoles={["Customer", "mechanic", "admin"]}>
+                <ProtectedRoute allowedRoles={["Customer", "Mechanic", "admin"]}>
                   <MapPage />
                 </ProtectedRoute>
               }
