@@ -102,7 +102,7 @@ function Users() {
             </div>
 
             {/* User Cards */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 ">
+            <div className="flex flex-wrap gap-6">
                 {filteredUsers.map((user) => (
                     <div
                         key={user._id}

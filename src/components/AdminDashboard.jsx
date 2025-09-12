@@ -6,9 +6,12 @@ import MechanicsDashboard from "./Admin/Container/Mechanics"
 import ServiceRequestsDashboard from "./Admin/Container/Services"
 import SystemDashboard from "./Admin/Container/Reports"
 import Settings from "./Admin/Settings"
+import { Button, MenuButton } from "@headlessui/react"
 
 export default function AdminDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState("dashboard")
+  const [isOpen, setIsOpen] = useState(false);
+
 
   const bookings = [
     {
@@ -124,17 +127,54 @@ export default function AdminDashboard({ user, onLogout }) {
   }
 
   return (
+    // <div className="bg-gray-900 text-white min-h-screen">
+    //   <div className="flex">
+    //     {/* Sidebar */}
+    //     <aside className="w-64 bg-gray-800 border-r h-[100dvh] border-gray-700 p-5 space-y-4">
+    //       {tabList.map((tab) => (
+    //         <button
+    //           key={tab.id}
+    //           onClick={() => setActiveTab(tab.id)}
+    //           className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition ${activeTab === tab.id
+    //             ? "bg-yellow-400 text-black"
+    //             : "hover:bg-gray-700 text-gray-300"
+    //             }`}
+    //         >
+    //           {tab.label}
+    //         </button>
+    //       ))}
+    //     </aside>
+
+    //     {/* Main */}
+    //     <main className="flex-1 p-8 h-[100dvh] overflow-y-auto">{renderContent()}</main>
+    //   </div>
+    // </div>
+
     <div className="bg-gray-900 text-white min-h-screen">
-      <div className="flex">
+      <div className="flex h-[100dvh]">
         {/* Sidebar */}
-        <aside className="w-64 bg-gray-800 border-r h-[100dvh] border-gray-700 p-5 space-y-4">
+        <aside
+          className={`fixed md:static top-0 left-0 h-full w-64 bg-gray-800 border-r border-gray-700 p-5 space-y-4 transform transition-transform duration-300 z-50
+          ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+        >
+          {/* Close button (mobile only) */}
+          <div className="flex justify-end md:hidden mb-4">
+            <button onClick={() => setIsOpen(false)}>
+              <span className="w-6 h-6" > ✖</span>
+
+            </button>
+          </div>
+
           {tabList.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                setIsOpen(false); // auto close on mobile
+              }}
               className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition ${activeTab === tab.id
-                ? "bg-yellow-400 text-black"
-                : "hover:bg-gray-700 text-gray-300"
+                  ? "bg-yellow-400 text-black"
+                  : "hover:bg-gray-700 text-gray-300"
                 }`}
             >
               {tab.label}
@@ -142,8 +182,29 @@ export default function AdminDashboard({ user, onLogout }) {
           ))}
         </aside>
 
-        {/* Main */}
-        <main className="flex-1 p-8 h-[100dvh] overflow-y-auto">{renderContent()}</main>
+        {/* Overlay when sidebar open on mobile */}
+        {isOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            onClick={() => setIsOpen(false)}
+          ></div>
+        )}
+
+        {/* Main content */}
+        <main className="flex-1 p-8 h-[100dvh] overflow-y-auto w-full">
+          {/* Mobile toggle button */}
+          <div className="md:hidden mb-4">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="p-2 rounded-md bg-gray-800 text-gray-300"
+            >
+
+              <span className="w-7 h-6" > ☰ </span>
+            </button>
+          </div>
+
+          {renderContent()}
+        </main>
       </div>
     </div>
   )
