@@ -9,7 +9,11 @@ import AnyReactComponent from "../components/map/marker"
 import NigeriaMap from "../components/map/marker"
 import { useLocalStorage } from "../helpers/UseLocalStorage"
 
-
+// =============================== NOTES ========================
+// This page displays a map with markers for mechanics and customers based on user roles for the initial version.
+// But currently a new update is being worked on to convert the use of google maps to just listing the mechanics and customers in a list view
+// on click of each mechanic should display the minimum time it will take to reach then customer and additonaly a detaled profile card of the mechanic
+// =================================================================
 
 const MapPage = () => {
   const { user } = useAuth()
@@ -89,62 +93,62 @@ const MapPage = () => {
     console.log("Selected marker data:", data);
 
 
-    if (type === "Mechanic") {
-      return (
-        <div className="card">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <h3 className="text-xl font-semibold text-gold mb-1">{data.fullName}</h3>
-              <p className="text-gray-400">{data.expertise.join(", ")}</p>
-            </div>
-            <span className={`status-badge ${data.available ? "status-active" : "status-blocked"}`}>
-              {data.available ? "Available" : "Busy"}
-            </span>
-          </div>
+    // if (type === "Mechanic") {
+    //   return (
+    //     <div className="card">
+    //       <div className="flex items-start justify-between mb-4">
+    //         <div>
+    //           <h3 className="text-xl font-semibold text-gold mb-1">{data.fullName}</h3>
+    //           <p className="text-gray-400">{data.expertise.join(", ")}</p>
+    //         </div>
+    //         <span className={`status-badge ${data.available ? "status-active" : "status-blocked"}`}>
+    //           {data.available ? "Available" : "Busy"}
+    //         </span>
+    //       </div>
 
-          <div className="space-y-3 mb-6">
-            <div className="flex items-center space-x-2">
-              <Star className="w-4 h-4 text-gold" />
-              <span className="text-gold font-medium">{data.rating}</span>
-              <span className="text-gray-400">({data.reviewCount} reviews)</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <MapPin className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-300">{data.location.address}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-300">{data.workingHours}</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <DollarSign className="w-4 h-4 text-gray-400" />
-              <span className="text-gray-300">Price Range: {data.priceRange}</span>
-            </div>
-          </div>
+    //       <div className="space-y-3 mb-6">
+    //         <div className="flex items-center space-x-2">
+    //           <Star className="w-4 h-4 text-gold" />
+    //           <span className="text-gold font-medium">{data.rating}</span>
+    //           <span className="text-gray-400">({data.reviewCount} reviews)</span>
+    //         </div>
+    //         <div className="flex items-center space-x-2">
+    //           <MapPin className="w-4 h-4 text-gray-400" />
+    //           <span className="text-gray-300">{data.location.address}</span>
+    //         </div>
+    //         <div className="flex items-center space-x-2">
+    //           <Clock className="w-4 h-4 text-gray-400" />
+    //           <span className="text-gray-300">{data.workingHours}</span>
+    //         </div>
+    //         <div className="flex items-center space-x-2">
+    //           <DollarSign className="w-4 h-4 text-gray-400" />
+    //           <span className="text-gray-300">Price Range: {data.priceRange}</span>
+    //         </div>
+    //       </div>
 
-          {user?.role === "Customer" && data.available && (
-            <div className="grid grid-cols-2 gap-3">
-              <button className="btn btn-primary">Book Now</button>
-              <button className="btn btn-secondary">Get Directions</button>
-            </div>
-          )}
+    //       {user?.role === "Customer" && data.available && (
+    //         <div className="grid grid-cols-2 gap-3">
+    //           <button className="btn btn-primary">Book Now</button>
+    //           <button className="btn btn-secondary">Get Directions</button>
+    //         </div>
+    //       )}
 
-          {data.services && (
-            <div className="mt-6">
-              <h4 className="font-semibold text-gold mb-3">Services Offered</h4>
-              <div className="space-y-2">
-                {data.services.slice(0, 3).map((service, index) => (
-                  <div key={index} className="flex justify-between items-center text-sm">
-                    <span className="text-gray-300">{service.name}</span>
-                    <span className="text-gold">${service.price}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )
-    }
+    //       {data.services && (
+    //         <div className="mt-6">
+    //           <h4 className="font-semibold text-gold mb-3">Services Offered</h4>
+    //           <div className="space-y-2">
+    //             {data.services.slice(0, 3).map((service, index) => (
+    //               <div key={index} className="flex justify-between items-center text-sm">
+    //                 <span className="text-gray-300">{service.name}</span>
+    //                 <span className="text-gold">${service.price}</span>
+    //               </div>
+    //             ))}
+    //           </div>
+    //         </div>
+    //       )}
+    //     </div>
+    //   )
+    // }
 
     if (type === "Customer") {
       return (

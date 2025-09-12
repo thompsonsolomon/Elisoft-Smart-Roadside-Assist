@@ -165,6 +165,8 @@ export default function ProfilePage() {
         role: formData.role,
       };
       const res = await updateUserProfile(Credentials);
+      console.log(res)
+      localStorage.setItem("Elisoft_user", JSON.stringify(res.data.user));
       toast.success(res.message || "Profile updated successfully!");
 
       setLoadAction(false);
@@ -186,7 +188,7 @@ export default function ProfilePage() {
           className="text-sm text-yellow-400 font-bold cursor-pointer"
           onClick={() => navigate(-1)}
         >
-          My Profile
+          Dashboard
         </h4>
         <button
           onClick={logout}
@@ -231,7 +233,7 @@ export default function ProfilePage() {
             <div><strong>Joined:</strong> {UserData?.createdAt ? new Date(UserData?.createdAt).toDateString() : "N/A"}</div>
           </div>
         )}
-  <ChangePinModal />      </div>
+        <ChangePinModal />      </div>
 
       {/* Edit Form */}
       <div className="max-w-3xl mx-auto py-10">
@@ -311,11 +313,11 @@ export default function ProfilePage() {
               </div>
 
 
-          {/* Location */}
-          <div>
-            <label className="block text-black font-semibold">Address / Location</label>
-            <button onClick={handleChangeLocation} className="w-full text-black border rounded p-2">   Change Location</button>
-          </div>
+              {/* Location */}
+              <div>
+                <label className="block text-black font-semibold">Address / Location</label>
+                <button onClick={handleChangeLocation} className="w-full text-black border rounded p-2">   Change Location</button>
+              </div>
 
               <div>
                 <label className="block text-black font-semibold">License Number</label>
@@ -332,7 +334,7 @@ export default function ProfilePage() {
         </form>
       </div>
 
-    
+
     </div>
   );
 }

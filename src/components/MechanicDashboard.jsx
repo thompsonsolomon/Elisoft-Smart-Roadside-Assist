@@ -203,18 +203,7 @@ export default function MechanicDashboard({ user, onLogout }) {
               </div>
             ))}
           </div>
-        </section>
-
-        {/* Profile Section */}
-        <section>
-          <div className="card" style={{ maxWidth: "500px" }}>
-            <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "#FFD700" }}>👤 Profile & Settings</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-              <button className="btn btn-primary">Update Profile</button>
-              <button className="btn btn-secondary">View Earnings</button>
-            </div>
-          </div>
-        </section>
+        </section>       
       </div>
     </div>
   )

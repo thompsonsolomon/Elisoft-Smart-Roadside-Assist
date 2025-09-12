@@ -7,8 +7,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-const {  user,isAuthenticated, loading } = useAuth()
-
+  const { user, isAuthenticated } = useAuth()
   return (
     <header className="bg-black shadow-md fixed w-full z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -50,8 +49,20 @@ const {  user,isAuthenticated, loading } = useAuth()
             <li><a href="#services" onClick={toggleMenu}>Services</a></li>
             <li><a href="#testimonials" onClick={toggleMenu}>Testimonials</a></li>
             <li><a href="#contact" onClick={toggleMenu}>Contact</a></li>
-            <Link to="/login" className="btn btn-ghost" onClick={toggleMenu}>Login</Link>
-            <Link to="/register" className="btn btn-primary" onClick={toggleMenu}>Get Started</Link>
+
+            {/* Conditional Links based on Authentication */}
+            {
+              isAuthenticated ? (
+                <Link to={`/${user?.role}`} className="btn btn-primary">Dashboard</Link>
+              ) : (
+                <>
+                  <Link to="/login" className="btn btn-ghost" onClick={toggleMenu}>Login</Link>
+                  <Link to="/register" className="btn btn-primary" onClick={toggleMenu}>Get Started</Link>
+                </>
+              )
+            }
+
+
           </ul>
         </div>
       )}

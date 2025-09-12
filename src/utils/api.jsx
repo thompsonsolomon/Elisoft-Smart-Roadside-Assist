@@ -123,7 +123,7 @@ const token = getAccessToken();
 // 🔹 Auth Functions
 export const registerUser = (credentials) => apiRequest("/api/auth/register", "POST", credentials);
 export const loginUser = (credentials) => apiRequest("/api/auth/login", "POST", credentials);
-export const forgotPin = (email) => apiRequest("/api/auth/forgot-pin", "POST", { email });
+export const forgotPin = (pin) => apiRequest("/api/auth/request-reset", "POST", { pin });
 export const resetPin = (resetToken, newPin) => apiRequest(`/api/auth/reset-pin/${resetToken}`, "POST", { newPin });
 export const changePin = (credentials, token) => apiRequest("/api/auth/change-pin", "POST", credentials, token);
 // 🔹 Product & User
@@ -146,3 +146,28 @@ export const placeOrders = (orders, token) => apiRequest("/api/orders/place", "P
 export const fetchOrders = (token) => apiRequest("/api/orders/all", "GET", null, token);
 export const orderDetails = (orderId, token) => apiRequest(`/api/details/${orderId}`, "GET", null, token);
 export const VerifyPayment = (session_id , orderId) => apiRequest("/api/payment/verify", "POST",session_id , orderId);
+
+// Admin Dashboard & Analytics
+export const GetDashboard = () => apiRequest("/api/admin/dashboard");
+export const GetAnalysis = () => apiRequest("/api/admin/analytics?period=30days");
+export const GetRevenueAnalysis = () => apiRequest("/api/admin/revenue-analytics?startDate=2024-01-01&endDate=2024-01-31"); // not fetched yet
+export const GetAllUsers = () => apiRequest("/api/admin/users?page=1&limit=20&role=&search="); //admin users start
+export const GetUserById = (id) => apiRequest(`/api/admin/users/${id}`);
+export const UpdateUserStatus = (id, data) =>  apiRequest(`/api/admin/users/${id}/status`, "PUT", data);
+export const DeleteUser = (id, token ) => apiRequest(`/api/admin/users/${id} `, "DELETE", token); //admin users stop
+export const GetAllMechanics = () => apiRequest("api/admin/mechanics?page=1&limit=20&available="); //mechanic start
+export const GetAvailableMechanics = () => apiRequest("/api/admin/mechanics/available");
+export const UpdateMechanicAvailability = (id, data) =>  apiRequest(`/api/admin/mechanics/${id}/availability`, "PUT", data); //mechanic stop
+export const GetAllServiceRequests = () => apiRequest("/api/admin/service-requests?page=1&limit=20&status=Pending&serviceType="); //service start
+export const GetPendingServiceRequests = () => apiRequest("/api/admin/service-requests/pending")
+export const AssignMechanicToRequest = (requestId, mechanicId) =>  apiRequest(`/api/admin/service-requests/${requestId}/assign `, "POST", { mechanicId });
+export const ReassignServiceRequest = (requestId, credentials) =>  apiRequest(`/api/admin/service-requests/${requestId}/reassign`, "POST", { credentials }); //fetch nc
+export const GetServiceRequestReports = () => apiRequest("/api/admin/reports/service-requests"); //service stop
+export const GetRevenueReports = () => apiRequest("/api/admin/reports/revenue"); //revenue report start
+export const GetUserActivityReports = () => apiRequest("/api/admin/reports/user-activity");
+export const GetMechanicPerformanceReports = () =>  apiRequest("/api/admin/reports/mechanic-performance");
+export const GetSystemHealth = () => apiRequest("/api/admin/system/health");
+export const PerformSystemCleanup = () => apiRequest("/api/admin/system/cleanup", "POST");
+export const GetSystemLogs = () => apiRequest("/api/admin/system/logs");
+export const SendNotification = (data) =>  apiRequest("/api/admin/notifications/send", "POST", data);
+export const ToggleMaintenanceMode = (data) =>  apiRequest("/api/admin/system/maintenance", "POST", { data });

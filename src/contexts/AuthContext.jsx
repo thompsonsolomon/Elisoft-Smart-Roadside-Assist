@@ -16,8 +16,7 @@ const initialState = {
   //   longitude: 3.3792057,
   //   phone: "09124919117",
   //   priceRates: [],
-  //   // role: "mechanic",
-  //   role: fetchedDummeryUserRole?.role,
+  //   role: "Mechanic",
   //   services: [
   //     { name: "Roadside Assistant", price: "400" },
   //     { name: "Towing Service", price: "1000" },
@@ -36,7 +35,6 @@ const initialState = {
   // },
   user: {},
   isAuthenticated: fetchedDummeryUserRole ? true : false,
-  // isAuthenticated: true,
   loading: true,
   error: null,
 }

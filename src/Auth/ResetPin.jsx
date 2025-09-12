@@ -5,22 +5,12 @@ import { KeyRound, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { resetPin } from '../utils/api';
 
 const  ResetPin = () => {
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
   const [newPin, setNewPin] = useState('');
+  const [OTP, setOTP] = useState('');
+  const [Number, setNumber] = useState('');
   const [confirmPin, setConfirmPin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-
-  useEffect(() => {
-    if (!token) {
-      setMessage({
-        type: 'error',
-        text: 'Invalid or expired password reset link. Please try again from the "Forgot Password" page.'
-      });
-    }
-  }, [ token]);
-
 
   const handleResetPin = async (e) => {
     e.preventDefault();
@@ -86,15 +76,45 @@ const  ResetPin = () => {
         {message.text && message.type === 'error' && (
           <div
             className="mt-6 p-4 rounded-lg flex items-center space-x-3 transition-opacity duration-300 ease-in-out bg-red-50 text-red-700 border-l-4 border-red-400"
-          >
+            onClick={()=> setMessage({ type: '', text: '' })}>
             <AlertCircle size={20} />
             <p className="text-sm font-medium">{message.text}</p>
           </div>
         )}
 
         {/* Only show the form if the URL parameters are valid */}
-        { token && message.type !== 'error' && (
+        { message.type !== 'error' && (
           <form onSubmit={handleResetPin} className="space-y-6">
+               <div className="space-y-1">
+              <label htmlFor="number" className="block text-sm font-semibold text-gray-700">
+               Phone Number
+              </label>
+              <input
+                id="number"
+                type="number"
+                value={Number}
+                onChange={(e) => setNumber(e.target.value)}
+                required
+                placeholder="••••"
+                className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-gray-50 text-gray-800 transition-colors duration-200 ease-in-out"
+              />
+            </div>
+
+               <div className="space-y-1">
+              <label htmlFor="otp" className="block text-sm font-semibold text-gray-700">
+                OTP
+              </label>
+              <input
+                id="otp"
+                type="number"
+                value={OTP}
+                onChange={(e) => setOTP(e.target.value)}
+                required
+                placeholder="••••"
+                className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-gray-50 text-gray-800 transition-colors duration-200 ease-in-out"
+              />
+            </div>
+
             <div className="space-y-1">
               <label htmlFor="newPin" className="block text-sm font-semibold text-gray-700">
                 New PIN
@@ -106,7 +126,7 @@ const  ResetPin = () => {
                 onChange={(e) => setNewPin(e.target.value)}
                 required
                 placeholder="••••"
-                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-gray-50 text-gray-800 transition-colors duration-200 ease-in-out"
+                className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-gray-50 text-gray-800 transition-colors duration-200 ease-in-out"
               />
             </div>
 
@@ -121,13 +141,13 @@ const  ResetPin = () => {
                 onChange={(e) => setConfirmPin(e.target.value)}
                 required
                 placeholder="••••"
-                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-gray-50 text-gray-800 transition-colors duration-200 ease-in-out"
+                className="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 bg-gray-50 text-gray-800 transition-colors duration-200 ease-in-out"
               />
             </div>
 
             <button
               type="submit"
-              disabled={isLoading || !token}
+              disabled={isLoading }
               className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-yellow-600 text-white font-bold rounded-lg shadow-lg hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 disabled:bg-yellow-400 disabled:cursor-not-allowed transition-all duration-200 ease-in-out"
             >
               {isLoading && <Loader2 className="animate-spin" size={20} />}

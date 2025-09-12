@@ -40,31 +40,18 @@ export default function RegisterPage() {
         return
       }
 
-      const MechanicCredentials = {
-        fullName: formData.fullName,
-        phone: Number(FinalNumber),
-        pin: formData.pin,
-        role: "Mechanic",
-        email: "test@gmail.com",
-        specialties: ["Engine Repair", "Tire Replacement"],
-        experienceYears: 5,
-        location: {
-          type: "Point",
-          coordinates: [3.3792, 6.5244],
-        },
-      }
-      const CustomerCredentials = {
-        fullName: formData.fullName,
-        phone: Number(FinalNumber),
-        pin: formData.pin,
-        role: formData.role,
-      }
+
 
       const credentials =
-        formData.role === "Mechanic"
-          ? MechanicCredentials
-          : CustomerCredentials
+      {
+        "phone":FinalNumber,
+        "pin": formData.pin,
+        "role": formData.role,
+        "fullName": formData.fullName
+      }
+
       const result = await register(credentials)
+      console.log(result)
       if (result.response?.data.status === "error") {
         toast.error(result.response?.data.message)
         setLoading(false)
@@ -272,6 +259,7 @@ export default function RegisterPage() {
               >
                 <option value="Customer">Customer</option>
                 <option value="Mechanic">Mechanic</option>
+                      <option value="Admin">Admin</option>
               </select>
             </div>
 

@@ -28,7 +28,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-pin" element={<ForgotPin />} />
-            <Route path="/reset-pin/:id" element={<ResetPin />} />
+            <Route path="/reset-pin" element={<ResetPin />} />
 
 
             <Route
@@ -52,9 +52,9 @@ function App() {
             <Route
               path="/admin"
               element={
-                <ProtectedRoute allowedRoles={["admin"]}>
-                  <AdminDashboard />
-                </ProtectedRoute>
+                <ProtectedRoute allowedRoles={["Admin"]}>
+                <AdminDashboard />
+                 </ProtectedRoute>
               }
             />
 

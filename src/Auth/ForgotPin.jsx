@@ -65,7 +65,7 @@ const ForgotPin = () => {
                         className="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-yellow-600 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 disabled:bg-yellow-400 disabled:cursor-not-allowed transition-colors duration-200"
                     >
                         {isLoading && <Loader2 className="animate-spin" size={20} />}
-                        <span>{isLoading ? 'Sending...' : 'Send Reset Link'}</span>
+                        <span>{isLoading ? 'Sending...' : 'Send Reset Pin'}</span>
                     </button>
                 </form>
 

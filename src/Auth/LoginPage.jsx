@@ -27,7 +27,7 @@ export default function LoginPage() {
 
     try {
       const credentials = {
-        "phone": Number(FinalNumber),
+        "phone": FinalNumber,
         "pin": formData.pin,
       };
       const result = await login(credentials);
