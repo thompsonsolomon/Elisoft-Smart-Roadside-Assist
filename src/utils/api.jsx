@@ -126,27 +126,19 @@ export const loginUser = (credentials) => apiRequest("/api/auth/login", "POST", 
 export const forgotPin = (pin) => apiRequest("/api/auth/request-reset", "POST", { pin });
 export const resetPin = (resetToken, newPin) => apiRequest(`/api/auth/reset-pin/${resetToken}`, "POST", { newPin });
 export const changePin = (credentials, token) => apiRequest("/api/auth/change-pin", "POST", credentials, token);
-// 🔹 Product & User
+// 🔹  User
 export const fetchUsers = () => apiRequest("/api/users/profile");
 export const updateUserProfile = (data, token) => apiRequest("/api/users/profile", "PUT", data, token);
 export const updateUserLocation = (data) => apiRequest("/api/users/location", "PUT", data, token);
-export const DeliveryDetails = (data, token) => apiRequest("/api/users/location", "POST", data, token);
-export const fetchDeliveryDetails = (token) => apiRequest("/api/users/location", "GET", null, token);
-export const updateLocation = (data, token) => apiRequest(`/api/users/location/`, "PUT", data, token);
+// export const updateLocation = (data, token) => apiRequest(`/api/users/location/`, "PUT", data, token);
+// Mechanics
+export const MechanicAvailability = ( data) =>  apiRequest(`/api/users/availability`, "PUT", data);
+export const MechanicGetRequests = () => apiRequest("/api/service-requests/available", "GET");
+export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
 
-// 🔹 Cart
-export const fetchCart = (token) => apiRequest("/api/cart", "GET", null, token);
-export const updateCart = (cartData, token) => apiRequest("/api/cart", "PUT", cartData, token);
-export const addToCartAPI = (product, token) => apiRequest("/api/cart/add", "POST", product, token);
-export const removeFromCartAPI = (productId) => apiRequest(`/api/cart/${productId}`, "DELETE");
-export const clearCartAPI = (token) => apiRequest("/api/cart", "DELETE", null, token);
-
-// 🔹 Orders
-export const placeOrders = (orders, token) => apiRequest("/api/orders/place", "POST", orders, token);
-export const fetchOrders = (token) => apiRequest("/api/orders/all", "GET", null, token);
-export const orderDetails = (orderId, token) => apiRequest(`/api/details/${orderId}`, "GET", null, token);
-export const VerifyPayment = (session_id , orderId) => apiRequest("/api/payment/verify", "POST",session_id , orderId);
-
+//Customers
+export const CustomerGetAvailableMechanic = (lat, lng) => apiRequest(`/api/users/nearby-mechanics?coordinates=${lng}, ${lat}`, "GET");
+export const CreateServiceRequest = (data) => apiRequest("/api/service-requests", "POST", data);
 // Admin Dashboard & Analytics
 export const GetDashboard = () => apiRequest("/api/admin/dashboard");
 export const GetAnalysis = () => apiRequest("/api/admin/analytics?period=30days");
@@ -154,7 +146,7 @@ export const GetRevenueAnalysis = () => apiRequest("/api/admin/revenue-analytics
 export const GetAllUsers = () => apiRequest("/api/admin/users?page=1&limit=20&role=&search="); //admin users start
 export const GetUserById = (id) => apiRequest(`/api/admin/users/${id}`);
 export const UpdateUserStatus = (id, data) =>  apiRequest(`/api/admin/users/${id}/status`, "PUT", data);
-export const DeleteUser = (id, token ) => apiRequest(`/api/admin/users/${id} `, "DELETE", token); //admin users stop
+export const DeleteUser = (id) => apiRequest(`/api/admin/users/${id} `, "DELETE"); //admin users stop
 export const GetAllMechanics = () => apiRequest("api/admin/mechanics?page=1&limit=20&available="); //mechanic start
 export const GetAvailableMechanics = () => apiRequest("/api/admin/mechanics/available");
 export const UpdateMechanicAvailability = (id, data) =>  apiRequest(`/api/admin/mechanics/${id}/availability`, "PUT", data); //mechanic stop

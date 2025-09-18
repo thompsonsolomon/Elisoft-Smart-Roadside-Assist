@@ -1,42 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { MechanicAvailability, MechanicGetRequests } from "../utils/api"
+import { toast } from "react-toastify"
+import JobRequests from "./Mechanics/JobRequests";
 
 export default function MechanicDashboard({ user, onLogout }) {
-  const [isAvailable, setIsAvailable] = useState(true)
+  const [isAvailable, setIsAvailable] = useState(() => {
+    // read from localStorage, fallback to false
+    const saved = localStorage.getItem("mechanicAvailability");
+    return saved ? JSON.parse(saved) : false;
+  });
   const navigate = useNavigate()
-  const jobRequests = [
-    {
-      id: 1,
-      customer: "John Smith",
-      type: "Oil Change",
-      date: "2024-01-15",
-      location: "Downtown",
-      distance: "2.1 miles",
-      urgency: "Normal",
-      price: "$45",
-    },
-    {
-      id: 2,
-      customer: "Mary Johnson",
-      type: "Brake Repair",
-      date: "2024-01-16",
-      location: "Midtown",
-      distance: "1.8 miles",
-      urgency: "Urgent",
-      price: "$180",
-    },
-    {
-      id: 3,
-      customer: "David Wilson",
-      type: "Engine Check",
-      date: "2024-01-17",
-      location: "Uptown",
-      distance: "3.2 miles",
-      urgency: "Normal",
-      price: "$120",
-    },
-  ]
-
   const acceptedJobs = [
     {
       id: 1,
@@ -58,6 +32,8 @@ export default function MechanicDashboard({ user, onLogout }) {
     },
   ]
 
+
+
   const handleAcceptJob = (jobId) => {
     alert(`Job ${jobId} accepted! Customer will be notified.`)
   }
@@ -65,6 +41,32 @@ export default function MechanicDashboard({ user, onLogout }) {
   const handleRejectJob = (jobId) => {
     alert(`Job ${jobId} rejected.`)
   }
+  const ToggleAvailability = async () => {
+    try {
+      const newAvailability = !isAvailable;
+
+      // Call API with the new value
+      const res = await MechanicAvailability({ isAvailable: newAvailability });
+      console.log("API response:", res);
+
+      // Save in state + localStorage
+      setIsAvailable(newAvailability);
+      localStorage.setItem(
+        "mechanicAvailability",
+        JSON.stringify(newAvailability)
+      );
+
+      toast.success(
+        newAvailability
+          ? "You are now available!"
+          : "You are now unavailable!"
+      );
+    } catch (error) {
+      console.error("Error toggling availability:", error);
+      toast.error("Failed to update availability");
+    }
+  };
+
 
   return (
     <div className=" fade-in flex justify-center items-center flex-col w-full ">
@@ -77,10 +79,10 @@ export default function MechanicDashboard({ user, onLogout }) {
             <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft</h1>
           </div>
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <button onClick={() => navigate("/profile")} className="btn btn-primary">
+            <button onClick={() => navigate("/profile")} className="btn btn-primary">
               Profile
             </button>
-          
+
           </div>
         </div>
       </header>
@@ -88,8 +90,8 @@ export default function MechanicDashboard({ user, onLogout }) {
       <div className="container" style={{ padding: "40px 20px" }}>
         {/* Status and Map Section */}
         <section style={{ marginBottom: "60px" }}>
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-        <div className="card">
+          <div className="grid md:grid-cols-1 gap-12 items-center">
+            <div className="card">
               <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "#FFD700" }}>🔄 Availability Status</h2>
               <div className="flex justify-between " style={{ alignItems: "center", marginBottom: "20px" }}>
                 <span style={{ color: "#ccc", fontSize: "1.1rem" }}>
@@ -99,20 +101,20 @@ export default function MechanicDashboard({ user, onLogout }) {
                   </strong>
                 </span>
                 <button
-                  onClick={() => setIsAvailable(!isAvailable)}
+                  onClick={() => ToggleAvailability()}
                   className={`btn ${isAvailable ? "btn-danger" : "btn-primary"}`}
                   style={{ padding: "8px 16px" }}
                 >
                   {isAvailable ? "Go Offline" : "Go Online"}
                 </button>
               </div>
-              <div style={{ padding: "15px", backgroundColor: "#0a0a0a", borderRadius: "8px" }}>
+              {/* <div style={{ padding: "15px", backgroundColor: "#0a0a0a", borderRadius: "8px" }}>
                 <p style={{ color: "#ccc", fontSize: "0.9rem", marginBottom: "8px" }}>📊 Today's Stats:</p>
                 <p style={{ color: "#FFD700" }}>Jobs Completed: 3 • Earnings: $425</p>
-              </div>
+              </div> */}
             </div>
 
-            <div
+            {/* <div
               className="card text-center"
               style={{ background: "linear-gradient(135deg, #FFD700, #FFA500)", color: "#000" }}
             >
@@ -126,7 +128,7 @@ export default function MechanicDashboard({ user, onLogout }) {
               >
                 View Map
               </button>
-            </div>
+            </div> */}
           </div>
         </section>
 
@@ -134,34 +136,7 @@ export default function MechanicDashboard({ user, onLogout }) {
         <section style={{ marginBottom: "60px" }}>
           <h2 style={{ fontSize: "2rem", marginBottom: "30px", color: "#FFD700" }}>📨 New Job Requests</h2>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-          {jobRequests.map((job) => (
-              <div key={job.id} className="card">
-                <div className="flex-between" style={{ marginBottom: "15px" }}>
-                  <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job.customer}</h3>
-                  <span className={`status-badge ${job.urgency === "Urgent" ? "status-blocked" : "status-pending"}`}>
-                    {job.urgency}
-                  </span>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "20px" }}>
-                  <p style={{ color: "#ccc" }}>🔧 Service: {job.type}</p>
-                  <p style={{ color: "#ccc" }}>📅 Date: {job.date}</p>
-                  <p style={{ color: "#ccc" }}>📍 Location: {job.location}</p>
-                  <p style={{ color: "#ccc" }}>📏 Distance: {job.distance}</p>
-                  <p style={{ color: "#ccc" }}>💰 Payment: {job.price}</p>
-                  <p style={{ color: "#ccc" }}>⏰ Type: On-site</p>
-                </div>
-                <div className="flex" style={{ gap: "12px" }}>
-                  <button onClick={() => handleAcceptJob(job.id)} className="btn btn-primary" style={{ flex: 1 }}>
-                    Accept Job
-                  </button>
-                  <button onClick={() => handleRejectJob(job.id)} className="btn btn-secondary" style={{ flex: 1 }}>
-                    Decline
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <JobRequests />
         </section>
 
         {/* Accepted Jobs Section */}
@@ -169,7 +144,7 @@ export default function MechanicDashboard({ user, onLogout }) {
           <h2 style={{ fontSize: "2rem", marginBottom: "30px", color: "#FFD700" }}>✅ Your Active Jobs</h2>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
-          {acceptedJobs.map((job) => (
+            {acceptedJobs.map((job) => (
               <div key={job.id} className="card">
                 <div className="flex-between" style={{ marginBottom: "15px" }}>
                   <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job.customer}</h3>
@@ -203,7 +178,7 @@ export default function MechanicDashboard({ user, onLogout }) {
               </div>
             ))}
           </div>
-        </section>       
+        </section>
       </div>
     </div>
   )

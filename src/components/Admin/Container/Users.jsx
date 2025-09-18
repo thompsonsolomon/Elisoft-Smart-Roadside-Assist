@@ -70,20 +70,65 @@ function Users() {
         fetchUserById();
     };
 
-
+    console.log(userData)
 
     const handleDeleteUser = async (userId) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-        if (!confirmDelete) return;
-        try {
-            await DeleteUser(userId);
-            toast.success("User deleted successfully");
-            console.log("Deleted user:", userId);
-        } catch (err) {
-            console.error("Error deleting user:", err);
-            toast.error("Failed to delete user");
-        }
+        setIsModalOpen(false);
+        toast.info(
+            <div>
+                <p>Are you sure you want to delete this user?</p>
+                <div className="flex gap-2 mt-2">
+                    {/* ✅ Yes button */}
+                    <button
+                        onClick={async () => {
+                            try {
+                                // 🔥 Delete user with fetch
+                                const response = await fetch(
+                                    `https://elisoft-backend.onrender.com/api/admin/users/${userId}`,
+                                    {
+                                        method: "DELETE",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            Authorization: `Bearer ${localStorage.getItem("token")}`, // if you use auth
+                                        },
+                                    }
+                                );
+
+                                if (!response.ok) {
+                                    throw new Error(`Failed to delete: ${response.status}`);
+                                }
+
+                                toast.dismiss(); // close confirm toast
+                                toast.success("User deleted successfully ✅");
+                                console.log("Deleted user:", userId);
+
+                                // Optional: refetch your user list here
+                                // fetchAllUsers();
+                            } catch (err) {
+                                console.error("Error deleting user:", err);
+                                toast.dismiss();
+                                toast.error("Failed to delete user ❌");
+                            }
+                        }}
+                        className="bg-red-600 text-white px-3 py-1 rounded"
+                    >
+                        Yes
+                    </button>
+
+                    {/* ❌ No button */}
+                    <button
+                        onClick={() => toast.dismiss()}
+                        className="bg-gray-400 text-black px-3 py-1 rounded"
+                    >
+                        No
+                    </button>
+                </div>
+            </div>,
+            { autoClose: false, closeOnClick: false }
+        );
     };
+
+
 
     return (
         <>
@@ -115,10 +160,16 @@ function Users() {
                                 <p className="text-gray-400 text-sm">{user.phone}</p>
                             </div>
                             <span
-                                className={`px-3 py-1 rounded-full text-xs ${user.isAvailable === "Active" ? "bg-green-600 text-white" : "bg-red-600 text-white"
+                                className={`px-3 py-1 rounded-full text-xs ${user.status === "Active"
+                                        ? "bg-green-600 text-white"
+                                        : user.status === "Pending"
+                                            ? "bg-fuchsia-400 text-white"
+                                            : "bg-red-600 text-white"
                                     }`}
+
                             >
                                 {user.isAvailable ? "Available" : "UnAvailable"}
+                                {/* {user.status} */}
                             </span>
                         </div>
                         <p className="text-gray-400 text-[13px] mb-2">Role: <span className="text-yellow-600">

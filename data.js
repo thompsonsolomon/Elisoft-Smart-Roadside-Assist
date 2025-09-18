@@ -327,6 +327,23 @@ export const serviceTypes = [
   { id: 8, name: "Battery Service", category: "Electrical", avgPrice: 120, avgDuration: "30 min" },
 ]
 
+export const mechanicServices = [
+  "Roadside Assistant",
+  "Mechanic Repair",
+  "Towing Service",
+  "Electric Rewire",
+  "Flat Tyre",
+  "Car Service Center",
+  "Body Repair",
+  "Break Repair",
+  "Car AC Repair",
+  "Engine Diagnostic",
+  "Wheel Alignment",
+  "Oil Change",
+  "Battery Jump Start",
+  "Key Lockout"
+];
+
 
 
 export const testimonials = [

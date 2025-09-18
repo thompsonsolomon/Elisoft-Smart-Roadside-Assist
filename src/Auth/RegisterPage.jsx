@@ -20,53 +20,53 @@ export default function RegisterPage() {
   })
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    setLoading(true)
-    e.preventDefault()
-    const UnnformatedNumber = formData.PhoneNumber || "";
-    const FinalNumber = FormatPin(UnnformatedNumber);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      if (formData.pin !== formData.confirmPin) {
-        toast.error("Pins do not match!")
-        return
-      }
-      if (formData.pin.length < 4) {
-        toast.error("Pin must be at least 4 digits long!")
-        return
-      }
-      if (formData.PhoneNumber.length < 11) {
-        toast.error("Phone number must be at least 11 digits long!")
-        return
-      }
+  try {
+    const unformattedNumber = formData.PhoneNumber || "";
+    const finalNumber = FormatPin(unformattedNumber);
 
-
-
-      const credentials =
-      {
-        "phone":FinalNumber,
-        "pin": formData.pin,
-        "role": formData.role,
-        "fullName": formData.fullName
-      }
-
-      const result = await register(credentials)
-      console.log(result)
-      if (result.response?.data.status === "error") {
-        toast.error(result.response?.data.message)
-        setLoading(false)
-        return
-      }
-      toast.success("Registration successful! Redirecting to login...")
-      return result
-    } catch (error) {
-      toast.error("An error occurred during registration. Please try again.")
-      setLoading(false)
-      return
-    } finally {
-      setLoading(false)
+    // ✅ Client-side validations
+    if (formData.pin !== formData.confirmPin) {
+      toast.error("Pins do not match!");
+      return;
     }
+    if (!formData.pin || formData.pin.length < 4) {
+      toast.error("Pin must be at least 4 digits long!");
+      return;
+    }
+    if (!formData.PhoneNumber || formData.PhoneNumber.length < 11) {
+      toast.error("Phone number must be at least 11 digits long!");
+      return;
+    }
+
+    const credentials = {
+      phone: finalNumber,
+      pin: formData.pin,
+      role: formData.role,
+      fullName: formData.fullName,
+    };
+
+    const result = await register(credentials);
+    console.log(result);
+
+    if (result?.response?.data?.status === "error" || result?.message?.includes("Error")) {
+      toast.error(result?.response?.data?.message || "Error occurred in registration");
+      return;
+    }
+
+    toast.success("Registration successful! Redirecting to login...");
+    return result;
+  } catch (error) {
+    console.error("Error during registration:", error);
+    toast.error("An unexpected error occurred. Please try again.");
+  } finally {
+    setLoading(false);
   }
+};
+
 
   const handleChange = (e) => {
     setFormData({
@@ -259,7 +259,6 @@ export default function RegisterPage() {
               >
                 <option value="Customer">Customer</option>
                 <option value="Mechanic">Mechanic</option>
-                      <option value="Admin">Admin</option>
               </select>
             </div>
 

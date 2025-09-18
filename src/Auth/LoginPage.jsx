@@ -19,37 +19,35 @@ export default function LoginPage() {
   })
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    setLoading(true)
-    e.preventDefault();
-    const UnnformatedNumber = formData.phoneNumber || "";
-        const FinalNumber = FormatPin(UnnformatedNumber);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const credentials = {
-        "phone": FinalNumber,
-        "pin": formData.pin,
-      };
-      const result = await login(credentials);
-      console.log(result)
-      if (result.response?.data.status === "error") {
-        toast.error(result.response?.data.message);
-        setLoading(false);
-        return;
-      }
-      else{
-        toast.success("Registration successful! Redirecting to login...");
-      }
-      navigate("/" + result.user.role);
-      return result
-    } catch (error) {
-      console.error("Error during registration:", error);
-      toast.error("An error occurred during registration. Please try again.");
+  try {
+    const FinalNumber = FormatPin(formData.phoneNumber || "");
+    const credentials = { phone: FinalNumber, pin: formData.pin };
+
+    const result = await login(credentials);
+    console.log(result);
+
+    // Handle API errors gracefully
+    if (result?.response?.data?.status === "error" || result?.message?.includes("Error")) {
+      toast.error(result?.response?.data?.message || "Login failed. Please try again.");
       return;
-    } finally {
-      setLoading(false)
     }
-  };
+
+    toast.success("Login successful! Redirecting...");
+    navigate("/" + result?.user?.role);
+
+    return result;
+  } catch (error) {
+    console.error("Error during login:", error);
+    toast.error("An unexpected error occurred. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleChange = (e) => {
     setFormData({

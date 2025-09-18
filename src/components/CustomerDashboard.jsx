@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import AvailableMechanicCard from "./Customer/AvailableMechanicCard";
 
 export default function CustomerDashboard() {
   const { user } = useAuth()
@@ -126,38 +127,7 @@ export default function CustomerDashboard() {
             />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {mechanics.map((mechanic) => (
-              <div key={mechanic.id} className="bg-gray-800 p-6 rounded-xl shadow">
-                <div className="flex justify-between items-center mb-3">
-                  <h3 className="text-yellow-400 font-semibold text-lg">{mechanic.name}</h3>
-                  <span
-                    className={`text-sm px-3 py-1 rounded-full ${mechanic.available ? "bg-green-600" : "bg-red-600"
-                      }`}
-                  >
-                    {mechanic.available ? "Available" : "Busy"}
-                  </span>
-                </div>
-                <p className="text-gray-400 mb-1">🔧 {mechanic.expertise}</p>
-                <p className="text-gray-400 mb-1">
-                  📍 {mechanic.location} • {mechanic.distance}
-                </p>
-                <div className="flex justify-between items-center mt-3 mb-4">
-                  <span className="text-yellow-400">⭐ {mechanic.rating}</span>
-                  <span className="text-gray-400 text-sm">Verified ✅</span>
-                </div>
-                <div className="flex gap-3">
-                  <button
-                    className="btn btn-primary w-full"
-                    disabled={!mechanic.available}
-                  >
-                    Book Now
-                  </button>
-                  <button className="btn btn-secondary w-full">View Profile</button>
-                </div>
-              </div>
-            ))}
-          </div>
+            <AvailableMechanicCard />
         </section>
 
         {/* Service Options */}

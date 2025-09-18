@@ -134,10 +134,15 @@ export default function ProfilePage() {
     e.preventDefault();
     try {
       const Credentials = {
-        coordinates: [
-          Number(location.longitude),
-          Number(location.latitude)
-        ],
+        "location": {
+          "type": "Point",
+          coordinates: [
+            Number(location.longitude),
+            Number(location.latitude)
+          ],
+        }
+
+
       };
       const res = await updateUserLocation(Credentials);
       setLoadAction(false);
