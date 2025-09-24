@@ -1,8 +1,29 @@
 import { Mail, Phone, MapPin } from "lucide-react";
+import { Card, CardContent } from "../../utils/Card";
 
 export default function ContactPage() {
+  const contactInfo = [
+    {
+      icon: Phone,
+      title: "Call Us",
+      details: ["1-800-DRROADS", "(1-800-377-6237)"],
+      description: "24/7 Emergency Hotline"
+    },
+    {
+      icon: Mail,
+      title: "Email Us",
+      details: ["help@drroads.com", "support@drroads.com"],
+      description: "We'll respond within 2 hours"
+    },
+    {
+      icon: MapPin,
+      title: "Find Us",
+      details: ["123 Main Street", "Los Angeles, CA 90210"],
+      description: "Headquarters & Training Center"
+    }
+  ];
   return (
-    <section className="pt-24 pb-16 px-4 md:px-12 bg-gray-900/50 min-h-screen" id="contact">
+    <section className="pt-24 pb-16 px-4 md:px-12 bg-[#121212] min-h-screen" id="contact">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -15,67 +36,72 @@ export default function ContactPage() {
         </div>
 
         {/* Contact Grid */}
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Info */}
-          <div className="space-y-6 text-gray-400">
-            <div className="flex items-start gap-4">
-              <MapPin className="text-yellow-500" />
-              <div>
-                <h4 className="font-semibold text-lg">Our Office</h4>
-                <p>123 Mechanic Street, Lagos, Nigeria</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Phone className="text-yellow-500" />
-              <div>
-                <h4 className="font-semibold text-lg">Phone</h4>
-                <p>+234 800 000 0000</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <Mail className="text-yellow-500" />
-              <div>
-                <h4 className="font-semibold text-lg">Email</h4>
-                <p>support@fixitnow.com</p>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Contact Information */}
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-2xl font-semibold mb-6">Contact Information</h3>
+              <div className="space-y-6">
+                {contactInfo.map((info, index) => {
+                  const Icon = info.icon;
+                  return (
+                    <Card key={index} className="bg-card border-border/50">
+                      <CardContent className="p-6">
+                        <div className="flex items-start space-x-4">
+                          <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                            <Icon className="h-6 w-6 text-yellow-500" />
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-lg mb-2">{info.title}</h4>
+                            {info.details.map((detail, idx) => (
+                              <p key={idx} className="text-foreground text-sm mb-1">{detail}</p>
+                            ))}
+                            <p className="text-sm text-muted-foreground">{info.description}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </div>
           </div>
 
           {/* Contact Form */}
-          <form className="bg-white rounded-lg shadow-md p-8 space-y-6">
+          <form className="bg-transparent border border-white  rounded-lg shadow-md p-8 space-y-6">
             <div>
-              <label htmlFor="name" className="block text-gray-700 font-medium mb-1">
+              <label htmlFor="name" className="block text-yellow-500 font-medium mb-1">
                 Your Name
               </label>
               <input
                 id="name"
                 type="text"
                 placeholder="Enter your name"
-                className="w-full border text-black border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full border  border-gray-700 outline-none bg-transparent rounded-md px-4 py-3 focus:outline-none  text-white"
                 required
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-gray-700 font-medium mb-1">
+              <label htmlFor="email" className="block text-yellow-500 font-medium mb-1">
                 Your Email
               </label>
               <input
                 id="email"
                 type="email"
                 placeholder="Enter your email"
-                className="w-full border text-black border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full border  border-gray-700 outline-none bg-transparent rounded-md px-4 py-3 focus:outline-none  text-white"
                 required
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-gray-700 font-medium mb-1">
+              <label htmlFor="message" className="block text-yellow-500 font-medium mb-1">
                 Your Message
               </label>
               <textarea
                 id="message"
                 rows="5"
                 placeholder="Write your message..."
-                className="w-full border text-black border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full border text-white border-gray-700 bg-transparent rounded-md px-4 py-3 focus:outline-none "
                 required
               />
             </div>

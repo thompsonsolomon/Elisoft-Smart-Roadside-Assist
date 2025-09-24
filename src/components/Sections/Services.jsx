@@ -1,9 +1,81 @@
+import { MapPin, Settings, Truck, CheckCircle } from "lucide-react";
+import { Card, CardContent } from "../../utils/Card";
+
+// export function ServicesPage() {
+//   const steps = [
+//     {
+//       icon: MapPin,
+//       title: "Share Location",
+//       description: "Tell us where you are and we'll find the nearest verified technician to help you.",
+//       step: "01"
+//     },
+//     {
+//       icon: Settings,
+//       title: "Select Issue",
+//       description: "Choose from common roadside issues or describe your specific problem in detail.",
+//       step: "02"
+//     },
+//     {
+//       icon: Truck,
+//       title: "Help Arrives",
+//       description: "A professional technician arrives at your location with the tools needed to help.",
+//       step: "03"
+//     },
+//     {
+//       icon: CheckCircle,
+//       title: "Problem Solved",
+//       description: "Get back on the road quickly with our efficient and reliable roadside assistance.",
+//       step: "04"
+//     }
+//   ];
+
+//   return (
+//     <section id="services" className="py-20 bg-[#121212]">
+//       <div className="container mx-auto px-4">
+//         <div className="text-center mb-16">
+//           <h2 className="text-3xl md:text-4xl font-bold mb-4">
+//             How It <span className="text-yellow-500">Works</span>
+//           </h2>
+//           <p className="text-lg text-gray-300 text-muted-foreground max-w-2xl mx-auto">
+//             Getting help on the road has never been easier. Follow these simple steps to get assistance when you need it most.
+//           </p>
+//         </div>
+
+//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+//           {steps.map((step, index) => {
+//             const Icon = step.icon;
+//             return (
+//               <Card key={index} className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 bg-card border-border/50">
+//                 {/* Step number */}
+//                 <div className="absolute top-4 right-4 text-6xl font-bold text-yellow-500/10 group-hover:text-yellow-500/20 transition-colors">
+//                   {step.step}
+//                 </div>
+
+//                 <CardContent className="p-6">
+//                   <div className="mb-4">
+//                     <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mb-4">
+//                       <Icon className="h-6 w-6 text-yellow-500" />
+//                     </div>
+//                     <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+//                   </div>
+//                   <p className="text-muted-foreground text-gray-400 leading-relaxed">
+//                     {step.description}
+//                   </p>
+//                 </CardContent>
+//               </Card>
+//             );
+//           })}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }
+
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import {
   Car,
   Wrench,
-  Truck,
   Zap,
   CircleSlash,
   Building,
@@ -19,7 +91,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-export default function ServicesPage() {
+export function ServicesPage() {
   const [sliderRef, instanceRef] = useKeenSlider({
     loop: true,
     mode: "free-snap",
@@ -146,21 +218,114 @@ export default function ServicesPage() {
           {services.map((service, index) => (
             <div
               key={index}
-              className="keen-slider__slide bg-white rounded-xl shadow-md p-6 flex flex-col justify-between text-center min-h-[300px] hover:shadow-lg transition duration-300"
+              className="
+    keen-slider__slide 
+    border border-white 
+    bg-transparent rounded-xl 
+    shadow-md p-6 
+    flex flex-col justify-between text-center 
+    min-h-[300px] 
+    hover:shadow-lg 
+    transition duration-300
+  "
             >
               <div className="flex flex-col items-center gap-3">
                 {service.icon}
-                <h3 className="text-lg font-bold text-gray-800">{service.title}</h3>
-                <p className="text-sm text-gray-600">{service.description}</p>
+                <h3 className="text-lg font-bold text-white">
+                  {service.title}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {service.description}
+                </p>
               </div>
-              <button className="mt-6 bg-yellow-500 text-black px-4 py-2 rounded hover:bg-yellow-400 transition">
+
+              <button
+                className="
+      mt-6 bg-yellow-500 text-white
+      px-4 py-2 rounded 
+      hover:bg-yellow-400 transition
+    "
+              >
                 Book Now
               </button>
             </div>
+
           ))}
         </div>
       </div>
     </section>
   );
 }
-  
+
+
+
+
+export function HowITWorks() {
+  const steps = [
+    {
+      icon: MapPin,
+      title: "Share Location",
+      description: "Tell us where you are and we'll find the nearest verified technician to help you.",
+      step: "01"
+    },
+    {
+      icon: Settings,
+      title: "Select Issue",
+      description: "Choose from common roadside issues or describe your specific problem in detail.",
+      step: "02"
+    },
+    {
+      icon: Truck,
+      title: "Help Arrives",
+      description: "A professional technician arrives at your location with the tools needed to help.",
+      step: "03"
+    },
+    {
+      icon: CheckCircle,
+      title: "Problem Solved",
+      description: "Get back on the road quickly with our efficient and reliable roadside assistance.",
+      step: "04"
+    }
+  ];
+
+  return (
+    <section id="services" className="py-20 bg-[#121212]">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            How It <span className="text-yellow-500">Works</span>
+          </h2>
+          <p className="text-lg text-gray-300 text-muted-foreground max-w-2xl mx-auto">
+            Getting help on the road has never been easier. Follow these simple steps to get assistance when you need it most.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <Card key={index} className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 bg-card border-border/50">
+                {/* Step number */}
+                <div className="absolute top-4 right-4 text-6xl font-bold text-yellow-500/10 group-hover:text-yellow-500/20 transition-colors">
+                  {step.step}
+                </div>
+
+                <CardContent className="p-6">
+                  <div className="mb-4">
+                    <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="h-6 w-6 text-yellow-500" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                  </div>
+                  <p className="text-muted-foreground text-gray-400 leading-relaxed">
+                    {step.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

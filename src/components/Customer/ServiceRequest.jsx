@@ -23,7 +23,7 @@ const ServiceRequestModal = ({ token }) => {
 
     try {
       const res = await fetch(
-        "https://elisoft-backend.onrender.com/api/service-requests",
+        "https://Elisoft Assist-backend.onrender.com/api/service-requests",
         {
           method: "POST",
           headers: {

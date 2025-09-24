@@ -88,7 +88,7 @@ const handleSubmit = async (e) => {
                 marginBottom: "10px",
               }}
             >
-              Join Elisoft
+              Join Elisoft Assist
             </h1>
             <p style={{ color: "#ccc", fontSize: "1.1rem" }}>
               Create your account to get started

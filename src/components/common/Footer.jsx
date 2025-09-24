@@ -1,56 +1,152 @@
-import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
-import { Link } from "react-router-dom";
+import React from "react";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Phone,
+  Mail,
+  MapPin,
+} from "lucide-react";
 
 export default function Footer() {
+  const quickLinks = [
+    { name: "Home", href: "#home" },
+    { name: "How It Works", href: "#services" },
+    { name: "Why Us", href: "#why-us" },
+    { name: "About Us", href: "#about" },
+    { name: "Contact", href: "#contact" },
+  ];
+
+  const services = [
+    "Battery Jump Start",
+    "Tire Change",
+    "Lockout Service",
+    "Fuel Delivery",
+    "Towing Service",
+    "Engine Repair",
+  ];
+
+  const socialLinks = [
+    { icon: Facebook, href: "#", label: "Facebook" },
+    { icon: Twitter, href: "#", label: "Twitter" },
+    { icon: Instagram, href: "#", label: "Instagram" },
+    { icon: Linkedin, href: "#", label: "LinkedIn" },
+  ];
+
   return (
-    <footer className="bg-gray-900 text-gray-200 py-12 px-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Logo & Description */}
-        <div>
-          <h3 className="text-2xl font-bold text-yellow-500 mb-4">Elisoft</h3>
-          <p className="text-sm text-gray-400">
-            Connecting car owners with trusted mechanics nearby. Fast. Reliable. Hassle-free.
-          </p>
-        </div>
-
-        {/* Quick Links */}
-        <div>
-          <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#home" className="hover:text-yellow-500 transition">Home</a></li>
-            <li><a href="#about" className="hover:text-yellow-500 transition">About</a></li>
-            <li><a href="#services" className="hover:text-yellow-500 transition">Services</a></li>
-            <li><a href="#testimonials" className="hover:text-yellow-500 transition">Testimonials</a></li>
-            <li><a href="#contact" className="hover:text-yellow-500 transition">Contact</a></li>
-          </ul>
-        </div>
-
-        {/* Contact & Socials */}
-        <div>
-          <h4 className="text-lg font-semibold text-white mb-4">Connect with Us</h4>
-          <div className="flex gap-4 mb-4">
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-yellow-500 transition">
-              <Facebook size={20} />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-yellow-500 transition">
-              <Twitter size={20} />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-yellow-500 transition">
-              <Instagram size={20} />
-            </a>
-            <a href="mailto:support@fixitnow.com" className="hover:text-yellow-500 transition">
-              <Mail size={20} />
-            </a>
+    <footer className="bg-card  border-border">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center">
+                <span className="text-black font-bold text-sm">ES</span>
+              </div>
+              <span className="text-xl font-bold">Elisoft Assist</span>
+            </div>
+            <p className="text-muted-foreground">
+              Assistance on the Go. Reliable roadside help when you need it most,
+              available 24/7 across the country.
+            </p>
+            <div className="flex space-x-4">
+              {socialLinks.map((social, index) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={index}
+                    href={social.href}
+                    aria-label={social.label}
+                    className="w-10 h-10 bg-yellow-500/10 rounded-lg flex items-center justify-center hover:bg-yellow-500/20 transition-colors"
+                  >
+                    <Icon className="h-5 w-5 text-yellow-500" />
+                  </a>
+                );
+              })}
+            </div>
           </div>
-          <p className="text-sm text-gray-400">Email: support@elisoft.com</p>
-          <p className="text-sm text-gray-400">Phone: +234 916 666 4149</p>
-          <p className="text-sm text-gray-400">Phone: +234 805 591 9755</p>
-        </div>
-      </div>
 
-      {/* Bottom */}
-      <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} Elisoft. All rights reserved.
+          {/* Quick Links */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg">Quick Links</h3>
+            <ul className="space-y-2">
+              {quickLinks.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    className="text-muted-foreground hover:text-yellow-500 transition-colors"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg">Our Services</h3>
+            <ul className="space-y-2">
+              {services.map((service, index) => (
+                <li key={index}>
+                  <span className="text-muted-foreground">{service}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-lg">Contact Info</h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <Phone className="h-5 w-5 text-yellow-500" />
+                <span className="text-muted-foreground">1-800-elisoftassist</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Mail className="h-5 w-5 text-yellow-500" />
+                <span className="text-muted-foreground">help@elisoftassist.com</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <MapPin className="h-5 w-5 text-yellow-500 mt-0.5" />
+                <div className="text-muted-foreground">
+                  <div>123 Main Street</div>
+                  <div>Los Angeles, CA 90210</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t border-border mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-muted-foreground text-sm">
+              © {new Date().getFullYear()} Elisoft Assist. All rights reserved.
+            </div>
+            <div className="flex space-x-6 text-sm">
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-yellow-500 transition-colors"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-yellow-500 transition-colors"
+              >
+                Terms of Service
+              </a>
+              <a
+                href="#"
+                className="text-muted-foreground hover:text-yellow-500 transition-colors"
+              >
+                Cookie Policy
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </footer>
   );

@@ -76,7 +76,7 @@ export default function MechanicDashboard({ user, onLogout }) {
       >
         <div className="container  flex justify-between">
           <div>
-            <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft</h1>
+            <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft Assist</h1>
           </div>
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
             <button onClick={() => navigate("/profile")} className="btn btn-primary">

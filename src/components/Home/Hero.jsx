@@ -1,65 +1,71 @@
 import { useEffect, useState } from "react";
-import carImg2 from "../../Asset/car2.png";
-import { MapPin, Shield, Zap } from "lucide-react";
+import bgImage from "../../Asset/about.png";
 import { Link } from "react-router-dom";
+import { PhoneCall } from "lucide-react";
 
 export default function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    // trigger animation after mount
     setIsVisible(true);
   }, []);
 
   return (
-    <section className={`py-24 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"} h-[100dvh] flex justify-center items-center`} id="home">
-      <div className="container mx-auto px-4  pt-5 ">
-        <div className="grid md:grid-cols-2 items-center gap-16 ">
-          {/* Text content */}
-          <div className="space-y-8">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              Find <span className="text-yellow-500">Trusted Mechanics</span> Near You
-            </h1>
-            <div className="flex flex-wrap items-center gap-6 text-lg text-gray-600">
-              <div className="flex items-center gap-2">
-                <Zap className="w-5 h-5 text-yellow-500" />
-                <span>Fast</span>
-              </div>
-              <div className="w-2 h-2 bg-yellow-500 rounded-full" />
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-yellow-500" />
-                <span>Reliable</span>
-              </div>
-              <div className="w-2 h-2 bg-yellow-500 rounded-full" />
-              <div className="flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-yellow-500" />
-                <span>Nearby</span>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link
-                to="/register"
-                className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-lg transition"
-              >
-                Get Started
-              </Link>
-              <Link
-                to="/register"
-                className="border border-yellow-500 text-yellow-500 hover:bg-yellow-100 font-semibold px-6 py-3 rounded-lg transition"
-              >
-                Become a Mechanic
-              </Link>
-            </div>
-          </div>
+    <section
+      id="home"
+      className="relative h-[100dvh] flex items-center justify-center overflow-hidden"
+    >
+      {/* Background image with zoom-in */}
+      <div
+        className={`absolute inset-0 bg-cover bg-center transition-transform duration-[4000ms] ${isVisible ? "scale-90" : "scale-50"
+          }`}
+        style={{ backgroundImage: `url(${bgImage})` }}
+      ></div>
 
-          {/* Image */}
-          <div className="flex justify-center">
-            <img
-              src={carImg2}
-              alt="Zooming Car"
-              className={`max-w-sm w-full rounded-xl shadow-2xl transform transition-transform duration-1000 ${
-                isVisible ? "scale-100" : "scale-50"
-              }`}
-            />
+      {/* Dark overlay for contrast */}
+      <div className="absolute inset-0 bg-black/80"></div>
+
+      {/* Content */}
+      <div
+        className={`relative z-10 text-center text-white px-4 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"
+          }`}
+      >
+        <h1 className="text-4xl md:text-7xl font-bold mb-6">
+          Stuck on the  <span className="text-yellow-500">Road?</span>
+        </h1>
+        <p className="text-lg md:text-xl mb-8 text-center max-w-2xl mx-auto">
+          Elisoft Assist connects you with verified roadside help within minutes – anytime, anywhere.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Link
+            to="/login"
+            className="bg-yellow-500 hover:bg-yellow-600 text-sm  text-white flex items-center gap-4 font-semibold px-4 py-2 rounded-lg transition"
+          >
+            <PhoneCall size={16} />
+            Get Started
+          </Link>
+          <Link
+            to="/register"
+            className="border border-yellow-500 text-yellow-500 text-sm hover:bg-yellow-500 hover:text-white font-semibold px-4 py-2 rounded-lg transition"
+          >
+            Become a Mechanic
+          </Link>
+        </div>
+
+        <div className="mt-8">
+          <div className="text-sm flex max-w-2xl text-center items-center justify-center gap-2 md:gap-8 text-gray-300">
+            <span>
+              ✓ Available 24/7
+            </span>
+            <span>
+              ✓ Licensed Professionals
+            </span>
+            <span>
+              ✓ Fast Response
+            </span>
+
           </div>
         </div>
       </div>

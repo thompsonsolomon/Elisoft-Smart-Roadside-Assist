@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { loginUser, registerUser } from "../utils/api";
-const fetchedDummeryUserRole = JSON.parse(localStorage.getItem("Elisoft_usercred"))
+const fetchedDummeryUserRole = JSON.parse(localStorage.getItem("Elisoft Assist_usercred"))
 const AuthContext = createContext()
 const initialState = {
   // user: {
@@ -84,7 +84,7 @@ export function AuthProvider({ children }) {
     // Check for existing session on app load
     const checkAuthStatus = () => {
       try {
-        const userData = localStorage.getItem("Elisoft_user")
+        const userData = localStorage.getItem("Elisoft Assist_user")
         if (userData) {
           const user = JSON.parse(userData)
           dispatch({ type: "LOGIN_SUCCESS", payload: user })
@@ -109,7 +109,7 @@ export function AuthProvider({ children }) {
       if (response.status === "success") {
         const data = await response;
         // Correctly stringify the user object before storing it.
-        localStorage.setItem("Elisoft_user", JSON.stringify(data.data.user));
+        localStorage.setItem("Elisoft Assist_user", JSON.stringify(data.data.user));
         localStorage.setItem("token", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
         navigate(`/` + data.data.user.role);
@@ -129,7 +129,7 @@ export function AuthProvider({ children }) {
       if (response.status === "success") {
         const data = await response;
         // Correctly stringify the user object before storing it.
-        localStorage.setItem("Elisoft_user", JSON.stringify(data.data.user));
+        localStorage.setItem("Elisoft Assist_user", JSON.stringify(data.data.user));
         localStorage.setItem("token", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);
         navigate(`/` + data.data.user.role);
@@ -144,7 +144,7 @@ export function AuthProvider({ children }) {
 
 
   const logout = () => {
-    localStorage.removeItem("Elisoft_user")
+    localStorage.removeItem("Elisoft Assist_user")
     localStorage.removeItem("token")
     localStorage.removeItem("refreshToken")
     dispatch({ type: "LOGOUT" })

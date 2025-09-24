@@ -27,7 +27,7 @@ const Marker = ({ type, user, onClick }) => {
 };
 
 export default function NigeriaMap() {
-  const [user, setUser, removeUser] = useLocalStorage("Elisoft_MapData", {});
+  const [user, setUser, removeUser] = useLocalStorage("Elisoft Assist_MapData", {});
 
   // Nigeria center
   const defaultProps = {

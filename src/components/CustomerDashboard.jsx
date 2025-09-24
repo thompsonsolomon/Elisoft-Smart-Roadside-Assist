@@ -82,7 +82,7 @@ export default function CustomerDashboard() {
       {/* Header */}
       <header className="bg-gray-950 py-4 shadow">
         <div className="container mx-auto flex justify-between items-center px-4">
-          <h1 className="text-yellow-400 text-2xl font-semibold">🔧 Elisoft</h1>
+          <h1 className="text-yellow-400 text-2xl font-semibold">🔧 Elisoft Assist</h1>
           <div className="flex gap-3">
             <button onClick={() => navigate("/profile")} className="btn btn-primary">
               Profile

@@ -60,7 +60,7 @@ export default function MapPage() {
       <header className="bg-dark" style={{ padding: "20px 0", borderBottom: "1px solid #333" }}>
         <div className="container flex-between">
           <div>
-            <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🗺️  Elisoft Map</h1>
+            <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🗺️  Elisoft Assist Map</h1>
             <p style={{ color: "#ccc" }}>
               {user?.role === "customer" ? "Find mechanics near you" : "Locate customer requests"}
             </p>

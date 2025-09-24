@@ -1,23 +1,36 @@
 import { useEffect, useState } from "react";
-import { MechanicGetRequests } from "../../utils/api";
-import { LocationName } from "../../helpers/GetLocationName";
+import { AcceptServiceREquest, MechanicGetRequests } from "../../utils/api";
 
 function JobRequests() {
-    const [MechanicRequest, setMechaniqueRequest] = useState([])
+    const [MechanicRequest, setMechanicRequest] = useState([])
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
-
+        setLoading(true)
         const HandleFetchREquest = async () => {
             const res = await MechanicGetRequests()
-            setMechaniqueRequest(res?.data?.availableRequests)
+            console.log(res);
+            
+            setMechanicRequest(res?.data?.availableRequests)
+            setLoading(false)
         }
 
         return () => {
             HandleFetchREquest()
         }
     }, [])
+
+    const handleAcceptJob = async (jobId) => {
+        // Implement accept job logic here
+        const res = await AcceptServiceREquest(jobId)
+        console.log(res);
+        
+    };
     return (
         <div className="grid md:grid-cols-2 gap-12 items-center w-full">
-            {MechanicRequest.map((job) => (
+            {
+                loading ? <p>Loading Job Requests...</p> : MechanicRequest?.length === 0 ? <p>No Job Requests Available</p> : null
+            }
+            {MechanicRequest?.map((job) => (
                 <div key={job?._id} className="card w-full">
                     <div className="flex-between" style={{ marginBottom: "15px" }}>
                         <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job?.customerId?.fullName}</h3>
@@ -38,7 +51,7 @@ function JobRequests() {
                     </div>
 
                     <div className="flex" style={{ gap: "12px" }}>
-                        <button onClick={() => handleAcceptJob(job.id)} className="btn btn-primary" style={{ flex: 1 }}>
+                        <button onClick={() => handleAcceptJob(job._id)} className="btn btn-primary" style={{ flex: 1 }}>
                             Accept Job
                         </button>
                         <button onClick={() => handleRejectJob(job.id)} className="btn btn-secondary" style={{ flex: 1 }}>

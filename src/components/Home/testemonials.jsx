@@ -12,7 +12,7 @@ function Testemonials() {
               </div>
               <div className="grid md:grid-cols-3 gap-8">
                 {testimonials.map((testimonial, index) => (
-                  <div key={index} className="card">
+                  <div key={index} className="card bg-transparent">
                     <div className="flex items-center mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
                         <Star key={i} className="w-5 h-5 text-gold fill-current" />

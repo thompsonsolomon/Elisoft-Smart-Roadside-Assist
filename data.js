@@ -330,18 +330,16 @@ export const serviceTypes = [
 export const mechanicServices = [
   "Roadside Assistant",
   "Mechanic Repair",
+  "Key Lockout",
   "Towing Service",
   "Electric Rewire",
   "Flat Tyre",
+  "Battery Jump Start",
   "Car Service Center",
   "Body Repair",
-  "Break Repair",
   "Car AC Repair",
   "Engine Diagnostic",
   "Wheel Alignment",
-  "Oil Change",
-  "Battery Jump Start",
-  "Key Lockout"
 ];
 
 

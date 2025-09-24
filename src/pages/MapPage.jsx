@@ -17,7 +17,7 @@ import { useLocalStorage } from "../helpers/UseLocalStorage"
 
 const MapPage = () => {
   const { user } = useAuth()
-  const [MaPuser] = useLocalStorage("Elisoft_MapData", null);
+  const [MaPuser] = useLocalStorage("Elisoft Assist_MapData", null);
 
   // Map center (New York City)
   const mapCenter = { lat: 40.7128, lng: -74.006 }
@@ -245,7 +245,7 @@ const MapPage = () => {
             <div>
               <h1 className="text-2xl font-bold text-gold flex items-center space-x-2">
                 <MapPin className="w-6 h-6" />
-                <span> Elisoft Map</span>
+                <span> Elisoft Assist Map</span>
               </h1>
               <p className="text-gray-400">
                 {user?.role === "Customer" ? "Find mechanics near you" : "Locate Customer requests"}

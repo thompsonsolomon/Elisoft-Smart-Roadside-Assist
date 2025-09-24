@@ -65,7 +65,7 @@ const handleSubmit = async (e) => {
           <div className="text-center" style={{ marginBottom: "30px" }}>
             <div style={{ fontSize: "3rem", marginBottom: "10px" }}>🔧</div>
             <h1 style={{ color: "#FFD700", fontSize: "2.2rem", marginBottom: "10px" }}>Welcome Back</h1>
-            <p style={{ color: "#ccc", fontSize: "1.1rem" }}>Sign in to your  Elisoft account</p>
+            <p style={{ color: "#ccc", fontSize: "1.1rem" }}>Sign in to your  Elisoft Assist account</p>
           </div>
 
           <form onSubmit={handleSubmit}>

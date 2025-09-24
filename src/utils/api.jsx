@@ -135,7 +135,7 @@ export const updateUserLocation = (data) => apiRequest("/api/users/location", "P
 export const MechanicAvailability = ( data) =>  apiRequest(`/api/users/availability`, "PUT", data);
 export const MechanicGetRequests = () => apiRequest("/api/service-requests/available", "GET");
 export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
-
+export const AcceptServiceREquest = (requestId) => apiRequest(`/api/services/request/${requestId}/accept`, "PUT");
 //Customers
 export const CustomerGetAvailableMechanic = (lat, lng) => apiRequest(`/api/users/nearby-mechanics?coordinates=${lng}, ${lat}`, "GET");
 export const CreateServiceRequest = (data) => apiRequest("/api/service-requests", "POST", data);

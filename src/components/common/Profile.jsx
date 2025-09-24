@@ -171,7 +171,7 @@ export default function ProfilePage() {
       };
       const res = await updateUserProfile(Credentials);
       console.log(res)
-      localStorage.setItem("Elisoft_user", JSON.stringify(res.data.user));
+      localStorage.setItem("Elisoft Assist_user", JSON.stringify(res.data.user));
       toast.success(res.message || "Profile updated successfully!");
 
       setLoadAction(false);

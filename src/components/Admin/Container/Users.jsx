@@ -84,7 +84,7 @@ function Users() {
                             try {
                                 // 🔥 Delete user with fetch
                                 const response = await fetch(
-                                    `https://elisoft-backend.onrender.com/api/admin/users/${userId}`,
+                                    `https://Elisoft Assist-backend.onrender.com/api/admin/users/${userId}`,
                                     {
                                         method: "DELETE",
                                         headers: {
