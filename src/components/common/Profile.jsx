@@ -455,8 +455,10 @@ export default function ProfilePage() {
             </div>
           </form>
 
-          <ResponsiveHeader />
         </div>
+      </div>
+      <div className="mt-20 visible md:hidden">
+          <ResponsiveHeader />
       </div>
     </div>
   );
