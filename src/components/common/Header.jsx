@@ -24,7 +24,7 @@ export default function Navbar() {
           {/* Conditional Links based on Authentication */}
           {
             isAuthenticated ? (
-              <Link to={`/${user?.role}`} className="btn btn-primary">
+              <Link to={`/${user?.role}`} className="btn text-yellow-500 outline-none">
                 <User className="inline mr-2" />
               </Link>
             ) : (
@@ -48,6 +48,7 @@ export default function Navbar() {
           <ul className="flex flex-col gap-4 px-6 py-4 text-white font-medium">
             <li><a href="#home" onClick={toggleMenu}>Home</a></li>
             <li><a href="#howitworks" onClick={toggleMenu}>How It Works</a></li>
+                        <li><a href="#services" onClick={toggleMenu}>Services</a></li>
             <li><a href="#whyus" onClick={toggleMenu}>Why Us</a></li>
             <li><a href="#about" onClick={toggleMenu}>About</a></li>
             <li><a href="#contact" onClick={toggleMenu}>Contact</a></li>
@@ -55,7 +56,7 @@ export default function Navbar() {
             {/* Conditional Links based on Authentication */}
             {
               isAuthenticated ? (
-                <Link to={`/${user?.role}`} className="btn btn-primary">    <User className="inline mr-2" /></Link>
+                <Link to={`/${user?.role}`} className="btn text-yellow-500 justify-start">    <User className="inline mr-2" /></Link>
               ) : (
                 <>
                   <Link to="/login" className="btn btn-ghost flex justify-start" onClick={toggleMenu}><UserPlus className="inline mr-2" /></Link>

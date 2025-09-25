@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { MechanicAvailability, MechanicGetRequests } from "../utils/api"
 import { toast } from "react-toastify"
 import JobRequests from "./Mechanics/JobRequests";
+import ResponsiveHeader from "./common/ResponsiveHeader";
 
 export default function MechanicDashboard({ user, onLogout }) {
   const [isAvailable, setIsAvailable] = useState(() => {
@@ -79,10 +80,6 @@ export default function MechanicDashboard({ user, onLogout }) {
             <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft Assist</h1>
           </div>
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-            <button onClick={() => navigate("/profile")} className="btn btn-primary">
-              Profile
-            </button>
-
           </div>
         </div>
       </header>
@@ -93,20 +90,30 @@ export default function MechanicDashboard({ user, onLogout }) {
           <div className="grid md:grid-cols-1 gap-12 items-center">
             <div className="card">
               <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "#FFD700" }}>🔄 Availability Status</h2>
-              <div className="flex justify-between " style={{ alignItems: "center", marginBottom: "20px" }}>
+              <div className="grid grid-cols-1 md:grid-cols-2 justify-between  gap-4 " style={{ alignItems: "center", marginBottom: "20px" }}>
                 <span style={{ color: "#ccc", fontSize: "1.1rem" }}>
                   Currently:{" "}
                   <strong style={{ color: isAvailable ? "#00FF00" : "#FF4444" }}>
                     {isAvailable ? "Available" : "Unavailable"}
                   </strong>
                 </span>
-                <button
-                  onClick={() => ToggleAvailability()}
-                  className={`btn ${isAvailable ? "btn-danger" : "btn-primary"}`}
-                  style={{ padding: "8px 16px" }}
-                >
-                  {isAvailable ? "Go Offline" : "Go Online"}
-                </button>
+                <div className="flex gap-4 w-full justify-end">
+
+                  <button
+                    onClick={() => ToggleAvailability()}
+                    className={` btn ${isAvailable ? "btn-danger" : "btn-primary"}`}
+                    style={{ padding: "8px 16px" }}
+                  >
+                    {isAvailable ? "Go Offline" : "Go Online"}
+                  </button>
+                  <button
+                    onClick={() => navigate("/map")}
+                    className="btn"
+                    style={{ backgroundColor: "#000", color: "#FFD700", border: "none" }}
+                  >
+                    View Map
+                  </button>
+                </div>
               </div>
               {/* <div style={{ padding: "15px", backgroundColor: "#0a0a0a", borderRadius: "8px" }}>
                 <p style={{ color: "#ccc", fontSize: "0.9rem", marginBottom: "8px" }}>📊 Today's Stats:</p>
@@ -180,6 +187,7 @@ export default function MechanicDashboard({ user, onLogout }) {
           </div>
         </section>
       </div>
+      <ResponsiveHeader />
     </div>
   )
 }

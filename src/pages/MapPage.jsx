@@ -8,6 +8,7 @@ import { ArrowLeft, MapPin, Star, Clock, DollarSign } from "lucide-react"
 import AnyReactComponent from "../components/map/marker"
 import NigeriaMap from "../components/map/marker"
 import { useLocalStorage } from "../helpers/UseLocalStorage"
+import ResponsiveHeader from "../components/common/ResponsiveHeader"
 
 // =============================== NOTES ========================
 // This page displays a map with markers for mechanics and customers based on user roles for the initial version.
@@ -251,7 +252,7 @@ const MapPage = () => {
                 {user?.role === "Customer" ? "Find mechanics near you" : "Locate Customer requests"}
               </p>
             </div>
-            <div className="flex space-x-3">
+            <div className="hidden md:flex space-x-3">
               <Link to={getBackRoute()} className="btn btn-ghost flex items-center space-x-2">
                 <ArrowLeft className="w-4 h-4" />
                 <span>Back to Dashboard</span>
@@ -266,15 +267,16 @@ const MapPage = () => {
           {/* Map Container */}
           <div className="lg:col-span-2 space-y-6">
             <div className="card p-0 overflow-hidden">
-              <div className="p-4 border-b border-gray-800">
+              <div className=" border-b border-gray-800">
                 <h2 className="text-lg font-semibold text-gold">
                   {user?.role === "Customer" ? "🔧 Available Mechanics" : "📍 Customer Requests"}
                 </h2>
               </div>
-              <div className="p-4">
+              <div className="py-4">
                 <div style={{ height: '50vh', width: '100%' }}>
                   <NigeriaMap />
-                </div>              </div>
+                </div>
+              </div>
             </div>
 
             {/* Map Legend */}
@@ -356,6 +358,8 @@ const MapPage = () => {
           </div>
         </div>
       </div>
+
+      <ResponsiveHeader />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { MapPin, Settings, Truck, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "../../utils/Card";
+import { motion } from "framer-motion";
 
 // export function ServicesPage() {
 //   const steps = [
@@ -288,15 +289,57 @@ export function HowITWorks() {
     }
   ];
 
-  return (
+  // return (
+  //   <section id="services" className="py-20 bg-[#121212]">
+  //     <div className="container mx-auto px-4">
+  //       <div className="text-center mb-16">
+  //         <h2 className="text-3xl md:text-4xl font-bold mb-4">
+  //           How It <span className="text-yellow-500">Works</span>
+  //         </h2>
+  //         <p className="text-lg text-gray-300 text-muted-foreground max-w-2xl mx-auto">
+  //           Getting help on the road has never been easier. Follow these simple steps to get assistance when you need it most.
+  //         </p>
+  //       </div>
+
+  //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+  //         {steps.map((step, index) => {
+  //           const Icon = step.icon;
+  //           return (
+  //             <Card key={index} className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 bg-card border-border/50">
+  //               {/* Step number */}
+  //               <div className="absolute top-4 right-4 text-6xl font-bold text-yellow-500/10 group-hover:text-yellow-500/20 transition-colors">
+  //                 {step.step}
+  //               </div>
+
+  //               <CardContent className="p-6">
+  //                 <div className="mb-4">
+  //                   <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mb-4">
+  //                     <Icon className="h-6 w-6 text-yellow-500" />
+  //                   </div>
+  //                   <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+  //                 </div>
+  //                 <p className="text-muted-foreground text-gray-400 leading-relaxed">
+  //                   {step.description}
+  //                 </p>
+  //               </CardContent>
+  //             </Card>
+  //           );
+  //         })}
+  //       </div>
+  //     </div>
+  //   </section>
+  // );
+
+ return (
     <section id="services" className="py-20 bg-[#121212]">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             How It <span className="text-yellow-500">Works</span>
           </h2>
-          <p className="text-lg text-gray-300 text-muted-foreground max-w-2xl mx-auto">
-            Getting help on the road has never been easier. Follow these simple steps to get assistance when you need it most.
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Getting help on the road has never been easier. Follow these simple
+            steps to get assistance when you need it most.
           </p>
         </div>
 
@@ -304,24 +347,34 @@ export function HowITWorks() {
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <Card key={index} className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 bg-card border-border/50">
-                {/* Step number */}
-                <div className="absolute top-4 right-4 text-6xl font-bold text-yellow-500/10 group-hover:text-yellow-500/20 transition-colors">
-                  {step.step}
-                </div>
-
-                <CardContent className="p-6">
-                  <div className="mb-4">
-                    <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mb-4">
-                      <Icon className="h-6 w-6 text-yellow-500" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+              >
+                <Card className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 bg-card border-border/50">
+                  {/* Step number */}
+                  <div className="absolute top-4 right-4 text-6xl font-bold text-yellow-500/10 group-hover:text-yellow-500/20 transition-colors">
+                    {step.step}
                   </div>
-                  <p className="text-muted-foreground text-gray-400 leading-relaxed">
-                    {step.description}
-                  </p>
-                </CardContent>
-              </Card>
+
+                  <CardContent className="p-6">
+                    <div className="mb-4">
+                      <div className="w-12 h-12 bg-yellow-500/10 rounded-lg flex items-center justify-center mb-4">
+                        <Icon className="h-6 w-6 text-yellow-500" />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-2">
+                        {step.title}
+                      </h3>
+                    </div>
+                    <p className="text-gray-400 leading-relaxed">
+                      {step.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             );
           })}
         </div>

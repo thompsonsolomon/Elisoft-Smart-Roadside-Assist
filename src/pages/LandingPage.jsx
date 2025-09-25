@@ -46,9 +46,6 @@ const LandingPage = () => {
       <WhyUs />
       <AboutPage />
       <ServicesPage />
-
-      {/* Testimonials */}
-      {/* <Testemonials /> */}
       <ContactPage />
 
       {/* Footer */}

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchUsers, updateUserLocation, updateUserProfile } from "../../utils/api";
 import { toast } from "react-toastify";
 import ChangePinModal from "../../Auth/ChangePIn";
+import ResponsiveHeader from "./ResponsiveHeader";
 
 const mechanicServices = [
   "Roadside Assistant",
@@ -339,6 +340,7 @@ export default function ProfilePage() {
         </form>
       </div>
 
+      <ResponsiveHeader />
 
     </div>
   );
