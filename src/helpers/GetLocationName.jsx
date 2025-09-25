@@ -22,6 +22,8 @@ export function LocationName({ lat, lon }) {
         setAddress(shortAddress || "Unknown location");
       } catch (err) {
         setAddress("Unable to fetch location");
+        console.log(err);
+        
       }
     };
 

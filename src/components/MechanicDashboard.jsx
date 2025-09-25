@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { MechanicAvailability, MechanicGetRequests } from "../utils/api"
 import { toast } from "react-toastify"
 import JobRequests from "./Mechanics/JobRequests";
 import ResponsiveHeader from "./common/ResponsiveHeader";
+import { User } from "lucide-react";
 
 export default function MechanicDashboard({ user, onLogout }) {
   const [isAvailable, setIsAvailable] = useState(() => {
@@ -79,7 +80,16 @@ export default function MechanicDashboard({ user, onLogout }) {
           <div>
             <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft Assist</h1>
           </div>
-          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+          <div
+           className="hidden justify-center items-center md:flex"
+
+>            <Link
+              to="/profile"
+              className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
+            >
+              <User className="w-6 h-6" />
+              <span className="text-xs mt-1">Profile</span>
+            </Link>
           </div>
         </div>
       </header>
