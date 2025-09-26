@@ -37,7 +37,7 @@ export default function Navbar() {
         </nav>
 
         {/* Hamburger Icon */}
-        <button className="md:hidden text-gray-700" onClick={toggleMenu}>
+        <button className="md:hidden text-gray-400" onClick={toggleMenu}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>

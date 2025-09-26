@@ -32,7 +32,7 @@ export default function ContactPage() {
             className="text-4xl font-bold text-white"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3 }}
             variants={slideInLeft}
           >
             Contact <span className="text-yellow-500">Us</span>
@@ -41,7 +41,7 @@ export default function ContactPage() {
             className="text-gray-400 mt-4 max-w-2xl mx-auto"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3 }}
             variants={slideInLeft}
           >
             Have a question or need help? Reach out to us and we'll respond quickly.
@@ -54,7 +54,7 @@ export default function ContactPage() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3 }}
             variants={staggerContainer}
             className="space-y-8"
           >
@@ -96,7 +96,7 @@ export default function ContactPage() {
             className="bg-transparent border border-white rounded-lg shadow-md p-8 space-y-6"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: false, amount: 0.3 }}
             variants={slideInRight} // animate form in from right
           >
             <div>

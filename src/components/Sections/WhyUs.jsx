@@ -33,7 +33,7 @@ export function WhyUs() {
                  key={index}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
               >
                 <Card className="group hover:shadow-xl hover:shadow-yellow-500/10 transition-all duration-300 bg-card border-border/50">

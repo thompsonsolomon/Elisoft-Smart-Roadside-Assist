@@ -22,7 +22,7 @@ export default function AboutPage() {
               className="w-24 h-1 bg-yellow-500 mx-auto mb-8"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               variants={slideInLeft}
             />
           </div>
@@ -32,7 +32,7 @@ export default function AboutPage() {
             <motion.div
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               variants={slideInLeft}
             >
               <p className="text-sm text-muted-foreground leading-relaxed mb-6">
@@ -47,7 +47,7 @@ export default function AboutPage() {
                 className="bg-yellow-500/5 border-l-4 border-yellow-500 p-6 rounded-r-lg"
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
+                viewport={{ once: false, amount: 0.3 }}
                 variants={slideInLeft}
               >
                 <p className="text-foreground text-sm font-medium italic">
@@ -61,7 +61,7 @@ export default function AboutPage() {
               className="space-y-6"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: false, amount: 0.3 }}
               variants={slideInRight} // animate from right side
             >
               {stats.map((stat, index) => {

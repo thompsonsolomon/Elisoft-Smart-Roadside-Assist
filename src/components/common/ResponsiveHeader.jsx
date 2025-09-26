@@ -30,7 +30,7 @@ function ResponsiveHeader() {
                     className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
                 >
                     <MapPin className="w-6 h-6" />
-                    <span className="text-xs mt-1">Map</span>
+                    <span className="text-xs mt-1">Map</span >
                 </Link>
 
                 <Link

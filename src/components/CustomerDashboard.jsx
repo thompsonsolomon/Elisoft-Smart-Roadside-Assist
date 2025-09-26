@@ -1,9 +1,9 @@
-"use client";
-
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import AvailableMechanicCard from "./Customer/AvailableMechanicCard";
+import ResponsiveHeader from "./common/ResponsiveHeader";
+import { User } from "lucide-react";
 
 export default function CustomerDashboard() {
   const { user } = useAuth()
@@ -11,44 +11,6 @@ export default function CustomerDashboard() {
   const [searchLocation, setSearchLocation] = useState("");
   const navigate = useNavigate();
 
-  const mechanics = [
-    {
-      id: 1,
-      name: "Mike's Auto Repair",
-      expertise: "Engine Specialist",
-      rating: 4.8,
-      location: "Downtown",
-      available: true,
-      distance: "2.1 miles",
-    },
-    {
-      id: 2,
-      name: "Sarah's Service Center",
-      expertise: "Brake Expert",
-      rating: 4.9,
-      location: "Midtown",
-      available: true,
-      distance: "1.8 miles",
-    },
-    {
-      id: 3,
-      name: "Quick Fix Garage",
-      expertise: "General Repair",
-      rating: 4.7,
-      location: "Uptown",
-      available: false,
-      distance: "3.2 miles",
-    },
-    {
-      id: 4,
-      name: "Elite Motors",
-      expertise: "Transmission",
-      rating: 4.6,
-      location: "Eastside",
-      available: true,
-      distance: "2.7 miles",
-    },
-  ];
 
   const appointments = [
     {
@@ -83,10 +45,16 @@ export default function CustomerDashboard() {
       <header className="bg-gray-950 py-4 shadow">
         <div className="container mx-auto flex justify-between items-center px-4">
           <h1 className="text-yellow-400 text-2xl font-semibold">🔧 Elisoft Assist</h1>
-          <div className="flex gap-3">
-            <button onClick={() => navigate("/profile")} className="btn btn-primary">
-              Profile
-            </button>
+          <div
+            className="hidden justify-center items-center md:flex"
+
+          >            <Link
+            to="/profile"
+            className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
+          >
+              <User className="w-6 h-6" />
+              <span className="text-xs mt-1">Profile</span>
+            </Link>
           </div>
         </div>
       </header>
@@ -127,7 +95,7 @@ export default function CustomerDashboard() {
             />
           </div>
 
-            <AvailableMechanicCard />
+          <AvailableMechanicCard />
         </section>
 
         {/* Service Options */}
@@ -154,7 +122,7 @@ export default function CustomerDashboard() {
         </section>
 
         {/* Appointments */}
-        {/* <section>
+        <section>
           <h2 className="text-2xl font-bold text-yellow-400 mb-6">📋 Your Appointments</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {appointments.map((appt) => (
@@ -183,8 +151,11 @@ export default function CustomerDashboard() {
               </div>
             ))}
           </div>
-        </section> */}
+        </section>
       </main>
+      <div className="mt-20 visible md:hidden">
+        <ResponsiveHeader />
+      </div>
     </div>
   );
 }

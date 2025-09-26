@@ -43,7 +43,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ErrorBoundary>
       <BrowserRouter>
-        <App />
+        <div className="overflow-x-hidden">
+          <App />
+        </div>
         <ToastContainer position="top-right" autoClose={3000} />
       </BrowserRouter>
     </ErrorBoundary>

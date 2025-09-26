@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { fetchUsers, updateUserLocation, updateUserProfile } from "../../utils/api";
 import { toast } from "react-toastify";
 import ChangePinModal from "../../Auth/ChangePIn";
@@ -183,10 +183,10 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       {/* Top bar */}
       <div className="max-w-6xl mx-auto flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate(-1)} className="text-sm text-gray-600 hover:text-gray-900">
+        <div className="flex items-center gap-4">          
+          <Link  to={`/${user?.role}`} className="text-sm text-gray-600 hover:text-gray-900">
             <h1 className="text-xl font-extrabold tracking-tight text-gray-900">Profile</h1>
-          </button>
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">

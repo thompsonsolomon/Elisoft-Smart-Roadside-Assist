@@ -94,7 +94,7 @@ import {
 
 export function ServicesPage() {
   const [sliderRef, instanceRef] = useKeenSlider({
-    loop: true,
+    loop: false,
     mode: "free-snap",
     slides: {
       perView: 1.2,
@@ -351,7 +351,7 @@ export function HowITWorks() {
                 key={index}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false }}
                 transition={{ duration: 0.6, delay: index * 0.15 }}
               >
                 <Card className="relative overflow-hidden group hover:shadow-lg transition-all duration-300 bg-card border-border/50">
