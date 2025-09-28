@@ -1,67 +1,24 @@
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { mechanics, customers } from "../../data"
-import GoogleMap from "../components/common/GoogleMap"
-import GoogleMapReact from 'google-map-react';
-import { ArrowLeft, MapPin, Star, Clock, DollarSign } from "lucide-react"
-import AnyReactComponent from "../components/map/marker"
+import { ArrowLeft, MapPin, Star, Clock, DollarSign, PhoneCall } from "lucide-react"
 import NigeriaMap from "../components/map/marker"
 import { useLocalStorage } from "../helpers/UseLocalStorage"
 import ResponsiveHeader from "../components/common/ResponsiveHeader"
-
-// =============================== NOTES ========================
-// This page displays a map with markers for mechanics and customers based on user roles for the initial version.
-// But currently a new update is being worked on to convert the use of google maps to just listing the mechanics and customers in a list view
-// on click of each mechanic should display the minimum time it will take to reach then customer and additonaly a detaled profile card of the mechanic
-// =================================================================
+import { useMapContext } from "../contexts/MapContext"
+import { LocationName } from "../helpers/GetLocationName"
 
 const MapPage = () => {
   const { user } = useAuth()
-  const [MaPuser] = useLocalStorage("Elisoft Assist_MapData", null);
+  const [selectedUser, setselectedUser] = useState(null)
+  const { selectedMechanic } = useMapContext();
 
-  // Map center (New York City)
-  const mapCenter = { lat: 40.7128, lng: -74.006 }
+  console.log(selectedMechanic);
 
-  console.log("Map user data:", MaPuser)
-
-  // Prepare markers based on user role
-  const markers = useMemo(() => {
-    const markerData = []
-
-    // Show mechanics for customers and admins
-    if (user?.role === "Customer" || user?.role === "admin") {
-      mechanics.forEach((mechanic) => {
-        markerData.push({
-          id: `Mechanic-${mechanic.id}`,
-          type: "Mechanic",
-          position: mechanic.location.coordinates,
-          title: mechanic.name,
-          data: mechanic,
-          color: mechanic.available ? "#FFD700" : "#6B7280",
-          label: "🔧",
-        })
-      })
-    }
-
-    // Show customers for mechanics and admins
-    if (user?.role === "Mechanic" || user?.role === "admin") {
-      customers.forEach((customer) => {
-        markerData.push({
-          id: `Customer-${customer.id}`,
-          type: "Customer",
-          position: customer.location.coordinates,
-          title: customer.name,
-          data: customer,
-          color: "#10B981",
-          label: "👤",
-        })
-      })
-    }
-
-    return markerData
-  }, [user?.role])
-
+  useEffect(() => {
+    setselectedUser(selectedMechanic);
+  }, [selectedMechanic]);
 
   const getBackRoute = () => {
     switch (user?.role) {
@@ -76,8 +33,9 @@ const MapPage = () => {
     }
   }
 
-  const renderMarkerDetails = () => {
-    if (!MaPuser) {
+  const renderMarkerDetails = (selectedUserDetails) => {
+    const user = selectedUserDetails || null
+    if (!user) {
       return (
         <div className="card">
           <div className="text-center py-12">
@@ -88,68 +46,65 @@ const MapPage = () => {
         </div>
       )
     }
+    const type = user.role
+    const data = user
+    if (type === "Mechanic") {
+      return (
+        <div className="card">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h3 className="text-xl font-semibold text-gold mb-1">{data.fullName}</h3>
+            </div>
+            <span className={`status-badge ${data.isAvailable ? "status-active" : "status-blocked"}`}>
+              {data.isAvailable ? "Available" : "Busy"}
+            </span>
+          </div>
 
-    const type = MaPuser.type
-    const data = MaPuser.user
-    console.log("Selected marker data:", data);
+          <div className="space-y-3 mb-6">
+            <div className="flex items-center space-x-2">
+              <Star className="w-4 h-4 text-gold" />
+              <span className="text-gold font-medium">{data.rating}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <MapPin className="w-4 h-4 text-gray-400" />
+              <span className="text-gray-300">{
+                data.location && (
+                  <LocationName
+                    lat={data?.location.coordinates[1]}
+                    lon={data?.location.coordinates[0]}
+                  />
+                )}</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <PhoneCall className="w-4 h-4 text-gray-400" />
+              <span className="text-gray-300">{data.phone}</span>
+            </div>
 
+          </div>
 
-    // if (type === "Mechanic") {
-    //   return (
-    //     <div className="card">
-    //       <div className="flex items-start justify-between mb-4">
-    //         <div>
-    //           <h3 className="text-xl font-semibold text-gold mb-1">{data.fullName}</h3>
-    //           <p className="text-gray-400">{data.expertise.join(", ")}</p>
-    //         </div>
-    //         <span className={`status-badge ${data.available ? "status-active" : "status-blocked"}`}>
-    //           {data.available ? "Available" : "Busy"}
-    //         </span>
-    //       </div>
+          {user?.role === "Customer" && data.available && (
+            <div className="grid grid-cols-2 gap-3">
+              <button className="btn btn-primary">Book Now</button>
+              <button className="btn btn-secondary">Get Directions</button>
+            </div>
+          )}
 
-    //       <div className="space-y-3 mb-6">
-    //         <div className="flex items-center space-x-2">
-    //           <Star className="w-4 h-4 text-gold" />
-    //           <span className="text-gold font-medium">{data.rating}</span>
-    //           <span className="text-gray-400">({data.reviewCount} reviews)</span>
-    //         </div>
-    //         <div className="flex items-center space-x-2">
-    //           <MapPin className="w-4 h-4 text-gray-400" />
-    //           <span className="text-gray-300">{data.location.address}</span>
-    //         </div>
-    //         <div className="flex items-center space-x-2">
-    //           <Clock className="w-4 h-4 text-gray-400" />
-    //           <span className="text-gray-300">{data.workingHours}</span>
-    //         </div>
-    //         <div className="flex items-center space-x-2">
-    //           <DollarSign className="w-4 h-4 text-gray-400" />
-    //           <span className="text-gray-300">Price Range: {data.priceRange}</span>
-    //         </div>
-    //       </div>
-
-    //       {user?.role === "Customer" && data.available && (
-    //         <div className="grid grid-cols-2 gap-3">
-    //           <button className="btn btn-primary">Book Now</button>
-    //           <button className="btn btn-secondary">Get Directions</button>
-    //         </div>
-    //       )}
-
-    //       {data.services && (
-    //         <div className="mt-6">
-    //           <h4 className="font-semibold text-gold mb-3">Services Offered</h4>
-    //           <div className="space-y-2">
-    //             {data.services.slice(0, 3).map((service, index) => (
-    //               <div key={index} className="flex justify-between items-center text-sm">
-    //                 <span className="text-gray-300">{service.name}</span>
-    //                 <span className="text-gold">${service.price}</span>
-    //               </div>
-    //             ))}
-    //           </div>
-    //         </div>
-    //       )}
-    //     </div>
-    //   )
-    // }
+          {data.services && (
+            <div className="mt-6">
+              <h4 className="font-semibold text-gold mb-3">Services Offered</h4>
+              <div className="space-y-2">
+                {data.services.slice(0, 3).map((service, index) => (
+                  <div key={index} className="flex justify-between items-center text-sm">
+                    <span className="text-gray-300">{service.name}</span>
+                    <span className="text-gold">${service.price}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )
+    }
 
     if (type === "Customer") {
       return (
@@ -207,35 +162,6 @@ const MapPage = () => {
     return null
   }
 
-  const getStatsData = () => {
-    if (user?.role === "Customer") {
-      const availableMechanics = mechanics.filter((m) => m.available).length
-      return {
-        title: "Available Mechanics",
-        value: availableMechanics,
-        total: mechanics.length,
-        subtitle: `${mechanics.length} total mechanics`,
-      }
-    } else {
-      return {
-        title: "Pending Requests",
-        value: customers.length,
-        total: customers.length,
-        subtitle: "Average distance: 2.3 miles",
-      }
-    }
-  }
-
-  const stats = getStatsData()
-
-
-  const defaultProps = {
-    center: {
-      lat: 10.99835602,
-      lng: 77.01502627
-    },
-    zoom: 11
-  };
 
   return (
     <div className="min-h-screen">
@@ -316,12 +242,13 @@ const MapPage = () => {
             {/* Selected Marker Details */}
             <div>
               <h2 className="text-lg font-semibold text-gold mb-4">
-                {MaPuser ? "📋 Details" : "ℹ️ Select a marker"}
+                {selectedUser ? "📋 Details" : "ℹ️ Select a marker"}
               </h2>
-              {renderMarkerDetails()}
+              {renderMarkerDetails(selectedUser)}
             </div>
 
-            {/* Quick Stats */}
+            {/* 
+            Quick Stats
             <div className="card">
               <h3 className="text-lg font-semibold text-gold mb-4">📊 Quick Stats</h3>
               <div className="space-y-3">
@@ -335,31 +262,16 @@ const MapPage = () => {
                 </div>
                 <div className="text-sm text-gray-400 pt-2 border-t border-gray-800">{stats.subtitle}</div>
               </div>
-            </div>
+            </div> */}
 
-            {/* Quick Actions */}
-            <div className="card">
-              <h3 className="text-lg font-semibold text-gold mb-4">⚡ Quick Actions</h3>
-              <div className="space-y-3">
-                {user?.role === "Customer" && (
-                  <>
-                    <button className="btn btn-primary w-full">Request Emergency Service</button>
-                    <button className="btn btn-secondary w-full">Schedule Appointment</button>
-                  </>
-                )}
-                {user?.role === "Mechanic" && (
-                  <>
-                    <button className="btn btn-primary w-full">Toggle Availability</button>
-                    <button className="btn btn-secondary w-full">View All Requests</button>
-                  </>
-                )}
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
 
-      <ResponsiveHeader />
+      <div className="mt-20 visible md:hidden">
+        <ResponsiveHeader />
+      </div>
     </div>
   )
 }

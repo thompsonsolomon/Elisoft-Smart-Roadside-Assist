@@ -201,59 +201,105 @@ export const customers = [
   },
 ]
 
-export const appointments = [
-  {
-    id: 1,
-    customerId: 1,
-    mechanicId: 1,
-    customerName: "John Smith",
-    mechanicName: "Mike's Auto Repair",
-    service: "Oil Change",
-    date: "2024-01-15",
-    time: "10:00 AM",
-    status: "Pending",
-    price: 45,
-    duration: "30 min",
-    location: "Workshop",
-    notes: "Regular maintenance",
-    createdAt: "2024-01-14T09:30:00Z",
-    updatedAt: "2024-01-14T09:30:00Z",
-  },
-  {
-    id: 2,
-    customerId: 2,
-    mechanicId: 2,
-    customerName: "Mary Johnson",
-    mechanicName: "Sarah's Service Center",
-    service: "Brake Repair",
-    date: "2024-01-16",
-    time: "2:00 PM",
-    status: "Accepted",
-    price: 180,
-    duration: "2 hours",
-    location: "Home Service",
-    notes: "Urgent brake repair needed",
-    createdAt: "2024-01-14T11:15:00Z",
-    updatedAt: "2024-01-14T12:00:00Z",
-  },
-  {
-    id: 3,
-    customerId: 3,
-    mechanicId: 4,
-    customerName: "David Wilson",
-    mechanicName: "Elite Motors",
-    service: "Engine Check",
-    date: "2024-01-10",
-    time: "9:00 AM",
-    status: "Completed",
-    price: 120,
-    duration: "1 hour",
-    location: "Workshop",
-    notes: "Diagnostic completed successfully",
-    createdAt: "2024-01-09T16:45:00Z",
-    updatedAt: "2024-01-10T11:00:00Z",
-  },
-]
+
+  export const appointments = [
+    {
+      id: 1,
+      mechanic:
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            3.5205641,
+            6.4595481
+          ]
+        },
+        "_id": "68c833b513214eff92ac81ea",
+        "fullName": "Thompson Solomon Ayomideji",
+        "phone": "+2349124919117",
+        "role": "Mechanic",
+        "status": "Active",
+        "isAvailable": true,
+        "profileImage": null,
+        "isPhoneVerified": false,
+        "rating": 0,
+        "totalRatings": 0,
+        "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
+        "createdAt": "2025-09-15T15:41:41.862Z",
+        "updatedAt": "2025-09-26T01:26:20.144Z",
+        "__v": 0,
+        "id": "68c833b513214eff92ac81ea"
+      }
+      ,
+      type: "Oil Change",
+      date: "2024-01-15",
+      status: "Pending",
+      price: "$45",
+    },
+    {
+      id: 2,
+   mechanic:
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            3.5205641,
+            6.4595481
+          ]
+        },
+        "_id": "68c833b513214eff92ac81ea",
+        "fullName": "Thompson solomon",
+        "phone": "+2349124919117",
+        "role": "Mechanic",
+        "status": "Active",
+        "isAvailable": true,
+        "profileImage": null,
+        "isPhoneVerified": false,
+        "rating": 0,
+        "totalRatings": 0,
+        "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
+        "createdAt": "2025-09-15T15:41:41.862Z",
+        "updatedAt": "2025-09-26T01:26:20.144Z",
+        "__v": 0,
+        "id": "68c833b513214eff92ac81ea"
+      },      type: "Brake Repair",
+      date: "2024-01-10",
+      status: "Completed",
+      price: "$180",
+    },
+    {
+      id: 3,
+   mechanic:
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            3.5205641,
+            6.4595481
+          ]
+        },
+        "_id": "68c833b513214eff92ac81ea",
+        "fullName": "Thompson Ayomideji",
+        "phone": "+2349124919117",
+        "role": "Mechanic",
+        "status": "Active",
+        "isAvailable": true,
+        "profileImage": null,
+        "isPhoneVerified": false,
+        "rating": 0,
+        "totalRatings": 0,
+        "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
+        "createdAt": "2025-09-15T15:41:41.862Z",
+        "updatedAt": "2025-09-26T01:26:20.144Z",
+        "__v": 0,
+        "id": "68c833b513214eff92ac81ea"
+      } ,     type: "Engine Check",
+      date: "2024-01-08",
+      status: "Completed",
+      price: "$120",
+    },
+  ];
+
 
 export const reviews = [
   {

@@ -1,43 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import AvailableMechanicCard from "./Customer/AvailableMechanicCard";
 import ResponsiveHeader from "./common/ResponsiveHeader";
 import { User } from "lucide-react";
+import { appointments } from "../../data";
+import { useMapContext } from "../contexts/MapContext";
 
 export default function CustomerDashboard() {
   const { user } = useAuth()
-
   const [searchLocation, setSearchLocation] = useState("");
   const navigate = useNavigate();
+  const { setSelectedMechanic, clearSelectedMechanic } = useMapContext();
+// clear on mount if you want
+  useEffect(() => {
+    clearSelectedMechanic();
+  }, []);
 
-
-  const appointments = [
-    {
-      id: 1,
-      mechanic: "Mike's Auto Repair",
-      type: "Oil Change",
-      date: "2024-01-15",
-      status: "Pending",
-      price: "$45",
-    },
-    {
-      id: 2,
-      mechanic: "Sarah's Service Center",
-      type: "Brake Repair",
-      date: "2024-01-10",
-      status: "Completed",
-      price: "$180",
-    },
-    {
-      id: 3,
-      mechanic: "Quick Fix Garage",
-      type: "Engine Check",
-      date: "2024-01-08",
-      status: "Completed",
-      price: "$120",
-    },
-  ];
+  const handleSetMapMarker = (mechanic) => () => {
+    setSelectedMechanic(mechanic);
+    navigate("/map");
+  };
 
   return (
     <div className="fade-in min-h-screen bg-gray-900 text-white">
@@ -98,6 +81,41 @@ export default function CustomerDashboard() {
           <AvailableMechanicCard />
         </section>
 
+        {/* Appointments */}
+        <section>
+          <h2 className="text-2xl font-bold text-yellow-400 mb-6">📋 Your Appointments</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            {appointments.map((appt) => (
+              <div key={appt.id} className="bg-gray-800 p-6 rounded-xl">
+                <div className="flex justify-between mb-3">
+                  <h3 className="text-yellow-400 font-semibold">{appt.mechanic?.fullName}</h3>
+                  <span
+                    className={`text-sm px-3 py-1 rounded-full ${appt.status === "Completed" ? "bg-green-600" : "bg-yellow-500 text-black"
+                      }`}
+                  >
+                    {appt.status}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 text-sm text-gray-300 gap-2 mb-4">
+                  <p>🔧 Service: {appt.type}</p>
+                  <p>📅 Date: {appt.date}</p>
+                  {/* <p>💰 Price: {appt.price}</p> */}
+                  <p>📍 Type: Workshop</p>
+                </div>
+                {appt.status === "Pending" && (
+                  <div className="flex gap-3">
+                    <button className="btn btn-secondary w-full"
+                      onClick={handleSetMapMarker(appt.mechanic)}
+                    >view on map</button>
+                    <button className="btn btn-danger w-full">Cancel</button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+
+
         {/* Service Options */}
         <section>
           <h2 className="text-2xl font-bold text-yellow-400 mb-6">📦 Service Options</h2>
@@ -121,37 +139,6 @@ export default function CustomerDashboard() {
           </div>
         </section>
 
-        {/* Appointments */}
-        <section>
-          <h2 className="text-2xl font-bold text-yellow-400 mb-6">📋 Your Appointments</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {appointments.map((appt) => (
-              <div key={appt.id} className="bg-gray-800 p-6 rounded-xl">
-                <div className="flex justify-between mb-3">
-                  <h3 className="text-yellow-400 font-semibold">{appt.mechanic}</h3>
-                  <span
-                    className={`text-sm px-3 py-1 rounded-full ${appt.status === "Completed" ? "bg-green-600" : "bg-yellow-500 text-black"
-                      }`}
-                  >
-                    {appt.status}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 text-sm text-gray-300 gap-2 mb-4">
-                  <p>🔧 Service: {appt.type}</p>
-                  <p>📅 Date: {appt.date}</p>
-                  <p>💰 Price: {appt.price}</p>
-                  <p>📍 Type: Workshop</p>
-                </div>
-                {appt.status === "Pending" && (
-                  <div className="flex gap-3">
-                    <button className="btn btn-secondary w-full">Reschedule</button>
-                    <button className="btn btn-danger w-full">Cancel</button>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
       </main>
       <div className="mt-20 visible md:hidden">
         <ResponsiveHeader />
