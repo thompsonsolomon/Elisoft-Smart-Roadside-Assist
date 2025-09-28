@@ -425,8 +425,9 @@ const mechanicLocation = {
 };
 
 export default function UberLikeMap() {
+  const MAP_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY",
+    googleMapsApiKey: MAP_KEY,
   });
 
   const [directions, setDirections] = useState(null);
