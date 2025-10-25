@@ -447,3 +447,5 @@ export const sortMechanicsByDistance = (mechanics) => {
 export const sortMechanicsByRating = (mechanics) => {
   return [...mechanics].sort((a, b) => b.rating - a.rating)
 }
+
+

@@ -272,7 +272,7 @@ export function HowITWorks() {
     {
       icon: Settings,
       title: "Select Issue",
-      description: "Choose from common roadside issues or describe your specific problem in detail.",
+      description: "Choose from common roadside issues or describe your specific problem.",
       step: "02"
     },
     {

@@ -8,8 +8,6 @@ export default function ServiceRequestForm({ open, onClose, data }) {
   const [shortAddress, setShortAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
-
-  console.log(data);
   
   // Convert coords to human-readable short address
   useEffect(() => {

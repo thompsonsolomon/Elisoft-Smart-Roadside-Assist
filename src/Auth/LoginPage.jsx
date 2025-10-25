@@ -56,7 +56,10 @@ const handleSubmit = async (e) => {
     })
   }
 
+
   return (
+
+
     <div
       className="register-page flex-center flex justify-center items-center p-4"
     >

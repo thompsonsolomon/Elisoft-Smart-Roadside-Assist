@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import ChangePinModal from "../../Auth/ChangePIn";
 import ResponsiveHeader from "./ResponsiveHeader";
 import { LocationName } from "../../helpers/GetLocationName";
+import PaymentSection from "../../utils/Payment";
 
 const mechanicServices = [
   "Roadside Assistant",
@@ -180,12 +181,12 @@ export default function ProfilePage() {
   const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-black py-8 px-4 sm:px-6 lg:px-8">
       {/* Top bar */}
       <div className="max-w-6xl mx-auto flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">          
           <Link  to={`/${user?.role}`} className="text-sm text-gray-600 hover:text-gray-900">
-            <h1 className="text-xl font-extrabold tracking-tight text-gray-900">Profile</h1>
+            <h1 className="text-xl font-extrabold tracking-tight text-white">Profile</h1>
           </Link>
         </div>
 
@@ -228,25 +229,25 @@ export default function ProfilePage() {
           </div>
 
           {/* Bio Card */}
-          <div className="bg-white rounded-2xl shadow p-6">
-            <h3 className="text-sm font-semibold text-gray-700 mb-4">User Bio</h3>
+          <div className="card shadow p-6">
+            <h3 className="text-sm font-semibold text-white mb-4">User Bio</h3>
 
             {userType === "mechanic" ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-700">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-200">
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-400">License</p>
+                  <p className="text-xs text-gray-200">License</p>
                   <p className="font-medium">{UserData?.licenseNumber || "N/A"}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-400">Verified</p>
+                  <p className="text-xs text-gray-200">Verified</p>
                   <p className="font-medium">{UserData?.isPhoneVerified ? "Yes" : "No"}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-400">Status</p>
+                  <p className="text-xs text-gray-200">Status</p>
                   <p className="font-medium">{UserData?.isAvailable ? "Available" : "Unavailable"}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-400">Joined</p>
+                  <p className="text-xs text-gray-200">Joined</p>
                   <p className="font-medium">{UserData?.createdAt ? new Date(UserData.createdAt).toDateString() : "N/A"}</p>
                 </div>
               </div>
@@ -277,13 +278,13 @@ export default function ProfilePage() {
           </div>
 
           {/* Location Card */}
-          <div className="bg-white rounded-2xl shadow p-6">
+          <div className="card shadow p-6">
             <div className="flex flex-col gap-5 items-start justify-between">
               <div>
-                <h4 className="text-sm font-semibold text-gray-700">Location</h4>
-                <p className="text-xs text-gray-500 mt-1">Update your current coordinates for quicker service matching.</p>
+                <h4 className="text-sm font-semibold text-white">Location</h4>
+                <p className="text-xs text-gray-200 mt-1">Update your current coordinates for quicker service matching.</p>
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="text-sm text-gray-100">
                 <LocationName
                   lat={location.latitude}
                   lon={location.longitude}
@@ -319,19 +320,19 @@ export default function ProfilePage() {
         <div className="lg:col-span-7 space-y-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Personal Info Card */}
-            <div className="bg-white rounded-2xl shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Personal Info</h3>
+            <div className="card rounded-2xl shadow p-6">
+              <h3 className="text-lg font-semibold text-white mb-4">Personal Info</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">Full name</label>
+                  <label className="text-sm text-white block mb-2">Full name</label>
                   <input name="name" value={formData.name} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-600 block mb-2">Phone number</label>
+                  <label className="text-sm text-white block mb-2">Phone number</label>
                   <input name="phone" value={formData.phone} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="text-sm text-gray-600 block mb-2">Address</label>
+                  <label className="text-sm text-white block mb-2">Address</label>
                   <input name="address" value={formData.address} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
                 </div>
               </div>
@@ -339,10 +340,10 @@ export default function ProfilePage() {
 
             {/* Services & Experience Card (only for mechanics) */}
             {userType === "mechanic" && (
-              <div className="bg-white rounded-2xl shadow p-6">
+              <div className="card shadow p-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-800">Services & Experience</h3>
-                  <p className="text-sm text-gray-500">Select services you offer</p>
+                  <h3 className="text-lg font-semibold text-gray-200">Services & Experience</h3>
+                  <p className="text-sm text-gray-200">Select services you offer</p>
                 </div>
 
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-56 overflow-y-auto">
@@ -357,7 +358,7 @@ export default function ProfilePage() {
                           onChange={handleServiceChange}
                           className="w-4 h-4"
                         />
-                        <span className="text-sm text-gray-700">{svc}</span>
+                        <span className="text-sm text-gray-100">{svc}</span>
                       </label>
                     );
                   })}
@@ -365,12 +366,12 @@ export default function ProfilePage() {
 
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="text-sm text-gray-600 block mb-2">Years of experience</label>
+                    <label className="text-sm text-gray-100 block mb-2">Years of experience</label>
                     <input name="yearsOfExperience" type="number" value={formData.yearsOfExperience} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
                   </div>
 
                   <div>
-                    <label className="text-sm text-gray-600 block mb-2">License number</label>
+                    <label className="text-sm text-gray-100 block mb-2">License number</label>
                     <input name="licenseNumber" value={formData.licenseNumber} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
                   </div>
                 </div>
@@ -378,8 +379,8 @@ export default function ProfilePage() {
             )}
 
             {/* Bank Card */}
-            {userType === "mechanic" && (
-              <div className="bg-white rounded-2xl shadow p-6">
+        
+              {/* <div className="bg-white rounded-2xl shadow p-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">Bank & Payment</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -416,8 +417,9 @@ export default function ProfilePage() {
                     {loading && <p className="text-xs text-gray-500 mt-2">Resolving account...</p>}
                   </div>
                 </div>
-              </div>
-            )}
+              </div> */}
+            
+            <PaymentSection />
 
             {/* Actions */}
             <div className="flex items-center gap-4">

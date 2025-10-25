@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { AcceptServiceREquest, MechanicGetRequests } from "../../utils/api";
+import { MyPendingRequests, MechanicGetRequests } from "../../utils/api";
+import axios from "axios";
 
 function JobRequests() {
     const [MechanicRequest, setMechanicRequest] = useState([])
     const [loading, setLoading] = useState(false)
+    const [MyRequestsList, setMyRequestsList] = useState([])
     useEffect(() => {
         setLoading(true)
         const HandleFetchREquest = async () => {
             const res = await MechanicGetRequests()
-            console.log(res);
-            
             setMechanicRequest(res?.data?.availableRequests)
             setLoading(false)
         }
@@ -19,12 +19,55 @@ function JobRequests() {
         }
     }, [])
 
+      useEffect(() => {
+        setLoading(true)
+        const HandleFetchREquest = async () => {
+            const res = await MyPendingRequests()
+            console.log("pending Requests" , res);
+
+            setMyRequestsList(res?.data?.availableRequests)
+            setLoading(false)
+        }
+
+        return () => {
+            HandleFetchREquest()
+        }
+    }, [])
+
     const handleAcceptJob = async (jobId) => {
-        // Implement accept job logic here
-        const res = await AcceptServiceREquest(jobId)
-        console.log(res);
-        
+        console.log(`Accepting job ${jobId}...`);
+
+        try {
+            const token = localStorage.getItem("token"); // or wherever you store it
+
+            const response = await axios.post(
+                `https://elisoft-backend.onrender.com/api/service-requests/${jobId}/accept`,
+                {}, // send empty body or required fields
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: token ? `Bearer ${token}` : "",
+                    },
+                }
+            );
+
+            console.log("✅ Job accepted successfully:", response.data);
+            alert("Job accepted successfully! Customer has been notified.");
+            return response.data;
+        } catch (error) {
+            if (error.response) {
+                console.error("❌ Server responded with error:", error.response.data);
+                alert(error.response.data?.message || "Failed to accept job.");
+            } else if (error.request) {
+                console.error("📡 No response from server:", error.request);
+                alert("No response from server. Please check your connection.");
+            } else {
+                console.error("⚙️ Request error:", error.message);
+                alert("Error setting up request.");
+            }
+        }
     };
+
     return (
         <div className="grid md:grid-cols-2 gap-12 items-center w-full">
             {
