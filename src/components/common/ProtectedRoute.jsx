@@ -12,6 +12,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   if (loading) {
     return <LoadingSpinner text="Checking authentication..." />
   }
+  console.log("ProtectedRoute - User:", user, "IsAuthenticated:", isAuthenticated)
 
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />

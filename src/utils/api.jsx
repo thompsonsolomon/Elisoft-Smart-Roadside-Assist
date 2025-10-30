@@ -26,12 +26,13 @@ api.interceptors.response.use(
             errorMessage?.toLowerCase().includes("token");
         if (isTokenExpired && !originalRequest._retry && getRefreshToken()) {
             originalRequest._retry = true;
+            const refreshtoken = getRefreshToken();
             try {
                 toast.info("Token expired. Refreshing...");
                 const token = getAccessToken();
                 const refreshRes = await axios.post(
                     `${API_BASE_URL}/api/auth/refresh-token`,
-                    { refreshToken: getRefreshToken() },
+                    { refreshToken: refreshtoken },
                     {
                         headers: {
                             "Content-Type": "application/json",
@@ -40,6 +41,7 @@ api.interceptors.response.use(
                         },
                     }
                 );
+                console.log("Testing",refreshRes);
                 const newAccessToken = refreshRes.data?.data?.accessToken;
                 if (!newAccessToken) {
                     console.log("No access token received");
@@ -57,7 +59,9 @@ api.interceptors.response.use(
             } catch (refreshError) {
                 console.error("🔴 Token refresh failed:", refreshError);
                 toast.error("We could not refresh your token. Please log in again.");
-                localStorage.removeItem("token")
+                localStorage.removeItem("token");
+                localStorage.removeItem("refreshToken");
+                localStorage.clear();
                 throw new Error("Session expired. Please log in again.");
             }
         }
@@ -67,7 +71,7 @@ api.interceptors.response.use(
 );
 
 
-
+// 2348085827542
 
 // 🔹 Generic API Request Function
 export const apiRequest = async (endpoint, method = "GET", data = null, token = getAccessToken()) => {

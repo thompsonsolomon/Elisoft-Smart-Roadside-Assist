@@ -54,7 +54,7 @@ const PaymentSection = () => {
             });
             console.log(res.data);
             setPlans(res?.data?.data?.plans || []);
-            toast.success("Payment plans loaded", "success");
+            // toast.success("Payment plans loaded", "success");
         } catch (err) {
             toast.error("Failed to load payment plans", "error");
         }
@@ -73,7 +73,7 @@ const PaymentSection = () => {
                     },
                 }
             );
-            toast.notify("Redirecting to payment gateway...", "info");
+            // toast.notify("Redirecting to payment gateway...", "info");
             window.location.href = res.data?.authorization_url; // Paystack redirect
         } catch (err) {
             toast.error(err.response?.data?.message || "Failed to initiate payment", "error");
@@ -86,7 +86,7 @@ const PaymentSection = () => {
             const res = await axios.get(`${API_BASE}/api/payments/verify?reference=${reference}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success("Payment verified successfully!", "success");
+            // toast.success("Payment verified successfully!", "success");
             return res.data;
         } catch (err) {
             toast.error("Payment verification failed", "error");

@@ -81,12 +81,12 @@ export default function MechanicDashboard({ user, onLogout }) {
             <h1 style={{ color: "#FFD700", fontSize: "1.8rem" }}>🔧  Elisoft Assist</h1>
           </div>
           <div
-           className="hidden justify-center items-center md:flex"
+            className="hidden justify-center items-center md:flex"
 
->            <Link
-              to="/profile"
-              className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
-            >
+          >            <Link
+            to="/profile"
+            className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
+          >
               <User className="w-6 h-6" />
               <span className="text-xs mt-1">Profile</span>
             </Link>
@@ -101,7 +101,10 @@ export default function MechanicDashboard({ user, onLogout }) {
             <div className="card">
               <h2 style={{ fontSize: "1.5rem", marginBottom: "20px", color: "#FFD700" }}>🔄 Availability Status</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 justify-between  gap-4 " style={{ alignItems: "center", marginBottom: "20px" }}>
-                <span style={{ color: "#ccc", fontSize: "1.1rem" }}>
+                <span style={{ color: "#ccc", fontSize: "1.1rem" }}
+                  onClick={() => ToggleAvailability()}
+
+                >
                   Currently:{" "}
                   <strong style={{ color: isAvailable ? "#00FF00" : "#FF4444" }}>
                     {isAvailable ? "Available" : "Unavailable"}
