@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 import JobRequests from "./Mechanics/JobRequests";
 import ResponsiveHeader from "./common/ResponsiveHeader";
 import { User } from "lucide-react";
+import AcceptedJob from "./Mechanics/AcceptedJob";
 
 export default function MechanicDashboard({ user, onLogout }) {
   const [isAvailable, setIsAvailable] = useState(() => {
@@ -13,28 +14,6 @@ export default function MechanicDashboard({ user, onLogout }) {
     return saved ? JSON.parse(saved) : false;
   });
   const navigate = useNavigate()
-  const acceptedJobs = [
-    {
-      id: 1,
-      customer: "Alice Brown",
-      type: "Engine Diagnostic",
-      date: "2024-01-14",
-      status: "In Progress",
-      location: "Eastside",
-      price: "$150",
-    },
-    {
-      id: 2,
-      customer: "Bob Wilson",
-      type: "Tire Replacement",
-      date: "2024-01-12",
-      status: "Completed",
-      location: "Westside",
-      price: "$200",
-    },
-  ]
-
-
 
   const handleAcceptJob = (jobId) => {
     alert(`Job ${jobId} accepted! Customer will be notified.`)
@@ -49,7 +28,6 @@ export default function MechanicDashboard({ user, onLogout }) {
 
       // Call API with the new value
       const res = await MechanicAvailability({ isAvailable: newAvailability });
-      console.log("API response:", res);
 
       // Save in state + localStorage
       setIsAvailable(newAvailability);
@@ -163,41 +141,7 @@ export default function MechanicDashboard({ user, onLogout }) {
         <section style={{ marginBottom: "60px" }}>
           <h2 style={{ fontSize: "2rem", marginBottom: "30px", color: "#FFD700" }}>✅ Your Active Jobs</h2>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            {acceptedJobs.map((job) => (
-              <div key={job.id} className="card">
-                <div className="flex-between" style={{ marginBottom: "15px" }}>
-                  <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job.customer}</h3>
-                  <span
-                    className={`status-badge ${job.status === "Completed" ? "status-completed" : "status-pending"}`}
-                  >
-                    {job.status}
-                  </span>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "20px" }}>
-                  <p style={{ color: "#ccc" }}>🔧 Service: {job.type}</p>
-                  <p style={{ color: "#ccc" }}>📅 Date: {job.date}</p>
-                  <p style={{ color: "#ccc" }}>📍 Location: {job.location}</p>
-                  <p style={{ color: "#ccc" }}>💰 Payment: {job.price}</p>
-                </div>
-                {job.status === "In Progress" && (
-                  <div style={{ display: "flex", gap: "12px" }}>
-                    <button className="btn btn-primary" style={{ flex: 1 }}>
-                      Mark Complete
-                    </button>
-                    <button className="btn btn-secondary" style={{ flex: 1 }}>
-                      Update Status
-                    </button>
-                  </div>
-                )}
-                {job.status === "Completed" && (
-                  <div className="text-center">
-                    <span style={{ color: "#00FF00", fontWeight: "500" }}>✅ Job Completed Successfully</span>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <AcceptedJob />
         </section>
       </div>
       <ResponsiveHeader />

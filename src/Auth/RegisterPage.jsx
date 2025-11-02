@@ -50,7 +50,6 @@ const handleSubmit = async (e) => {
     };
 
     const result = await register(credentials);
-    console.log(result);
 
     if (result?.response?.data?.status === "error" || result?.message?.includes("Error")) {
       toast.error(result?.response?.data?.message || "Error occurred in registration");

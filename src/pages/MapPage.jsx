@@ -14,7 +14,6 @@ const MapPage = () => {
   const [selectedUser, setselectedUser] = useState(null)
   const { selectedMechanic } = useMapContext();
 
-  console.log(selectedMechanic);
 
   useEffect(() => {
     setselectedUser(selectedMechanic);
@@ -189,7 +188,7 @@ const MapPage = () => {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid gap-8">
           {/* Map Container */}
           <div className="lg:col-span-2 space-y-6">
             <div className="card p-0 overflow-hidden">
@@ -199,7 +198,7 @@ const MapPage = () => {
                 </h2>
               </div>
               <div className="py-4">
-                <div style={{ height: '50vh', width: '100%' }}>
+                <div className="bg-gold">
                   <NigeriaMap />
                 </div>
               </div>
@@ -235,36 +234,6 @@ const MapPage = () => {
                 )}
               </div>
             </div>
-          </div>
-
-          {/* Details Panel */}
-          <div className="space-y-6">
-            {/* Selected Marker Details */}
-            <div>
-              <h2 className="text-lg font-semibold text-gold mb-4">
-                {selectedUser ? "📋 Details" : "ℹ️ Select a marker"}
-              </h2>
-              {renderMarkerDetails(selectedUser)}
-            </div>
-
-            {/* 
-            Quick Stats
-            <div className="card">
-              <h3 className="text-lg font-semibold text-gold mb-4">📊 Quick Stats</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300">{stats.title}:</span>
-                  <span className="text-gold font-semibold text-lg">{stats.value}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-300">Total Available:</span>
-                  <span className="text-gray-400">{stats.total}</span>
-                </div>
-                <div className="text-sm text-gray-400 pt-2 border-t border-gray-800">{stats.subtitle}</div>
-              </div>
-            </div> */}
-
-
           </div>
         </div>
       </div>

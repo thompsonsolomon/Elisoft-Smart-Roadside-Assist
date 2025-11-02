@@ -54,7 +54,6 @@ export default function ServiceRequestForm({ open, onClose, data }) {
       setLoading(true);
       setSuccessMsg("");
       const res = await CreateServiceRequest(payload);
-      console.log("Service request created:", res);
       if (res.error) {
         setSuccessMsg(res.error || "Failed to create request");
         return;

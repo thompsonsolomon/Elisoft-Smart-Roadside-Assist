@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { MyPendingRequests, MechanicGetRequests } from "../../utils/api";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function JobRequests() {
     const [MechanicRequest, setMechanicRequest] = useState([])
@@ -23,8 +24,6 @@ function JobRequests() {
         setLoading(true)
         const HandleFetchREquest = async () => {
             const res = await MyPendingRequests()
-            console.log("pending Requests" , res);
-
             setMyRequestsList(res?.data?.availableRequests)
             setLoading(false)
         }
@@ -35,7 +34,6 @@ function JobRequests() {
     }, [])
 
     const handleAcceptJob = async (jobId) => {
-        console.log(`Accepting job ${jobId}...`);
 
         try {
             const token = localStorage.getItem("token"); // or wherever you store it
@@ -51,8 +49,7 @@ function JobRequests() {
                 }
             );
 
-            console.log("✅ Job accepted successfully:", response.data);
-            alert("Job accepted successfully! Customer has been notified.");
+         toast.success("Job accepted successfully! Customer has been notified.");
             return response.data;
         } catch (error) {
             if (error.response) {

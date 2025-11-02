@@ -61,7 +61,6 @@ function AvailableMechanicCard() {
     // Implement navigation to mechanic profile page
     try {
       const res = await GetMechanicByID(id);
-      console.log("Mechanic Details:", res);
     } catch (error) {
 
     }

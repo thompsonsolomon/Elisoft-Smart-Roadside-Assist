@@ -51,7 +51,6 @@ const ServiceRequestModal = ({ token }) => {
 
       const data = await res.json();
       toast.success("Service request created successfully!");
-      console.log("Created request:", data);
       setShowModal(false);
       setFormData({
         serviceType: "",

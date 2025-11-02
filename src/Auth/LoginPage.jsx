@@ -28,7 +28,6 @@ const handleSubmit = async (e) => {
     const credentials = { phone: FinalNumber, pin: formData.pin };
 
     const result = await login(credentials);
-    console.log(result);
 
     // Handle API errors gracefully
     if (result?.response?.data?.status === "error" || result?.message?.includes("Error")) {

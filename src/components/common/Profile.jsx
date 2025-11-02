@@ -419,7 +419,7 @@ export default function ProfilePage() {
                 </div>
               </div> */}
             
-            <PaymentSection />
+            {/* <PaymentSection /> */}
 
             {/* Actions */}
             <div className="flex items-center gap-4">

@@ -70,7 +70,6 @@ function Users() {
         fetchUserById();
     };
 
-    console.log(userData)
 
     const handleDeleteUser = async (userId) => {
         setIsModalOpen(false);
@@ -100,7 +99,6 @@ function Users() {
 
                                 toast.dismiss(); // close confirm toast
                                 toast.success("User deleted successfully ✅");
-                                console.log("Deleted user:", userId);
 
                                 // Optional: refetch your user list here
                                 // fetchAllUsers();

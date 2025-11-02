@@ -41,10 +41,8 @@ api.interceptors.response.use(
                         },
                     }
                 );
-                console.log("Testing",refreshRes);
                 const newAccessToken = refreshRes.data?.data?.accessToken;
                 if (!newAccessToken) {
-                    console.log("No access token received");
                     localStorage.removeItem("token")
                     throw new Error("No access token received");
                 }
@@ -144,7 +142,7 @@ export const MechanicGetRequests = () => apiRequest("/api/service-requests/avail
 export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
 export const MyPendingRequests = ( ) => apiRequest(`/api/service-requests/available`, "GET");
 export const MyAcceptedRequests = ( ) => apiRequest(`/api/service-requests/accepted`, "GET");
-
+export const UpdateServiceRequestStatus = (requestId, data) =>  apiRequest(`/api/services/request/${requestId}/status`, "PUT", data);
 
 
 //Customers
