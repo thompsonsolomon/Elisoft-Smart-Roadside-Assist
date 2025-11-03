@@ -1,8 +1,10 @@
 import { Suspense, lazy } from "react"
 import { Routes, Route } from "react-router-dom"
-import { AuthProvider } from "./contexts/AuthContext"
+import { AuthProvider, useAuth } from "./contexts/AuthContext"
 import LoadingSpinner from "./components/common/LoadingSpinner"
 import ProtectedRoute from "./components/common/ProtectedRoute"
+import Payment from "./components/CashFlow/Payment"
+import Subscription from "./components/CashFlow/Subscription"
 // import ProfilePage from "./components/common/Profile"
 
 // Lazy load components for better performance
@@ -18,7 +20,7 @@ const AdminDashboard = lazy(() => import("./components/AdminDashboard"))
 const MapPage = lazy(() => import("./pages/MapPage"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
-function App() {
+function App() {  
   return (
     <AuthProvider>
       <div className="min-h-screen bg-black text-white">
@@ -75,6 +77,17 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+              <Route
+              path="/payment"
+              element={
+                <ProtectedRoute allowedRoles={["Customer", "Mechanic"]}>
+                  <Payment />
+                </ProtectedRoute>
+              }
+            />
+
+            
 
             <Route path="*" element={<NotFound />} />
           </Routes>

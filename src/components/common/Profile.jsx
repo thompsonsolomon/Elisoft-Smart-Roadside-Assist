@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import ChangePinModal from "../../Auth/ChangePIn";
 import ResponsiveHeader from "./ResponsiveHeader";
 import { LocationName } from "../../helpers/GetLocationName";
-import PaymentSection from "../../utils/Payment";
 
 const mechanicServices = [
   "Roadside Assistant",
@@ -43,7 +42,6 @@ export default function ProfilePage() {
   const [formData, setFormData] = useState({
     name: user?.fullName || "",
     phone: user?.phone || "",
-    address: user?.address || "",
     services: Array.isArray(user?.services) ? user.services : [],
     yearsOfExperience: user?.yearsOfExperience || "",
     licenseNumber: user?.licenseNumber || "",
@@ -147,6 +145,7 @@ export default function ProfilePage() {
       setLoadAction(false);
     }
   };
+  console.log(user)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -184,8 +183,8 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-black py-8 px-4 sm:px-6 lg:px-8">
       {/* Top bar */}
       <div className="max-w-6xl mx-auto flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">          
-          <Link  to={`/${user?.role}`} className="text-sm text-gray-600 hover:text-gray-900">
+        <div className="flex items-center gap-4">
+          <Link to={`/${user?.role}`} className="text-sm text-gray-600 hover:text-gray-900">
             <h1 className="text-xl font-extrabold tracking-tight text-white">Profile</h1>
           </Link>
         </div>
@@ -222,7 +221,7 @@ export default function ProfilePage() {
                 <p className="text-sm font-semibold">{UserData?.createdAt ? new Date(UserData.createdAt).toLocaleDateString() : "N/A"}</p>
               </div>
               <div className="bg-white/20 rounded-lg p-3 text-white">
-                <p className="text-xs">Status</p>
+                <p className="text-xs">Availability</p>
                 <p className="text-sm font-semibold">{UserData?.isAvailable ? "Available" : "Unavailable"}</p>
               </div>
             </div>
@@ -244,7 +243,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-gray-200">Status</p>
-                  <p className="font-medium">{UserData?.isAvailable ? "Available" : "Unavailable"}</p>
+                  <p className="font-medium">{UserData?.status ? "Active" : "Pending"}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-gray-200">Joined</p>
@@ -261,10 +260,7 @@ export default function ProfilePage() {
                   <p className="text-xs text-gray-400">Verified</p>
                   <p className="font-medium">{UserData?.isPhoneVerified ? "Yes" : "No"}</p>
                 </div>
-                <div className="space-y-1">
-                  <p className="text-xs text-gray-400">Car Type</p>
-                  <p className="font-medium">{UserData?.car || "N/A"}</p>
-                </div>
+               
                 <div className="space-y-1">
                   <p className="text-xs text-gray-400">Free Assistance</p>
                   <p className="font-medium">{UserData?.currentPlan === "premium" ? "Unlimited" : `${UserData?.firstAssistance || 0} / ${assistanceLimit}`}</p>
@@ -272,9 +268,14 @@ export default function ProfilePage() {
               </div>
             )}
 
-            <div className="mt-6">
+            <div className=" mt-6 flex  w-full justify-between items-center">
+              <Link
+              to={"/payment"}                className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-700"
+              >
+                {UserData?.role.includes("Mechanic") ? "Payment" : "Subscription"}
+              </Link>
               <ChangePinModal />
-            </div>
+              </div>
           </div>
 
           {/* Location Card */}
@@ -289,7 +290,7 @@ export default function ProfilePage() {
                   lat={location.latitude}
                   lon={location.longitude}
                 />
-                
+
               </div>
             </div>
 
@@ -329,11 +330,16 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <label className="text-sm text-white block mb-2">Phone number</label>
-                  <input name="phone" value={formData.phone} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
+                  <input name="phone" value={formData.phone} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none  focus:ring-yellow-300" />
                 </div>
                 <div className="md:col-span-2">
                   <label className="text-sm text-white block mb-2">Address</label>
-                  <input name="address" value={formData.address} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
+                  <div className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                    <LocationName
+                      lat={location.latitude}
+                      lon={location.longitude}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -378,49 +384,6 @@ export default function ProfilePage() {
               </div>
             )}
 
-            {/* Bank Card */}
-        
-              {/* <div className="bg-white rounded-2xl shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">Bank & Payment</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm text-gray-600 block mb-2">Account number</label>
-                    <input name="accountNumber" value={formData.accountNumber} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2" />
-                  </div>
-
-                  <div>
-                    <label className="text-sm text-gray-600 block mb-2">Bank</label>
-                    <select
-                      value={selectedBankCode}
-                      onChange={(e) => {
-                        const code = e.target.value;
-                        setSelectedBankCode(code);
-                        const bank = banks.find((b) => b.code === code);
-                        if (bank) {
-                          setFormData((prev) => ({ ...prev, bankName: bank.name, bankCode: bank.code }));
-                        } else {
-                          setFormData((prev) => ({ ...prev, bankName: "", bankCode: "" }));
-                        }
-                      }}
-                      className="w-full border text-black border-gray-200 rounded px-3 py-2"
-                    >
-                      <option value="">Select a bank</option>
-                      {banks.map((bank) => (
-                        <option key={bank.id} value={bank.code}>{bank.name}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="text-sm text-gray-600 block mb-2">Account name</label>
-                    <input name="accountName" value={formData.accountName} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2" />
-                    {loading && <p className="text-xs text-gray-500 mt-2">Resolving account...</p>}
-                  </div>
-                </div>
-              </div> */}
-            
-            {/* <PaymentSection /> */}
-
             {/* Actions */}
             <div className="flex items-center gap-4">
               <button
@@ -460,7 +423,7 @@ export default function ProfilePage() {
         </div>
       </div>
       <div className="mt-20 visible md:hidden">
-          <ResponsiveHeader />
+        <ResponsiveHeader />
       </div>
     </div>
   );

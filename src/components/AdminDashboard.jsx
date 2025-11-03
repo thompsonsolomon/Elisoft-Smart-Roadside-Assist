@@ -7,6 +7,7 @@ import ServiceRequestsDashboard from "./Admin/Container/Services"
 import SystemDashboard from "./Admin/Container/Reports"
 import Settings from "./Admin/Settings"
 import { Button, MenuButton } from "@headlessui/react"
+import AdminPlans from "./Admin/Container/MembershipPlan"
 
 export default function AdminDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -50,6 +51,7 @@ export default function AdminDashboard({ user, onLogout }) {
     { id: "users", label: "👥 Users" },
     { id: "mechanics", label: "🔧 Mechanics" },
     { id: "services", label: "🛠️ Services" },
+    { id: "plans", label: "💳 Plans" },
     { id: "bookings", label: "📅 Bookings" },
     { id: "settings", label: "⚙️ Settings" },
 
@@ -79,7 +81,10 @@ export default function AdminDashboard({ user, onLogout }) {
         return (
           <SystemDashboard />
         )
-
+      case "plans":
+        return (
+          <AdminPlans />
+        )
 
       case "bookings":
         return (
@@ -173,8 +178,8 @@ export default function AdminDashboard({ user, onLogout }) {
                 setIsOpen(false); // auto close on mobile
               }}
               className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition ${activeTab === tab.id
-                  ? "bg-yellow-400 text-black"
-                  : "hover:bg-gray-700 text-gray-300"
+                ? "bg-yellow-400 text-black"
+                : "hover:bg-gray-700 text-gray-300"
                 }`}
             >
               {tab.label}

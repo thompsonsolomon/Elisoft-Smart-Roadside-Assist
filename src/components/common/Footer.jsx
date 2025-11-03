@@ -102,7 +102,8 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-yellow-500" />
-                <span className="text-muted-foreground">1-800-elisoftassist</span>
+                <a href="tel:+2348055006766"></a>
+                <span className="text-muted-foreground">+234-805-5006-766</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-yellow-500" />
@@ -111,8 +112,8 @@ export default function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-yellow-500 mt-0.5" />
                 <div className="text-muted-foreground">
-                  <div>123 Main Street</div>
-                  <div>Los Angeles, CA 90210</div>
+                  <div>29, Isaac John Street Off</div>
+                  <div>Oyebajo, St. Fadeyi bus Stop, Lagos Nigeria</div>
                 </div>
               </div>
             </div>

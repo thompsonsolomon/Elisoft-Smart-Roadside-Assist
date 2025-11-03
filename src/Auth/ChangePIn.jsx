@@ -54,7 +54,7 @@ export default function ChangePinModal() {
             <div className="w-full mt-3" >
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="px-4 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700"
+                    className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-700"
                 >
                     Change PIN
                 </button>
@@ -64,7 +64,7 @@ export default function ChangePinModal() {
             {isOpen && (
                 <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
                     <div className="bg-white rounded-2xl shadow-lg w-96 p-6 relative">
-                        <h2 className="text-xl font-bold mb-4 text-center">Change PIN</h2>
+                        <h2 className="text-xl font-bold mb-4 text-yellow-500 text-center">Change PIN</h2>
 
                         {error && (
                             <p className="text-red-500 text-sm mb-2 text-center">{error}</p>

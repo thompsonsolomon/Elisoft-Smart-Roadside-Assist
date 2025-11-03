@@ -187,3 +187,8 @@ export const PerformSystemCleanup = () => apiRequest("/api/admin/system/cleanup"
 export const GetSystemLogs = () => apiRequest("/api/admin/system/logs");
 export const SendNotification = (data) =>  apiRequest("/api/admin/notifications/send", "POST", data);
 export const ToggleMaintenanceMode = (data) =>  apiRequest("/api/admin/system/maintenance", "POST", { data });
+
+
+export const UpdatePlan = (planId, data) =>  apiRequest(`/api/memberships/plans/${planId}`, "PUT", data);  //Payment plan Start
+export const CreatePlan = (data) =>  apiRequest("/api/memberships/plans", "POST", data);
+export const DeletePlan = (planId) => apiRequest(`/api/memberships/plans/${planId}`, "DELETE");
