@@ -7,19 +7,19 @@ export default function ContactPage() {
     {
       icon: Phone,
       title: "Call Us",
-      details: ["1-800-DRROADS", "(1-800-377-6237)"],
+      details: ["02013303398", "08055006766", "09166664149"],
       description: "24/7 Emergency Hotline"
     },
     {
       icon: Mail,
       title: "Email Us",
-      details: ["help@drroads.com", "support@drroads.com"],
+      details: ["help@elisoftassist.com", "support@elisoftassist.com"],
       description: "We'll respond within 2 hours"
     },
     {
       icon: MapPin,
       title: "Find Us",
-      details: ["123 Main Street", "Los Angeles, CA 90210"],
+      details: ["29 Issac John St. Off Oyebajo, Fadeyi Stop Lagos", "Elisoft Plaza 13 power line Road, Ijoka , Akure Ondo State "],
       description: "Headquarters & Training Center"
     }
   ];

@@ -202,103 +202,103 @@ export const customers = [
 ]
 
 
-  export const appointments = [
+export const appointments = [
+  {
+    id: 1,
+    mechanic:
     {
-      id: 1,
-      mechanic:
-      {
-        "location": {
-          "type": "Point",
-          "coordinates": [
-            3.5205641,
-            6.4595481
-          ]
-        },
-        "_id": "68c833b513214eff92ac81ea",
-        "fullName": "Thompson Solomon Ayomideji",
-        "phone": "+2349124919117",
-        "role": "Mechanic",
-        "status": "Active",
-        "isAvailable": true,
-        "profileImage": null,
-        "isPhoneVerified": false,
-        "rating": 0,
-        "totalRatings": 0,
-        "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
-        "createdAt": "2025-09-15T15:41:41.862Z",
-        "updatedAt": "2025-09-26T01:26:20.144Z",
-        "__v": 0,
-        "id": "68c833b513214eff92ac81ea"
-      }
-      ,
-      type: "Oil Change",
-      date: "2024-01-15",
-      status: "Pending",
-      price: "$45",
-    },
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          3.5205641,
+          6.4595481
+        ]
+      },
+      "_id": "68c833b513214eff92ac81ea",
+      "fullName": "Thompson Solomon Ayomideji",
+      "phone": "+2349124919117",
+      "role": "Mechanic",
+      "status": "Active",
+      "isAvailable": true,
+      "profileImage": null,
+      "isPhoneVerified": false,
+      "rating": 0,
+      "totalRatings": 0,
+      "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
+      "createdAt": "2025-09-15T15:41:41.862Z",
+      "updatedAt": "2025-09-26T01:26:20.144Z",
+      "__v": 0,
+      "id": "68c833b513214eff92ac81ea"
+    }
+    ,
+    type: "Oil Change",
+    date: "2024-01-15",
+    status: "Pending",
+    price: "$45",
+  },
+  {
+    id: 2,
+    mechanic:
     {
-      id: 2,
-   mechanic:
-      {
-        "location": {
-          "type": "Point",
-          "coordinates": [
-            3.5205641,
-            6.4595481
-          ]
-        },
-        "_id": "68c833b513214eff92ac81ea",
-        "fullName": "Thompson solomon",
-        "phone": "+2349124919117",
-        "role": "Mechanic",
-        "status": "Active",
-        "isAvailable": true,
-        "profileImage": null,
-        "isPhoneVerified": false,
-        "rating": 0,
-        "totalRatings": 0,
-        "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
-        "createdAt": "2025-09-15T15:41:41.862Z",
-        "updatedAt": "2025-09-26T01:26:20.144Z",
-        "__v": 0,
-        "id": "68c833b513214eff92ac81ea"
-      },      type: "Brake Repair",
-      date: "2024-01-10",
-      status: "Completed",
-      price: "$180",
-    },
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          3.5205641,
+          6.4595481
+        ]
+      },
+      "_id": "68c833b513214eff92ac81ea",
+      "fullName": "Thompson solomon",
+      "phone": "+2349124919117",
+      "role": "Mechanic",
+      "status": "Active",
+      "isAvailable": true,
+      "profileImage": null,
+      "isPhoneVerified": false,
+      "rating": 0,
+      "totalRatings": 0,
+      "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
+      "createdAt": "2025-09-15T15:41:41.862Z",
+      "updatedAt": "2025-09-26T01:26:20.144Z",
+      "__v": 0,
+      "id": "68c833b513214eff92ac81ea"
+    }, type: "Brake Repair",
+    date: "2024-01-10",
+    status: "Completed",
+    price: "$180",
+  },
+  {
+    id: 3,
+    mechanic:
     {
-      id: 3,
-   mechanic:
-      {
-        "location": {
-          "type": "Point",
-          "coordinates": [
-            3.5205641,
-            6.4595481
-          ]
-        },
-        "_id": "68c833b513214eff92ac81ea",
-        "fullName": "Thompson Ayomideji",
-        "phone": "+2349124919117",
-        "role": "Mechanic",
-        "status": "Active",
-        "isAvailable": true,
-        "profileImage": null,
-        "isPhoneVerified": false,
-        "rating": 0,
-        "totalRatings": 0,
-        "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
-        "createdAt": "2025-09-15T15:41:41.862Z",
-        "updatedAt": "2025-09-26T01:26:20.144Z",
-        "__v": 0,
-        "id": "68c833b513214eff92ac81ea"
-      } ,     type: "Engine Check",
-      date: "2024-01-08",
-      status: "Completed",
-      price: "$120",
-    },
-  ];
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          3.5205641,
+          6.4595481
+        ]
+      },
+      "_id": "68c833b513214eff92ac81ea",
+      "fullName": "Thompson Ayomideji",
+      "phone": "+2349124919117",
+      "role": "Mechanic",
+      "status": "Active",
+      "isAvailable": true,
+      "profileImage": null,
+      "isPhoneVerified": false,
+      "rating": 0,
+      "totalRatings": 0,
+      "lastLocationUpdate": "2025-09-26T01:26:20.143Z",
+      "createdAt": "2025-09-15T15:41:41.862Z",
+      "updatedAt": "2025-09-26T01:26:20.144Z",
+      "__v": 0,
+      "id": "68c833b513214eff92ac81ea"
+    }, type: "Engine Check",
+    date: "2024-01-08",
+    status: "Completed",
+    price: "$120",
+  },
+];
 
 
 export const reviews = [
@@ -449,3 +449,15 @@ export const sortMechanicsByRating = (mechanics) => {
 }
 
 
+export const DummyMapData = {
+  location: {
+    type: "Point",
+    coordinates: [3.3792, 6.5244], // [lng, lat]
+  },
+  serviceType: "Battery Jump Start",
+  address: "Victoria Island, Lagos",
+  customerId: {
+    fullName: "Demo User",
+    phone: "+2348012345678",
+  },
+};
