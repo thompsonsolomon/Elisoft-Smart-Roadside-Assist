@@ -4,43 +4,65 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function JobRequests() {
-    const [MechanicRequest, setMechanicRequest] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [MyRequestsList, setMyRequestsList] = useState([])
+    const [MechanicRequest, setMechanicRequest] = useState([]);
+    const [MyRequestsList, setMyRequestsList] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    // Fetch all available mechanic requests
     useEffect(() => {
-        setLoading(true)
-        const HandleFetchREquest = async () => {
-            const res = await MechanicGetRequests()
-            setMechanicRequest(res?.data?.availableRequests)
-            setLoading(false)
-        }
+        let isMounted = true;
+
+        const fetchMechanicRequests = async () => {
+            setLoading(true);
+            try {
+                const res = await MechanicGetRequests();
+                if (isMounted) setMechanicRequest(res?.data?.availableRequests || []);
+            } catch (err) {
+                console.error("❌ Failed to fetch mechanic requests:", err);
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        fetchMechanicRequests(); // ✅ Run immediately on mount
 
         return () => {
-            HandleFetchREquest()
-        }
-    }, [])
+            isMounted = false;
+        };
+    }, []);
 
-      useEffect(() => {
-        setLoading(true)
-        const HandleFetchREquest = async () => {
-            const res = await MyPendingRequests()
-            setMyRequestsList(res?.data?.availableRequests)
-            setLoading(false)
-        }
+    // Fetch all pending requests for the mechanic
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchPendingRequests = async () => {
+            setLoading(true);
+            try {
+                const res = await MyPendingRequests();
+                if (isMounted) setMyRequestsList(res?.data?.availableRequests || []);
+            } catch (err) {
+                console.error("❌ Failed to fetch pending requests:", err);
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        fetchPendingRequests(); // ✅ Run immediately on mount
 
         return () => {
-            HandleFetchREquest()
-        }
-    }, [])
+            isMounted = false;
+        };
+    }, []);
 
+    // Accept job handler
     const handleAcceptJob = async (jobId) => {
-
         try {
-            const token = localStorage.getItem("token"); // or wherever you store it
+            setLoading(true);
+            const token = localStorage.getItem("token");
 
             const response = await axios.post(
                 `https://elisoft-backend.onrender.com/api/service-requests/${jobId}/accept`,
-                {}, // send empty body or required fields
+                {},
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -49,19 +71,21 @@ function JobRequests() {
                 }
             );
 
-         toast.success("Job accepted successfully! Customer has been notified.");
+            toast.success("✅ Job accepted successfully! Customer has been notified.");
             return response.data;
         } catch (error) {
             if (error.response) {
                 console.error("❌ Server responded with error:", error.response.data);
-                alert(error.response.data?.message || "Failed to accept job.");
+                toast.error(error.response.data?.message || "Failed to accept job.");
             } else if (error.request) {
                 console.error("📡 No response from server:", error.request);
-                alert("No response from server. Please check your connection.");
+                toast.error("No response from server. Please check your connection.");
             } else {
-                console.error("⚙️ Request error:", error.message);
-                alert("Error setting up request.");
+                console.error("⚙️ Request setup error:", error.message);
+                toast.error("Error setting up request.");
             }
+        } finally {
+            setLoading(false);
         }
     };
 
