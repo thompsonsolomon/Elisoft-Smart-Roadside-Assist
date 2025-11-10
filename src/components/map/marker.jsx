@@ -36,7 +36,6 @@ export default function UberLikeMap() {
     }
   }, [location.state]);
 
-  console.log("Active job data:", job);
 
   // ✅ Safety checks (avoid undefined)
   const jobCoords = job?.location?.coordinates || [3.3792, 6.5244]; // Default: Lagos

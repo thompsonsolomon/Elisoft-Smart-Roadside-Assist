@@ -7,36 +7,45 @@ function AcceptedJob() {
     const [myAceptedJobs, setAcceptedJobs] = useState([])
     const navigate = useNavigate()
     useEffect(() => {
-        setLoading(true)
-        const HandleFetchREquest = async () => {
-            const res = await MyAcceptedRequests()
-            setAcceptedJobs(res?.data?.acceptedRequests)
-            setLoading(false)
-        }
+        let isMounted = true;
+
+        const fetchJobs = async () => {
+            setLoading(true);
+            try {
+                const res = await MyAcceptedRequests();
+                if (isMounted) setAcceptedJobs(res?.data?.acceptedRequests || []);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        fetchJobs();
 
         return () => {
-            HandleFetchREquest()
-        }
-    }, [])
+            isMounted = false;
+        };
+    }, []);
 
 
-    const HandleAcceptJobRequest = (jobId) => {
+    const HandleAcceptJobRequest = async (jobId) => {
         setLoading(true)
-        const res = UpdateServiceRequestStatus(jobId, { status: "Completed" })
+        const res = await UpdateServiceRequestStatus(jobId, { status: "Completed" })
         setLoading(false)
     }
 
-    const OpenMap = (job) =>{
+    const OpenMap = (job) => {
         console.log(job)
         navigate("/map", { state: { job } });
     }
     return (
         <div className="grid md:grid-cols-2 gap-12 items-center">
+            {
+                loading ? <p className="text-white">Loading Accepted Jobs...</p> : null
+            }
             {myAceptedJobs?.map((job) => (
                 <div key={job.id} className="card">
-                    {
-                        loading ? <p>Loading Accepted Jobs...</p> : null
-                    }
                     <div className="flex-between" style={{ marginBottom: "15px" }}>
                         <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job.customerId.fullName}</h3>
                         <span
