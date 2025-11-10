@@ -5,7 +5,18 @@ import App from "./App.jsx"
 import "./index.css"
 import { ToastContainer } from 'react-toastify'
 import { MapProvider } from "./contexts/MapContext.jsx"
+import { registerSW } from "virtual:pwa-register";
 
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm("New version available. Reload?")) {
+      updateSW(true);
+    }
+  },
+  onOfflineReady() {
+    console.log("App ready to work offline.");
+  },
+});
 // Error boundary for production
 class ErrorBoundary extends React.Component {
   constructor(props) {
