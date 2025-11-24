@@ -70,7 +70,7 @@ const pricing = [
 ];
 
 // Your business WhatsApp number
-const WHATSAPP_NUMBER = "2348141342103"; // <-- Replace with your real number
+const WHATSAPP_NUMBER = "2348033269613"; // <-- Replace with your real number
 
 // 1️⃣ BOOK INSTALLATION
 const handleBookInstallation = () => {
