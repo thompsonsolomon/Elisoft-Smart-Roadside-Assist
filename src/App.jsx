@@ -5,6 +5,7 @@ import LoadingSpinner from "./components/common/LoadingSpinner"
 import ProtectedRoute from "./components/common/ProtectedRoute"
 import Payment from "./components/CashFlow/Payment"
 import Subscription from "./components/CashFlow/Subscription"
+import { DashCam } from "./components/Sections/DashCam"
 // import ProfilePage from "./components/common/Profile"
 
 // Lazy load components for better performance
@@ -20,7 +21,7 @@ const AdminDashboard = lazy(() => import("./components/AdminDashboard"))
 const MapPage = lazy(() => import("./pages/MapPage"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
-function App() {  
+function App() {
   return (
     <AuthProvider>
       <div className="min-h-screen bg-black text-white">
@@ -31,6 +32,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-pin" element={<ForgotPin />} />
             <Route path="/reset-pin" element={<ResetPin />} />
+            <Route path="/elisoft" element={<DashCam />} />
 
 
             <Route
@@ -55,7 +57,7 @@ function App() {
               path="/admin"
               element={
                 <ProtectedRoute allowedRoles={["Admin"]}>
-                <AdminDashboard />
+                  <AdminDashboard />
                 </ProtectedRoute>
               }
             />
@@ -78,7 +80,7 @@ function App() {
               }
             />
 
-              <Route
+            <Route
               path="/payment"
               element={
                 <ProtectedRoute allowedRoles={["Customer", "Mechanic"]}>
@@ -87,7 +89,7 @@ function App() {
               }
             />
 
-            
+
 
             <Route path="*" element={<NotFound />} />
           </Routes>

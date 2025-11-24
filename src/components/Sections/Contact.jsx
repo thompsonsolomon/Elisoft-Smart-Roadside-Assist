@@ -11,10 +11,10 @@ export default function ContactPage() {
       description: "24/7 Emergency Hotline"
     },
     {
-      icon: Mail,
+    icon: Mail,
       title: "Email Us",
       details: ["help@elisoftassist.com", "support@elisoftassist.com"],
-      description: "We'll respond within 2 hours"
+      description: "We'll respond within 30 minutes "
     },
     {
       icon: MapPin,

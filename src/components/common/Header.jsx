@@ -17,7 +17,7 @@ export default function Navbar() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-6 text-white font-medium">
           <a href="#home" className="hover:text-yellow-500 transition">Home</a>
-          <a href="#howitworks" className="hover:text-yellow-500 transition">How It Works</a>
+          <a href="#services" className="hover:text-yellow-500 transition">How It Works</a>
           <a href="#whyus" className="hover:text-yellow-500 transition">Why Us</a>
           <a href="#about" className="hover:text-yellow-500 transition">About Us</a>
           <a href="#contact" className="hover:text-yellow-500 transition">Contact Us</a>
@@ -47,7 +47,7 @@ export default function Navbar() {
         <div className="md:hidden bg-black shadow-md">
           <ul className="flex flex-col gap-4 px-6 py-4 text-white font-medium">
             <li><a href="#home" onClick={toggleMenu}>Home</a></li>
-            <li><a href="#howitworks" onClick={toggleMenu}>How It Works</a></li>
+            <li><a href="#services" onClick={toggleMenu}>How It Works</a></li>
                         <li><a href="#services" onClick={toggleMenu}>Services</a></li>
             <li><a href="#whyus" onClick={toggleMenu}>Why Us</a></li>
             <li><a href="#about" onClick={toggleMenu}>About</a></li>

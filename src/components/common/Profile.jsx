@@ -1,19 +1,223 @@
+// import axios from "axios";
+// import { useEffect, useState } from "react";
+// import { useAuth } from "../../contexts/AuthContext";
+// import { Link } from "react-router-dom";
+// import { fetchUsers, updateUserLocation, updateUserProfile } from "../../utils/api";
+// import { toast } from "react-toastify";
+// import ChangePinModal from "../../Auth/ChangePIn";
+// import ResponsiveHeader from "./ResponsiveHeader";
+// import { LocationName } from "../../helpers/GetLocationName";
+
+// const mechanicServices = [
+//   "Roadside Assistant",
+//   "Mechanic Repair",
+//   "Towing Service",
+//   "Electric Rewire / Battery Jumpstart",
+//   "Flat Tyre",
+//   "Car Service Center",
+//   "Body Repair",
+//   "Break Repair",
+//   "Car AC Repair",
+//   "Engine Diagnostic",
+//   "Wheel Alignment",
+//   "Oil Change",
+//   "Body Painting",
+//   "Key Lockout"
+// ];
+
+// export default function ProfilePage() {
+//   const { user, logout } = useAuth();
+//   const [UserData, setUserData] = useState(user || null);
+//   const [formData, setFormData] = useState({
+//     name: user?.fullName || "",
+//     phone: user?.phone || "",
+//     address: user?.address || "",
+//     services: Array.isArray(user?.services) ? user.services : [],
+//     yearsOfExperience: user?.yearsOfExperience || "",
+//     licenseNumber: user?.licenseNumber || "",
+//     accountNumber: user?.accountNumber || "",
+//     bankName: user?.bankName || "",
+//     bankCode: user?.bankCode || "",
+//     accountName: user?.accountName || "",
+//     role: user?.role || "Mechanic",
+//   });
+
+//   const [loading, setLoading] = useState(false);
+//   const [loadAction, setLoadAction] = useState(false);
+//   const [location, setLocation] = useState({ latitude: null, longitude: null });
+//   const userType = user?.role?.toLowerCase();
+
+//   console.log(user)
+//   // ✅ Fetch fresh user details
+//   useEffect(() => {
+//     let isMounted = true;
+//     const fetchUserData = async () => {
+//       setLoading(true);
+//       try {
+//         const data = await fetchUsers();
+//         if (isMounted && data?.data?.user?.user) {
+//           setUserData(data.data.user.user);
+//         }
+//       } catch (err) {
+//         console.error("Error fetching user:", err);
+//       } finally {
+//         if (isMounted) setLoading(false);
+//       }
+//     };
+//     fetchUserData();
+//     return () => {
+//       isMounted = false;
+//     };
+//   }, []);
+
+//   // ✅ Get geolocation (works in production too)
+//   useEffect(() => {
+//     let isMounted = true;
+//     if ("geolocation" in navigator) {
+//       navigator.geolocation.getCurrentPosition(
+//         ({ coords }) => {
+//           if (isMounted) {
+//             setLocation({
+//               latitude: coords.latitude,
+//               longitude: coords.longitude,
+//             });
+//           }
+//         },
+//         (error) => {
+//           console.error("Error getting location:", error);
+//           toast.warn("Unable to fetch location. Please allow location access.");
+//         },
+//         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+//       );
+//     } else {
+//       toast.error("Geolocation is not supported on this device.");
+//     }
+//     return () => {
+//       isMounted = false;
+//     };
+//   }, []);
+
+//   // ✅ Handle form input change
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   // ✅ Handle checkbox service change
+//   const handleServiceChange = (e) => {
+//     const { value, checked } = e.target;
+//     setFormData((prev) => {
+//       const services = new Set(prev.services || []);
+//       if (checked) services.add(value);
+//       else services.delete(value);
+//       return { ...prev, services: Array.from(services) };
+//     });
+//   };
+
+//   // ✅ Update user location
+//   const handleChangeLocation = async (e) => {
+//     e?.preventDefault?.();
+//     if (!location.latitude || !location.longitude) {
+//       toast.error("Location not available. Please allow GPS access.");
+//       return;
+//     }
+
+//     setLoadAction(true);
+//     try {
+//       const Credentials = {
+//         location: {
+//           type: "Point",
+//           coordinates: [Number(location.longitude), Number(location.latitude)],
+//         },
+//       };
+//       const res = await updateUserLocation(Credentials);
+//       toast.success(res.message || "📍 Location updated successfully!");
+//     } catch (err) {
+//       console.error("Error updating location:", err);
+//       toast.error("❌ Failed to update location");
+//     } finally {
+//       setLoadAction(false);
+//     }
+//   };
+
+//   // ✅ Update profile
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoadAction(true);
+//     try {
+//       const Credentials = {
+//         fullName: formData.name,
+//         phone: formData.phone,
+//         // services: formData.services,
+//         yearsOfExperience: formData.yearsOfExperience,
+//         licenseNumber: formData.licenseNumber,
+//         role: formData.role,
+//       };
+//       console.log("Cred===>",Credentials)
+//       const res = await updateUserProfile(Credentials);
+//       localStorage.setItem("Elisoft Assist_user", JSON.stringify(res.data.user));
+//       toast.success(res.message || "✅ Profile updated successfully!");
+//     } catch (err) {
+//       console.error("Error updating profile:", err);
+//       toast.error("❌ Failed to update profile");
+//     } finally {
+//       setLoadAction(false);
+//     }
+//   };
+
+//   // ✅ Reset form
+//   const handleReset = () => {
+//     setFormData({
+//       name: UserData?.fullName || "",
+//       phone: UserData?.phone || "",
+//       address: UserData?.address || "",
+//       services: Array.isArray(UserData?.services) ? UserData.services : [],
+//       yearsOfExperience: UserData?.yearsOfExperience || "",
+//       licenseNumber: UserData?.licenseNumber || "",
+//       accountNumber: UserData?.accountNumber || "",
+//       bankName: UserData?.bankName || "",
+//       bankCode: UserData?.bankCode || "",
+//       accountName: UserData?.accountName || "",
+//       role: UserData?.role || "Mechanic",
+//     });
+//     toast.info("🔄 Form reset to current profile");
+//   };
+
+//   const handleServiceUpdate = async () =>{
+//     const res = await UpdateServices()
+//   }
+
+//   const planLimits = { basic: 1, standard: 3, premium: "Unlimited" };
+//   const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
+
+//   // ✅ Return layout
+
+
+
+
+
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
-import { fetchUsers, updateUserLocation, updateUserProfile } from "../../utils/api";
+import {
+  fetchUsers,
+  updateUserLocation,
+  updateUserProfile,
+  UpdateServices,
+} from "../../utils/api";
 import { toast } from "react-toastify";
 import ChangePinModal from "../../Auth/ChangePIn";
 import ResponsiveHeader from "./ResponsiveHeader";
 import { LocationName } from "../../helpers/GetLocationName";
 
 const mechanicServices = [
-  "Roadside Assistant",
+  "Fuel Delivery",
   "Mechanic Repair",
   "Towing Service",
-  "Electric Rewire / Battery Jumpstart",
-  "Flat Tyre",
+  // "Electric Rewire / Battery Jumpstart",
+  "Battery Jump Start",
+  "Tyre Assist",
   "Car Service Center",
   "Body Repair",
   "Break Repair",
@@ -22,165 +226,30 @@ const mechanicServices = [
   "Wheel Alignment",
   "Oil Change",
   "Body Painting",
-  "Key Lockout"
+  "Key Lockout",
 ];
 
 export default function ProfilePage() {
-  // const { user, logout } = useAuth();
-  // const [loadAction, setLoadAction] = useState(false);
-  // const [UserData, setUserData] = useState(user || null);
-  // const [loading, setLoading] = useState(false);
-  // const [location, setLocation] = useState({
-  //   latitude: null,
-  //   longitude: null,
-  // });
-
-  // const [formData, setFormData] = useState({
-  //   name: user?.fullName || "",
-  //   phone: user?.phone || "",
-  //   services: Array.isArray(user?.services) ? user.services : [],
-  //   yearsOfExperience: user?.yearsOfExperience || "",
-  //   licenseNumber: user?.licenseNumber || "",
-  //   accountNumber:
-  //     user?.accountNumber ||
-  //     (user?.phone
-  //       ? user.phone.startsWith("0")
-  //         ? user.phone.slice(1)
-  //         : user.phone.startsWith("+234")
-  //           ? user.phone.replace("+234", "")
-  //           : user.phone
-  //       : ""),
-  //   bankName: user?.bankName || "",
-  //   bankCode: user?.bankCode || "",
-  //   accountName: user?.accountName || user?.name || "",
-  //   role: user?.role || "Mechanic",
-  // });
-
-  // const userType = user?.role?.toLowerCase();
-
-  // // Fetch (refresh) user details
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const data = await fetchUsers();
-  //       setUserData(data?.data?.user?.user || user);
-  //     } catch (err) {
-  //       console.error("Error fetching user:", err);
-  //     }
-  //   };
-  //   fetchUserData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user]);
-
-  // // Get geolocation
-  // useEffect(() => {
-  //   if ("geolocation" in navigator) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       ({ coords }) => {
-  //         setLocation({
-  //           latitude: coords.latitude,
-  //           longitude: coords.longitude,
-  //         });
-  //       },
-  //       (error) => console.error("Error getting location:", error)
-  //     );
-  //   }
-  // }, []);
-
-
-
-  // // Handlers
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({ ...prev, [name]: value }));
-  // };
-
-  // // Services are now stored as simple strings (no price)
-  // const handleServiceChange = (e) => {
-  //   const { value, checked } = e.target;
-  //   setFormData((prev) => {
-  //     const services = new Set(prev.services || []);
-  //     if (checked) services.add(value);
-  //     else services.delete(value);
-  //     return { ...prev, services: Array.from(services) };
-  //   });
-  // };
-
-  // const handleChangeLocation = async (e) => {
-  //   e?.preventDefault?.();
-  //   setLoadAction(true);
-  //   try {
-  //     const Credentials = {
-  //       location: {
-  //         type: "Point",
-  //         coordinates: [Number(location.longitude), Number(location.latitude)],
-  //       }
-  //     };
-  //     const res = await updateUserLocation(Credentials);
-  //     toast.success(res.message || "Location updated successfully!");
-  //     setLoadAction(false);
-  //   } catch (err) {
-  //     console.error("Error updating location:", err);
-  //     toast.error("Failed to update location");
-  //     setLoadAction(false);
-  //   }
-  // };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   setLoadAction(true);
-  //   try {
-  //     const Credentials = {
-  //       fullName: formData.name,
-  //       phone: formData.phone,
-  //       address: formData.address,
-  //       services: formData.services,
-  //       yearsOfExperience: formData.yearsOfExperience,
-  //       licenseNumber: formData.licenseNumber,
-  //       accountNumber: formData.accountNumber,
-  //       bankName: formData.bankName,
-  //       bankCode: formData.bankCode,
-  //       accountName: formData.accountName,
-  //       role: formData.role,
-  //     };
-  //     const res = await updateUserProfile(Credentials);
-  //     localStorage.setItem("Elisoft Assist_user", JSON.stringify(res.data.user));
-  //     toast.success(res.message || "Profile updated successfully!");
-  //     setLoadAction(false);
-  //   } catch (err) {
-  //     console.error("Error updating profile:", err);
-  //     toast.error("Failed to update profile");
-  //     setLoadAction(false);
-  //   }
-  // };
-
-  // // Plan limits (display purposes)
-  // const planLimits = { basic: 1, standard: 3, premium: "Unlimited" };
-  // const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
-
-
   const { user, logout } = useAuth();
   const [UserData, setUserData] = useState(user || null);
   const [formData, setFormData] = useState({
     name: user?.fullName || "",
     phone: user?.phone || "",
-    address: user?.address || "",
-    services: Array.isArray(user?.services) ? user.services : [],
+    services: Array.isArray(user?.
+      specialties) ? user.
+      specialties : [],
     yearsOfExperience: user?.yearsOfExperience || "",
     licenseNumber: user?.licenseNumber || "",
-    accountNumber: user?.accountNumber || "",
-    bankName: user?.bankName || "",
-    bankCode: user?.bankCode || "",
-    accountName: user?.accountName || "",
     role: user?.role || "Mechanic",
   });
 
   const [loading, setLoading] = useState(false);
   const [loadAction, setLoadAction] = useState(false);
+  const [loadServices, setLoadServices] = useState(false);
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const userType = user?.role?.toLowerCase();
 
-  // ✅ Fetch fresh user details
+  // ✅ Fetch user data fresh from backend
   useEffect(() => {
     let isMounted = true;
     const fetchUserData = async () => {
@@ -188,7 +257,19 @@ export default function ProfilePage() {
       try {
         const data = await fetchUsers();
         if (isMounted && data?.data?.user?.user) {
-          setUserData(data.data.user.user);
+          const freshUser = data.data.user.user;
+          setUserData(freshUser);
+          setFormData((prev) => ({
+            ...prev,
+            name: freshUser.fullName || "",
+            phone: freshUser.phone || "",
+            services: Array.isArray(freshUser.specialties)
+              ? freshUser.services
+              : [],
+            yearsOfExperience: freshUser.yearsOfExperience || "",
+            licenseNumber: freshUser.licenseNumber || "",
+            role: freshUser.role || "Mechanic",
+          }));
         }
       } catch (err) {
         console.error("Error fetching user:", err);
@@ -202,18 +283,15 @@ export default function ProfilePage() {
     };
   }, []);
 
-  // ✅ Get geolocation (works in production too)
+  // ✅ Get geolocation (for location update)
   useEffect(() => {
-    let isMounted = true;
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         ({ coords }) => {
-          if (isMounted) {
-            setLocation({
-              latitude: coords.latitude,
-              longitude: coords.longitude,
-            });
-          }
+          setLocation({
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+          });
         },
         (error) => {
           console.error("Error getting location:", error);
@@ -224,18 +302,15 @@ export default function ProfilePage() {
     } else {
       toast.error("Geolocation is not supported on this device.");
     }
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
-  // ✅ Handle form input change
+  // ✅ Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Handle checkbox service change
+  // ✅ Handle service selection
   const handleServiceChange = (e) => {
     const { value, checked } = e.target;
     setFormData((prev) => {
@@ -272,7 +347,7 @@ export default function ProfilePage() {
     }
   };
 
-  // ✅ Update profile
+  // ✅ Update general profile info
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoadAction(true);
@@ -280,18 +355,15 @@ export default function ProfilePage() {
       const Credentials = {
         fullName: formData.name,
         phone: formData.phone,
-        address: formData.address,
-        services: formData.services,
         yearsOfExperience: formData.yearsOfExperience,
         licenseNumber: formData.licenseNumber,
-        accountNumber: formData.accountNumber,
-        bankName: formData.bankName,
-        bankCode: formData.bankCode,
-        accountName: formData.accountName,
         role: formData.role,
       };
       const res = await updateUserProfile(Credentials);
-      localStorage.setItem("Elisoft Assist_user", JSON.stringify(res.data.user));
+      localStorage.setItem(
+        "Elisoft Assist_user",
+        JSON.stringify(res.data.user)
+      );
       toast.success(res.message || "✅ Profile updated successfully!");
     } catch (err) {
       console.error("Error updating profile:", err);
@@ -301,12 +373,25 @@ export default function ProfilePage() {
     }
   };
 
-  // ✅ Reset form
+  // ✅ Update mechanic services separately
+  const handleServiceUpdate = async () => {
+    setLoadServices(true);
+    try {
+      const res = await UpdateServices({ services: formData.services });
+      toast.success(res.message || "✅ Services updated successfully!");
+    } catch (err) {
+      console.error("Error updating services:", err);
+      toast.error("❌ Failed to update services");
+    } finally {
+      setLoadServices(false);
+    }
+  };
+
+  // ✅ Reset form to fetched user data
   const handleReset = () => {
     setFormData({
       name: UserData?.fullName || "",
       phone: UserData?.phone || "",
-      address: UserData?.address || "",
       services: Array.isArray(UserData?.services) ? UserData.services : [],
       yearsOfExperience: UserData?.yearsOfExperience || "",
       licenseNumber: UserData?.licenseNumber || "",
@@ -319,11 +404,9 @@ export default function ProfilePage() {
     toast.info("🔄 Form reset to current profile");
   };
 
+  console.log(user)
   const planLimits = { basic: 1, standard: 3, premium: "Unlimited" };
   const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
-
-  // ✅ Return layout
-
   return (
     <div className="min-h-screen bg-black py-8 px-4 sm:px-6 lg:px-8">
       {/* Top bar */}
@@ -388,7 +471,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-gray-200">Status</p>
-                  <p className="font-medium">{UserData?.status ? "Active" : "Pending"}</p>
+                  <p className="font-medium">{UserData?.status}</p>
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-gray-200">Joined</p>
@@ -471,11 +554,11 @@ export default function ProfilePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm text-white block mb-2">Full name</label>
-                  <input name="name" value={formData.name} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
+                  <input name="name" value={formData.name} onChange={handleChange} className="w-full border border-gray-200 bg-transparent text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:bg-transparent focus:text-white" />
                 </div>
                 <div>
                   <label className="text-sm text-white block mb-2">Phone number</label>
-                  <input name="phone" value={formData.phone} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none  focus:ring-yellow-300" />
+                  <input name="phone" value={formData.phone} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300" />
                 </div>
                 <div className="md:col-span-2">
                   <label className="text-sm text-white block mb-2">Address</label>
@@ -495,13 +578,24 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-200">Services & Experience</h3>
                   <p className="text-sm text-gray-200">Select services you offer</p>
+                  <button
+                    onClick={handleServiceUpdate}
+                    type="button"
+                    className="px-3 py-1 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 text-sm"
+                    disabled={loadServices}
+                  >
+                    {loadServices ? "Saving..." : "Save Services"}
+                  </button>
                 </div>
 
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-56 overflow-y-auto">
                   {mechanicServices.map((svc) => {
                     const checked = (formData.services || []).includes(svc);
                     return (
-                      <label key={svc} className="flex items-center gap-3 p-3 border rounded-lg hover:shadow">
+                      <label
+                        key={svc}
+                        className="flex items-center gap-3 p-3 border rounded-lg hover:shadow"
+                      >
                         <input
                           type="checkbox"
                           value={svc}
@@ -518,17 +612,16 @@ export default function ProfilePage() {
                 <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="text-sm text-gray-100 block mb-2">Years of experience</label>
-                    <input name="yearsOfExperience" type="number" value={formData.yearsOfExperience} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
+                    <input placeholder="Years of Experience" name="yearsOfExperience" type="number" value={formData.yearsOfExperience} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
                   </div>
 
                   <div>
                     <label className="text-sm text-gray-100 block mb-2">License number</label>
-                    <input name="licenseNumber" value={formData.licenseNumber} onChange={handleChange} className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
+                    <input placeholder="License Number" name="licenseNumber" value={formData.licenseNumber} onChange={handleChange} className="w-full border border-gray-200 bg-transparent text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300" />
                   </div>
                 </div>
               </div>
             )}
-
             {/* Actions */}
             <div className="flex items-center gap-4">
               <button
@@ -559,3 +652,13 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+

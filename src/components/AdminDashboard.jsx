@@ -8,6 +8,7 @@ import SystemDashboard from "./Admin/Container/Reports"
 import Settings from "./Admin/Settings"
 import { Button, MenuButton } from "@headlessui/react"
 import AdminPlans from "./Admin/Container/MembershipPlan"
+import AdminServicePrices from "./Admin/Container/ServicePricing"
 
 export default function AdminDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -52,6 +53,7 @@ export default function AdminDashboard({ user, onLogout }) {
     { id: "mechanics", label: "🔧 Mechanics" },
     { id: "services", label: "🛠️ Services" },
     { id: "plans", label: "💳 Plans" },
+    {id: "Pricing", label: "💲 Pricing" },
     { id: "bookings", label: "📅 Bookings" },
     { id: "settings", label: "⚙️ Settings" },
 
@@ -85,6 +87,11 @@ export default function AdminDashboard({ user, onLogout }) {
         return (
           <AdminPlans />
         )
+         case "Pricing":
+        return (
+          <AdminServicePrices />
+        )
+        
 
       case "bookings":
         return (

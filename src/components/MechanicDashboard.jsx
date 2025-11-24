@@ -28,7 +28,7 @@ export default function MechanicDashboard({ user, onLogout }) {
 
       // Call API with the new value
       const res = await MechanicAvailability({ isAvailable: newAvailability });
-
+      console.log("Availability updated:", res);
       // Save in state + localStorage
       setIsAvailable(newAvailability);
       localStorage.setItem(

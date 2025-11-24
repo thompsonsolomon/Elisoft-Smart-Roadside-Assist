@@ -143,6 +143,7 @@ export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
 export const MyPendingRequests = ( ) => apiRequest(`/api/service-requests/available`, "GET");
 export const MyAcceptedRequests = ( ) => apiRequest(`/api/service-requests/accepted`, "GET");
 export const UpdateServiceRequestStatus = (requestId, data) =>  apiRequest(`/api/services/request/${requestId}/status`, "PUT", data);
+export const UpdateServices = (data) => apiRequest("/api/users/mechanic/services", "PUT", data);
 
 
 //Customers
@@ -151,11 +152,20 @@ export const CreateServiceRequest = (data) => apiRequest("/api/service-requests"
 export const GetServiceRequest = () => apiRequest(`/api/service-requests/my-requests`);
 
 
-//payments
+//payments/membership
 export const GetPaymentPlans = () => apiRequest("/api/memberships/plans", "GET", null, token);
-export const InitializePayment = (planId) => apiRequest("/api/payments/initialize", "POST", { planId }, token);
+export const InitializePayment = (data) => apiRequest("/api/payments/create-intent", "POST", { data }, token);
 export const VerifyPayment = (reference) => apiRequest(`/api/payments/verify?reference=${reference}`, "GET", null, token);
 export const GetPaymentHistory = () => apiRequest("/api/payments/history", "GET", null, token);
+
+
+//Pricing
+export const createServicePrice = (data) => apiRequest("/api/service-prices/set-price", "POST", data, token);
+export const getAllServicePrices = (state) => apiRequest("/api/service-prices/all", "GET", null, token);
+export const getServicePriceForState = (state) => apiRequest(`/api/service-prices/state?state=${state}`, "GET", null, token);
+export const activateServicePrice = (id) => apiRequest(`/api/service-prices/${id}/activate`, "PATCH", null, token);
+export const deactivateServicePrice = (id, token ) => apiRequest(`/api/service-prices/${id}/deactivate`, "PATCH", null, token);
+
 
 // Admin Dashboard & Analytics
 export const GetDashboard = () => apiRequest("/api/admin/dashboard");

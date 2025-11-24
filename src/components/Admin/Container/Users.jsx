@@ -10,15 +10,20 @@ function Users() {
     const [userData, setUserData] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [singleUser, setSingleUser] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     // fetch all users
     useEffect(() => {
         const fetchAllUsers = async () => {
+            setLoading(true);
             try {
                 const data = await GetAllUsers();
                 setUserData(data?.data?.users || []);
+            setLoading(false);
             } catch (err) {
                 console.error("Error fetching users:", err);
+                setLoading(false);
+                toast.error("Failed to fetch users. Please try again.");
             }
         };
         fetchAllUsers();
@@ -126,7 +131,9 @@ function Users() {
         );
     };
 
-
+if (loading) {
+    return <div>Loading users...</div>;
+}
 
     return (
         <>

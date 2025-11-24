@@ -49,18 +49,34 @@ const Payment = () => {
   };
 
   // 🔹 Handle user membership subscription
-  const handlePayment = async (planId) => {
+  const handlePayment = async (planId, amount) => {
     try {
       toast.info("Redirecting to payment...");
-      const res = await InitializePayment(planId);
+
+      const payload = {
+        amount: Number(amount) * 100,   // convert ₦ → kobo
+        planId: planId,
+        paymentMethod: "card",
+        paymentType: "membership",
+      };
+
+      console.log("Sending payment data:", payload);
+
+      const res = await InitializePayment(payload);
+
       if (res?.data?.data?.authorization_url) {
         window.open(res.data.data.authorization_url, "_blank");
         toast.success("Payment page opened");
+      } else {
+        toast.error("Payment URL missing");
       }
-    } catch {
+
+    } catch (err) {
       toast.error("Payment initialization failed");
+      console.log(err);
     }
   };
+
 
   // 🔹 Verify manual payment
   const handleVerify = async () => {
@@ -83,7 +99,7 @@ const Payment = () => {
     if (user?.role === "Customer") fetchPlans();
     if (user?.role === "Mechanic") fetchHistory();
   }, [user]);
-
+  console.log(plans)
   return (
     <div className="min-h-screen bg-black text-white py-10 flex flex-col items-center">
       <header className="w-full max-w-6xl flex justify-between items-center px-5 mb-10">
@@ -93,18 +109,18 @@ const Payment = () => {
         <div className="flex items-center gap-2 text-gray-400">
           <p>Role:</p>
           <Link
-          to={"/profile"}
+            to={"/profile"}
             className="bg-yellow-500/10 text-yellow-400 border border-yellow-400/30 rounded-lg px-3 py-1 outline-none"
           >
             {
-              user.role === "customer" ? "Customer" : "Mechanic"
+              user.role === "Customer" ? "Customer" : "Mechanic"
             }
           </Link>
         </div>
       </header>
 
       <main className="w-full max-w-6xl space-y-10 px-5">
-        {user?.role === "customer" && (
+        {user?.role === "Customer" && (
           <>
             {/* Customer Membership Section */}
             <section className="bg-gradient-to-br from-yellow-700/10 via-black to-yellow-900/10 border border-yellow-500/10 rounded-2xl shadow-lg p-6">
@@ -136,7 +152,7 @@ const Payment = () => {
                           </p>
                         </div>
                         <button
-                          onClick={() => handlePayment(plan._id)}
+                          onClick={() => handlePayment(plan._id, plan.price)}
                           className="mt-6 w-full bg-yellow-500 text-black font-semibold py-2 rounded-lg hover:bg-yellow-400 transition"
                         >
                           Subscribe Now
@@ -213,10 +229,10 @@ const Payment = () => {
                         </p>
                         <p
                           className={`text-sm ${item.status === "success"
-                              ? "text-green-500"
-                              : item.status === "pending"
-                                ? "text-yellow-500"
-                                : "text-red-500"
+                            ? "text-green-500"
+                            : item.status === "pending"
+                              ? "text-yellow-500"
+                              : "text-red-500"
                             }`}
                         >
                           {item.status}

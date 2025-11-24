@@ -14,6 +14,14 @@ const containerStyle = {
   height: "500px",
 };
 
+// Dummy available mechanics
+const AvailableMechanics = [
+  { id: 1, name: "Mechanic - Yaba", coordinates: [3.3755, 6.5170] },
+  { id: 2, name: "Mechanic - Ikeja", coordinates: [3.3480, 6.6018] },
+  { id: 3, name: "Mechanic - Lekki", coordinates: [3.4835, 6.4410] },
+];
+
+
 export default function UberLikeMap() {
   const MAP_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
   const { isLoaded } = useLoadScript({
@@ -26,6 +34,7 @@ export default function UberLikeMap() {
 
   const [directions, setDirections] = useState(null);
   const mapRef = useRef();
+  const hasJob = !!location.state?.job;
 
   // 🧠 Ensure job state is updated dynamically when user navigates with new data
   useEffect(() => {
@@ -87,48 +96,83 @@ export default function UberLikeMap() {
           fullscreenControl: false,
         }}
       >
-        {/* Customer marker */}
-        <Marker
-          position={JobLocation}
-          label="Customer"
-          icon={{
-            path: window.google.maps.SymbolPath.CIRCLE,
-            fillColor: "#22C55E",
-            fillOpacity: 1,
-            scale: 10,
-            strokeColor: "#fff",
-            strokeWeight: 2,
-          }}
-        />
 
-        {/* Mechanic marker */}
-        <Marker
-          position={MyLocation}
-          label="Mechanic"
-          icon={{
-            path: window.google.maps.SymbolPath.CIRCLE,
-            fillColor: "#2563EB",
-            fillOpacity: 1,
-            scale: 10,
-            strokeColor: "#fff",
-            strokeWeight: 2,
-          }}
-        />
+        {
+          hasJob ? (
+            <>
+              {/* Customer marker */}
+              <Marker
+                position={JobLocation}
+                label="Customer"
+                icon={{
+                  path: window.google.maps.SymbolPath.CIRCLE,
+                  fillColor: "#22C55E",
+                  fillOpacity: 1,
+                  scale: 10,
+                  strokeColor: "#fff",
+                  strokeWeight: 2,
+                }}
+              />
 
-        {/* Directions line */}
-        {directions && (
-          <DirectionsRenderer
-            directions={directions}
-            options={{
-              suppressMarkers: true,
-              polylineOptions: {
-                strokeColor: "#1E90FF",
-                strokeOpacity: 0.7,
-                strokeWeight: 6,
-              },
-            }}
-          />
-        )}
+              {/* Mechanic marker */}
+              <Marker
+                position={MyLocation}
+                label="Mechanic"
+                icon={{
+                  path: window.google.maps.SymbolPath.CIRCLE,
+                  fillColor: "#2563EB",
+                  fillOpacity: 1,
+                  scale: 10,
+                  strokeColor: "#fff",
+                  strokeWeight: 2,
+                }}
+              />
+
+              {/* Directions line */}
+              {directions && (
+                <DirectionsRenderer
+                  directions={directions}
+                  options={{
+                    suppressMarkers: true,
+                    polylineOptions: {
+                      strokeColor: "#1E90FF",
+                      strokeOpacity: 0.7,
+                      strokeWeight: 6,
+                    },
+                  }}
+                />
+              )}
+            </>
+          )
+            :
+            (
+              <>
+                {/* 🔥 SHOW ALL AVAILABLE MECHANICS WHEN NO JOB */}
+                {AvailableMechanics.map((mec) => {
+                  const coord = {
+                    lat: mec.coordinates[1],
+                    lng: mec.coordinates[0],
+                  };
+                  return (
+                    <Marker
+                      key={mec.id}
+                      position={coord}
+                      label={mec.name}
+                      icon={{
+                        path: window.google.maps.SymbolPath.CIRCLE,
+                        fillColor: "#2563EB",
+                        fillOpacity: 1,
+                        scale: 10,
+                        strokeColor: "#fff",
+                        strokeWeight: 2,
+                      }}
+                    />
+                  );
+                })}
+              </>
+            )
+        }
+
       </GoogleMap>
 
       {/* Legend */}
