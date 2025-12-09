@@ -154,9 +154,9 @@ export const GetServiceRequest = () => apiRequest(`/api/service-requests/my-requ
 
 //payments/membership
 export const GetPaymentPlans = () => apiRequest("/api/memberships/plans", "GET", null, token);
-export const InitializePayment = (data) => apiRequest("/api/payments/create-intent", "POST", { data }, token);
-export const VerifyPayment = (reference) => apiRequest(`/api/payments/verify?reference=${reference}`, "GET", null, token);
-export const GetPaymentHistory = () => apiRequest("/api/payments/history", "GET", null, token);
+export const InitializePayment = (payload, token ) => apiRequest("/api/payments/create-intent", "POST",  payload , token);
+export const VerifyPayment = (reference, token ) => apiRequest(`/api/payments/verify/${reference}`, "GET",  token);
+export const GetUserPaymentHistory = () => apiRequest("/api/payments/my-payments?page=1&limit=10", "GET", null, token);
 
 
 //Pricing

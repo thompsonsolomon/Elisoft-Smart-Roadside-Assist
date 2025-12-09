@@ -1,4 +1,4 @@
-import { MapPin, Settings, Truck, CheckCircle, Camera } from "lucide-react";
+import { MapPin, Settings, Truck, CheckCircle, Camera, Map, LocateFixedIcon, Eye } from "lucide-react";
 import { Card, CardContent } from "../../utils/Card";
 import { motion } from "framer-motion";
 import { useKeenSlider } from "keen-slider/react";
@@ -49,6 +49,19 @@ export function ServicesPage() {
       icon: <Camera className="w-10 h-10 text-yellow-500" />,
       to: "/elisoft",
       description: "Car Dashcam Installation Services provide expert, on-spot installation for all types of dashcams.",
+    },
+    {
+      title: "Elisoft Smart Tracker",
+      icon: <LocateFixedIcon className="w-10 h-10 text-yellow-500" />,
+      to: "/elisoft",
+      description: "Real-time tracking, instant alerts, and 24/7 access through our mobile app – keep your vehicle secure wherever you are.",
+    },
+
+    {
+      title: "Car Inspection",
+      icon: <Eye className="w-10 h-10 text-yellow-500" />,
+      to: "/elisoft",
+      description: "Whether you’re buying a second-hand car or need a thorough check for your current vehicle, our 78-point inspection gives you full peace of mind.",
     },
 
     {

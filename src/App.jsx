@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/common/ProtectedRoute"
 import Payment from "./components/CashFlow/Payment"
 import Subscription from "./components/CashFlow/Subscription"
 import { DashCam } from "./components/Sections/DashCam"
+import PaymentVerification from "./components/CashFlow/ValidatePayment"
 // import ProfilePage from "./components/common/Profile"
 
 // Lazy load components for better performance
@@ -85,6 +86,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRoles={["Customer", "Mechanic"]}>
                   <Payment />
+                </ProtectedRoute>
+              }
+            />
+
+               <Route
+              path="/verify-payment"
+              element={
+                <ProtectedRoute allowedRoles={["Customer", "Mechanic"]}>
+                  <PaymentVerification />
                 </ProtectedRoute>
               }
             />

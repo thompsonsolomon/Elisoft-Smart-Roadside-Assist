@@ -5,6 +5,7 @@ import {
     AssignMechanicToRequest,
     ReassignServiceRequest,
     GetServiceRequestReports,
+    GetAvailableMechanics,
 } from "../../../utils/api";
 import { GetAllMechanics } from "../../../utils/api";
 import { toast } from "react-toastify";
@@ -30,15 +31,16 @@ const ServiceRequestsDashboard = () => {
         try {
             // 🔹 Sequential fetching to avoid 429 errors
             const all = await GetAllServiceRequests();
-            setRequests(all?.data?.requests || []);
+            setRequests(all?.data?.serviceRequests || []);
 
             const pend = await GetPendingServiceRequests();
-            setPending(pend?.data?.requests || []);
+            setPending(pend?.data?.pendingRequests || []);
 
-            const mechs = await GetAllMechanics();
+            const mechs = await GetAvailableMechanics();
             setMechanics(mechs?.data?.mechanics || []);
 
             const rep = await GetServiceRequestReports();
+            console.log(rep)
             setReports(rep?.data?.reports || []);
 
         } catch (err) {
@@ -96,7 +98,7 @@ const ServiceRequestsDashboard = () => {
                                 <div key={req._id} className="p-4 border rounded-lg shadow-sm">
                                     <p><strong>ID:</strong> {req._id}</p>
                                     <p><strong>Status:</strong> {req.status}</p>
-                                    <p><strong>Customer:</strong> {req.customer?.fullName}</p>
+                                    <p><strong>Customer:</strong> {req.customerId?.fullName}</p>
                                     <p>
                                         <strong>Mechanic:</strong>{" "}
                                         {req.mechanic ? req.mechanic.fullName : "Not assigned"}
@@ -107,7 +109,7 @@ const ServiceRequestsDashboard = () => {
                                             onChange={(e) =>
                                                 handleAssign(req._id, e.target.value, !!req.mechanic)
                                             }
-                                            className="border rounded p-2"
+                                            className="border bg-yellow-500 rounded p-2"
                                         >
                                             <option value="" disabled>
                                                 {req.mechanic ? "Reassign mechanic" : "Assign mechanic"}
@@ -133,12 +135,12 @@ const ServiceRequestsDashboard = () => {
                                 <div key={req._id} className="p-4 border rounded-lg shadow-sm">
                                     <p><strong>ID:</strong> {req._id}</p>
                                     <p><strong>Status:</strong> {req.status}</p>
-                                    <p><strong>Customer:</strong> {req.customer?.fullName}</p>
+                                    <p><strong>Customer:</strong> {req.customerId?.fullName}</p>
                                     <div className="mt-2">
                                         <select
                                             defaultValue=""
                                             onChange={(e) => handleAssign(req._id, e.target.value)}
-                                            className="border rounded p-2"
+                                            className="border bg-yellow-500 rounded p-2"
                                         >
                                             <option value="" disabled>Assign mechanic</option>
                                             {mechanics.map((m) => (

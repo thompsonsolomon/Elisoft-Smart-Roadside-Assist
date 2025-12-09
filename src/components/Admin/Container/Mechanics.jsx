@@ -23,7 +23,7 @@ const MechanicsDashboard = () => {
         try {
             const [all, avail, reqs] = await Promise.all([
                 GetAllMechanics(),
-                GetAvailableMechanics(),
+                    GetAvailableMechanics(),
             ]);
             setMechanics(all?.data?.mechanics || []);
             setAvailable(avail?.data?.mechanics || []);
