@@ -41,7 +41,11 @@ api.interceptors.response.use(
                         },
                     }
                 );
-                const newAccessToken = refreshRes.data?.data?.accessToken;
+                console.log(refreshRes)
+                const newAccessToken = refreshRes.data?.data?.token;
+
+                console.log(newAccessToken);
+                
                 if (!newAccessToken) {
                     localStorage.removeItem("token")
                     throw new Error("No access token received");
@@ -141,7 +145,7 @@ export const MechanicAvailability = ( data) =>  apiRequest(`/api/users/availabil
 export const MechanicGetRequests = () => apiRequest("/api/service-requests/available", "GET");
 export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
 export const MyPendingRequests = ( ) => apiRequest(`/api/service-requests/available`, "GET");
-export const MyAcceptedRequests = ( ) => apiRequest(`/api/service-requests/accepted`, "GET");
+export const MyAcceptedRequests = ( ) => apiRequest(`/api/service-requests?status=Accepted`, "GET");
 export const UpdateServiceRequestStatus = (requestId, data) =>  apiRequest(`/api/services/request/${requestId}/status`, "PUT", data);
 export const UpdateServices = (data) => apiRequest("/api/users/mechanic/services", "PUT", data);
 
@@ -155,7 +159,7 @@ export const GetServiceRequest = () => apiRequest(`/api/service-requests/my-requ
 //payments/membership
 export const GetPaymentPlans = () => apiRequest("/api/memberships/plans", "GET", null, token);
 export const InitializePayment = (payload, token ) => apiRequest("/api/payments/create-intent", "POST",  payload , token);
-export const VerifyPayment = (reference, token ) => apiRequest(`/api/payments/verify/${reference}`, "GET",  token);
+export const VerifyPayment = (reference, token ) => apiRequest(`/api/payments/verify/${reference}`, "POST", {} , token);
 export const GetUserPaymentHistory = () => apiRequest("/api/payments/my-payments?page=1&limit=10", "GET", null, token);
 
 

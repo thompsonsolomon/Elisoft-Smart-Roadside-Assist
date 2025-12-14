@@ -49,8 +49,8 @@ const PaymentVerification = () => {
         const res = await VerifyPayment(reference);
         console.log('Verification response:', res);
 
-        if (res?.data?.status === 'success' && res?.data?.data?.payment) {
-          const p = res.data.data.payment;
+        if (res?.status === 'success' && res?.data?.payment) {
+          const p = res.data.payment;
 
           if (['Completed', 'Paid', 'Success'].includes(p.status)) {
             setStatus('success');
@@ -62,8 +62,8 @@ const PaymentVerification = () => {
           } else {
             setMessage('Payment found but not completed yet. Checking again...');
           }
-        } else if (res?.data?.status === 'error') {
-          setMessage(res?.data?.message || 'Payment not verified yet.');
+        } else if (res?.status === 'error') {
+          setMessage(res?.message || 'Payment not verified yet.');
         }
 
         if (attemptsRef.current >= MAX_ATTEMPTS) {

@@ -203,7 +203,7 @@ const Payment = () => {
                         <p
                           className={`text-sm ${item.status === "success"
                             ? "text-green-500"
-                            : item.status === "pending"
+                            : item.status === "Completed"
                               ? "text-yellow-500"
                               : "text-red-500"
                             }`}

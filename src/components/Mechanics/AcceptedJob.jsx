@@ -13,7 +13,8 @@ function AcceptedJob() {
             setLoading(true);
             try {
                 const res = await MyAcceptedRequests();
-                if (isMounted) setAcceptedJobs(res?.data?.acceptedRequests || []);
+                console.log(res);
+                if (isMounted) setAcceptedJobs(res?.data?.serviceRequests || []);
             } catch (err) {
                 console.error(err);
             } finally {

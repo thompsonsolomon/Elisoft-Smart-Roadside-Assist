@@ -18,10 +18,15 @@ export default function CustomerDashboard() {
     clearSelectedMechanic();
   }, []);
 
-  const handleSetMapMarker = (mechanic) => () => {
-    setSelectedMechanic(mechanic);
-    navigate("/map");
-  };
+  // const handleSetMapMarker = (mechanic) => () => {
+  //   setSelectedMechanic(mechanic);
+  //   navigate("/map");
+  // };
+
+    const handleSetMapMarker = (job) => {
+        console.log(job)
+        navigate("/map", { state: { job } });
+    }
 
   useEffect(() => {
     const HandleFetchREquest = async () => {
@@ -107,8 +112,8 @@ export default function CustomerDashboard() {
                   </h3>
                   <span
                     className={`text-sm px-3 py-1 rounded-full ${appt.status === "Completed"
-                        ? "bg-green-600"
-                        : "bg-yellow-500 text-black"
+                      ? "bg-green-600"
+                      : "bg-yellow-500 text-black"
                       }`}
                   >
                     {appt.status}
@@ -124,17 +129,18 @@ export default function CustomerDashboard() {
                 </div>
 
                 {/* Actions */}
-                {appt.status === "Pending" && (
-                  <div className="flex gap-3">
-                    <button
-                      className="btn btn-secondary w-full"
-                      onClick={() => handleSetMapMarker(appt.mechanicId)}
-                    >
-                      View on Map
-                    </button>
+
+                <div className="flex gap-3">
+                  <button
+                    className="btn btn-secondary w-full"
+                    onClick={() => handleSetMapMarker(appt)}
+                  >
+                    View on Map
+                  </button>
+                  {appt.status === "Pending" && (
                     <button className="btn btn-danger w-full">Cancel</button>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             ))}
           </div>

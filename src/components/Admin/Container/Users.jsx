@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { DeleteUser, GetAllUsers, GetUserById, UpdateUserStatus } from '../../../utils/api'
 import UserDetailsModal from './UserDetails'
 import { toast } from 'react-toastify';
+import { Loader2 } from 'lucide-react';
 
 function Users() {
     const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +20,7 @@ function Users() {
             try {
                 const data = await GetAllUsers();
                 setUserData(data?.data?.users || []);
-            setLoading(false);
+                setLoading(false);
             } catch (err) {
                 console.error("Error fetching users:", err);
                 setLoading(false);
@@ -131,9 +132,12 @@ function Users() {
         );
     };
 
-if (loading) {
-    return <div>Loading users...</div>;
-}
+    if (loading) {
+        return <div className="flex justify-center items-center py-16">
+            <Loader2 className="animate-spin text-yellow-400" size={32} />
+        </div>
+            ;
+    }
 
     return (
         <>
@@ -166,10 +170,10 @@ if (loading) {
                             </div>
                             <span
                                 className={`px-3 py-1 rounded-full text-xs ${user.status === "Active"
-                                        ? "bg-green-600 text-white"
-                                        : user.status === "Pending"
-                                            ? "bg-fuchsia-400 text-white"
-                                            : "bg-red-600 text-white"
+                                    ? "bg-green-600 text-white"
+                                    : user.status === "Pending"
+                                        ? "bg-fuchsia-400 text-white"
+                                        : "bg-red-600 text-white"
                                     }`}
 
                             >

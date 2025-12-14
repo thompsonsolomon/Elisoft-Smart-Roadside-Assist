@@ -449,8 +449,8 @@ export default function ProfilePage() {
                 <p className="text-sm font-semibold">{UserData?.createdAt ? new Date(UserData.createdAt).toLocaleDateString() : "N/A"}</p>
               </div>
               <div className="bg-white/20 rounded-lg p-3 text-white">
-                <p className="text-xs">Availability</p>
-                <p className="text-sm font-semibold">{UserData?.isAvailable ? "Available" : "Unavailable"}</p>
+                <p className="text-xs">Account Verify</p>
+                <p className="text-sm font-semibold">{UserData?.status ? "Available" : "Unavailable"}</p>
               </div>
             </div>
           </div>
@@ -486,7 +486,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-xs text-gray-400">Verified</p>
-                  <p className="font-medium">{UserData?.isPhoneVerified ? "Yes" : "No"}</p>
+                  <p className="font-medium">{UserData?.status ? "Yes" : "No"}</p>
                 </div>
 
                 <div className="space-y-1">
