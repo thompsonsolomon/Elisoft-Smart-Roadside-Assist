@@ -14,6 +14,7 @@ const containerStyle = {
   height: "500px",
 };
 
+// Dummy mechanics
 const AvailableMechanics = [
   { id: 1, name: "Mechanic - Yaba", coordinates: [3.3755, 6.517] },
   { id: 2, name: "Mechanic - Ikeja", coordinates: [3.348, 6.6018] },
@@ -27,61 +28,60 @@ export default function UberLikeMap() {
     googleMapsApiKey: MAP_KEY,
   });
 
-  const location = useLocation();
   const { user } = useAuth();
+  const location = useLocation();
+  const mapRef = useRef(null);
 
   const [job, setJob] = useState(location.state?.job || DummyMapData);
   const [directions, setDirections] = useState(null);
-  const mapRef = useRef(null);
 
   const hasJob = !!location.state?.job;
 
+  // 🔄 Sync job when navigating
   useEffect(() => {
-    if (location.state?.job) {
-      setJob(location.state.job);
-    } else {
-      setJob(DummyMapData);
-    }
+    setJob(location.state?.job || DummyMapData);
   }, [location.state]);
 
-  // Coordinates safety
+  // 📍 Coordinates
   const jobCoords = job?.location?.coordinates || [3.3792, 6.5244];
   const userCoords = user?.location?.coordinates || [3.3869, 6.5167];
 
   const JobLocation = { lat: jobCoords[1], lng: jobCoords[0] };
   const MyLocation = { lat: userCoords[1], lng: userCoords[0] };
 
-  // ✅ CREATE ICONS ONLY AFTER MAP IS LOADED
-  const customerIcon = useMemo(() => {
-    if (!isLoaded || !window.google) return null;
+  // 🎯 REAL MAP PIN ICONS (created only after map loads)
+  const icons = useMemo(() => {
+    if (!isLoaded || !window.google) return {};
+
     return {
-      url:
-        "data:image/svg+xml;charset=UTF-8," +
-        encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44">
-          <circle cx="22" cy="22" r="12" fill="#22C55E" stroke="white" stroke-width="3"/>
-        </svg>
-      `),
-      scaledSize: new window.google.maps.Size(44, 44),
-      anchor: new window.google.maps.Point(22, 22),
+      customer: {
+        url:
+          "data:image/svg+xml;charset=UTF-8," +
+          encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+            <path fill="#22C55E" d="M192 0C86 0 0 86 0 192c0 77.4 27 99.5 172.3 309.7a24 24 0 0039.4 0C357 291.5 384 269.4 384 192 384 86 298 0 192 0z"/>
+            <circle cx="192" cy="192" r="72" fill="white"/>
+          </svg>`),
+        scaledSize: new window.google.maps.Size(40, 40),
+        anchor: new window.google.maps.Point(20, 40),
+      },
+
+      mechanic: {
+        url:
+          "data:image/svg+xml;charset=UTF-8," +
+          encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+            <path fill="#2563EB" d="M192 0C86 0 0 86 0 192c0 77.4 27 99.5 172.3 309.7a24 24 0 0039.4 0C357 291.5 384 269.4 384 192 384 86 298 0 192 0z"/>
+            <circle cx="192" cy="192" r="72" fill="white"/>
+            <path d="M232 256l-40-40-40 40" fill="#2563EB"/>
+          </svg>`),
+        scaledSize: new window.google.maps.Size(40, 40),
+        anchor: new window.google.maps.Point(20, 40),
+      },
     };
   }, [isLoaded]);
 
-  const mechanicIcon = useMemo(() => {
-    if (!isLoaded || !window.google) return null;
-    return {
-      url:
-        "data:image/svg+xml;charset=UTF-8," +
-        encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44">
-          <circle cx="22" cy="22" r="12" fill="#2563EB" stroke="white" stroke-width="3"/>
-        </svg>
-      `),
-      scaledSize: new window.google.maps.Size(44, 44),
-      anchor: new window.google.maps.Point(22, 22),
-    };
-  }, [isLoaded]);
-
+  // 🛣️ Route
   const onLoad = useCallback(
     (map) => {
       mapRef.current = map;
@@ -106,54 +106,56 @@ export default function UberLikeMap() {
         }
       );
     },
-    [JobLocation, MyLocation, hasJob]
+    [hasJob, JobLocation, MyLocation]
   );
 
-  if (!isLoaded) return <p className="text-center">Loading map…</p>;
+  if (!isLoaded) return <p>Loading map…</p>;
 
   return (
     <div className="relative w-full">
       <GoogleMap
         mapContainerStyle={containerStyle}
         onLoad={onLoad}
-        center={MyLocation}
-        zoom={13}
         options={{
+          mapTypeId: "roadmap",
           streetViewControl: false,
           fullscreenControl: false,
         }}
       >
         {hasJob ? (
           <>
+            {/* Customer */}
             <Marker
               position={JobLocation}
-              icon={customerIcon}
+              icon={icons.customer}
+              title="Customer Location"
               label={{
                 text: "Customer",
-                color: "#15803D",
+                color: "#16A34A",
                 fontWeight: "bold",
-                fontSize: "12px",
               }}
             />
 
+            {/* Mechanic */}
             <Marker
               position={MyLocation}
-              icon={mechanicIcon}
+              icon={icons.mechanic}
+              title="You (Mechanic)"
               label={{
-                text: "You",
-                color: "#1D4ED8",
+                text: "Mechanic",
+                color: "#2563EB",
                 fontWeight: "bold",
-                fontSize: "12px",
               }}
             />
 
+            {/* Route */}
             {directions && (
               <DirectionsRenderer
                 directions={directions}
                 options={{
                   suppressMarkers: true,
                   polylineOptions: {
-                    strokeColor: "#2563EB",
+                    strokeColor: "#1E90FF",
                     strokeOpacity: 0.8,
                     strokeWeight: 6,
                   },
@@ -163,15 +165,15 @@ export default function UberLikeMap() {
           </>
         ) : (
           <>
-            {AvailableMechanics.map((m) => (
+            {AvailableMechanics.map((mec) => (
               <Marker
-                key={m.id}
-                position={{ lat: m.coordinates[1], lng: m.coordinates[0] }}
-                icon={mechanicIcon}
+                key={mec.id}
+                position={{ lat: mec.coordinates[1], lng: mec.coordinates[0] }}
+                icon={icons.mechanic}
                 label={{
-                  text: m.name,
+                  text: mec.name,
                   color: "#1D4ED8",
-                  fontSize: "11px",
+                  fontSize: "12px",
                   fontWeight: "bold",
                 }}
               />
