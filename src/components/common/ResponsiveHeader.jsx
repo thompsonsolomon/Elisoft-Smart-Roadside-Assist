@@ -5,7 +5,6 @@ import { useAuth } from "../../contexts/AuthContext";
 function ResponsiveHeader() {
     const { user, isAuthenticated } = useAuth()
     const path = window.location.pathname
-    console.log(path);
     
     return (
         // fixed bottom bar only on small screens
