@@ -4,14 +4,16 @@ import { useAuth } from "../../contexts/AuthContext";
 
 function ResponsiveHeader() {
     const { user, isAuthenticated } = useAuth()
-
+    const path = window.location.pathname
+    console.log(path);
+    
     return (
         // fixed bottom bar only on small screens
         <header className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a] border-t border-gray-800 md:hidden z-50">
             <nav className="flex justify-around items-center py-2">
                 <Link
                     to={`/${user?.role}`}
-                    className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
+                    className={`flex flex-col items-center text-${path == "/Mechanic" ? "yellow" : "gray"}-400 hover:text-yellow-500 transition`}
                 >
                     <Home className="w-6 h-6" />
                     <span className="text-xs mt-1">Home</span>
@@ -19,7 +21,7 @@ function ResponsiveHeader() {
 
                 <Link
                     to="/payment"
-                    className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
+                    className={`flex flex-col items-center text-${path == "/payment" ? "yellow" : "gray"}-400 hover:text-yellow-500 transition`}
                 >
                     <CreditCard className="w-6 h-6" />
                     <span className="text-xs mt-1">Payment</span>
@@ -27,7 +29,7 @@ function ResponsiveHeader() {
 
                 <Link
                     to="/map"
-                    className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
+                    className={`flex flex-col items-center text-${path == "/map" ? "yellow" : "gray"}-400 hover:text-yellow-500 transition`}
                 >
                     <MapPin className="w-6 h-6" />
                     <span className="text-xs mt-1">Map</span >
@@ -35,7 +37,7 @@ function ResponsiveHeader() {
 
                 <Link
                     to="/profile"
-                    className="flex flex-col items-center text-gray-400 hover:text-yellow-500 transition"
+                    className={`flex flex-col items-center text-${path == "/profile" ? "yellow" : "gray"}-400 hover:text-yellow-500 transition`}
                 >
                     <User className="w-6 h-6" />
                     <span className="text-xs mt-1">Profile</span>

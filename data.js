@@ -374,19 +374,62 @@ export const serviceTypes = [
 ]
 
 export const mechanicServices = [
-  "Roadside Assistant",
+  "Fuel Delivery",
   "Mechanic Repair",
-  "Key Lockout",
   "Towing Service",
-  "Electric Rewire",
-  "Flat Tyre",
+  // "Electric Rewire / Battery Jumpstart",
   "Battery Jump Start",
+  "Tyre Assist",
   "Car Service Center",
   "Body Repair",
+  "Break Repair",
   "Car AC Repair",
   "Engine Diagnostic",
   "Wheel Alignment",
+  "Oil Change",
+  "Body Painting",
+  "Key Lockout",
 ];
+
+export const States = [
+  "ABIA",
+  "ADAMAWA",
+  "AKWA IBOM",
+  "ANAMBRA",
+  "BAUCHI",
+  "BAYELSA",
+  "BENUE",
+  "BORNO",
+  "CROSS RIVER",
+  "DELTA",
+  "EBONYI",
+  "EDO",
+  "EKITI",
+  "ENUGU",
+  "GOMBE",
+  "IMO",
+  "JIGAWA",
+  "KADUNA",
+  "KANO",
+  "KATSINA",
+  "KEBBI",
+  "KOGI",
+  "KWARA",
+  "LAGOS",
+  "NASARAWA",
+  "NIGER",
+  "OGUN",
+  "ONDO",
+  "OSUN",
+  "OYO",
+  "PLATEAU",
+  "RIVERS",
+  "SOKOTO",
+  "TARABA",
+  "YOBE",
+  "ZAMFARA",
+  "FCT - ABUJA"
+]
 
 
 
@@ -408,6 +451,7 @@ export const testimonials = [
   },
 ]
 
+  
 // Helper functions for data manipulation
 export const getAvailableMechanics = () => mechanics.filter((mechanic) => mechanic.available)
 

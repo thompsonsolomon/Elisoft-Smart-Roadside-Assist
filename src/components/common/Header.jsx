@@ -48,7 +48,7 @@ export default function Navbar() {
           <ul className="flex flex-col gap-4 px-6 py-4 text-white font-medium">
             <li><a href="#home" onClick={toggleMenu}>Home</a></li>
             <li><a href="#services" onClick={toggleMenu}>How It Works</a></li>
-                        <li><a href="#services" onClick={toggleMenu}>Services</a></li>
+            <li><a href="#services" onClick={toggleMenu}>Services</a></li>
             <li><a href="#whyus" onClick={toggleMenu}>Why Us</a></li>
             <li><a href="#about" onClick={toggleMenu}>About</a></li>
             <li><a href="#contact" onClick={toggleMenu}>Contact</a></li>

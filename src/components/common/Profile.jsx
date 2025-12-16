@@ -1,201 +1,3 @@
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-// import { useAuth } from "../../contexts/AuthContext";
-// import { Link } from "react-router-dom";
-// import { fetchUsers, updateUserLocation, updateUserProfile } from "../../utils/api";
-// import { toast } from "react-toastify";
-// import ChangePinModal from "../../Auth/ChangePIn";
-// import ResponsiveHeader from "./ResponsiveHeader";
-// import { LocationName } from "../../helpers/GetLocationName";
-
-// const mechanicServices = [
-//   "Roadside Assistant",
-//   "Mechanic Repair",
-//   "Towing Service",
-//   "Electric Rewire / Battery Jumpstart",
-//   "Flat Tyre",
-//   "Car Service Center",
-//   "Body Repair",
-//   "Break Repair",
-//   "Car AC Repair",
-//   "Engine Diagnostic",
-//   "Wheel Alignment",
-//   "Oil Change",
-//   "Body Painting",
-//   "Key Lockout"
-// ];
-
-// export default function ProfilePage() {
-//   const { user, logout } = useAuth();
-//   const [UserData, setUserData] = useState(user || null);
-//   const [formData, setFormData] = useState({
-//     name: user?.fullName || "",
-//     phone: user?.phone || "",
-//     address: user?.address || "",
-//     services: Array.isArray(user?.services) ? user.services : [],
-//     yearsOfExperience: user?.yearsOfExperience || "",
-//     licenseNumber: user?.licenseNumber || "",
-//     accountNumber: user?.accountNumber || "",
-//     bankName: user?.bankName || "",
-//     bankCode: user?.bankCode || "",
-//     accountName: user?.accountName || "",
-//     role: user?.role || "Mechanic",
-//   });
-
-//   const [loading, setLoading] = useState(false);
-//   const [loadAction, setLoadAction] = useState(false);
-//   const [location, setLocation] = useState({ latitude: null, longitude: null });
-//   const userType = user?.role?.toLowerCase();
-
-//   console.log(user)
-//   // ✅ Fetch fresh user details
-//   useEffect(() => {
-//     let isMounted = true;
-//     const fetchUserData = async () => {
-//       setLoading(true);
-//       try {
-//         const data = await fetchUsers();
-//         if (isMounted && data?.data?.user?.user) {
-//           setUserData(data.data.user.user);
-//         }
-//       } catch (err) {
-//         console.error("Error fetching user:", err);
-//       } finally {
-//         if (isMounted) setLoading(false);
-//       }
-//     };
-//     fetchUserData();
-//     return () => {
-//       isMounted = false;
-//     };
-//   }, []);
-
-//   // ✅ Get geolocation (works in production too)
-//   useEffect(() => {
-//     let isMounted = true;
-//     if ("geolocation" in navigator) {
-//       navigator.geolocation.getCurrentPosition(
-//         ({ coords }) => {
-//           if (isMounted) {
-//             setLocation({
-//               latitude: coords.latitude,
-//               longitude: coords.longitude,
-//             });
-//           }
-//         },
-//         (error) => {
-//           console.error("Error getting location:", error);
-//           toast.warn("Unable to fetch location. Please allow location access.");
-//         },
-//         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-//       );
-//     } else {
-//       toast.error("Geolocation is not supported on this device.");
-//     }
-//     return () => {
-//       isMounted = false;
-//     };
-//   }, []);
-
-//   // ✅ Handle form input change
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [name]: value }));
-//   };
-
-//   // ✅ Handle checkbox service change
-//   const handleServiceChange = (e) => {
-//     const { value, checked } = e.target;
-//     setFormData((prev) => {
-//       const services = new Set(prev.services || []);
-//       if (checked) services.add(value);
-//       else services.delete(value);
-//       return { ...prev, services: Array.from(services) };
-//     });
-//   };
-
-//   // ✅ Update user location
-//   const handleChangeLocation = async (e) => {
-//     e?.preventDefault?.();
-//     if (!location.latitude || !location.longitude) {
-//       toast.error("Location not available. Please allow GPS access.");
-//       return;
-//     }
-
-//     setLoadAction(true);
-//     try {
-//       const Credentials = {
-//         location: {
-//           type: "Point",
-//           coordinates: [Number(location.longitude), Number(location.latitude)],
-//         },
-//       };
-//       const res = await updateUserLocation(Credentials);
-//       toast.success(res.message || "📍 Location updated successfully!");
-//     } catch (err) {
-//       console.error("Error updating location:", err);
-//       toast.error("❌ Failed to update location");
-//     } finally {
-//       setLoadAction(false);
-//     }
-//   };
-
-//   // ✅ Update profile
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setLoadAction(true);
-//     try {
-//       const Credentials = {
-//         fullName: formData.name,
-//         phone: formData.phone,
-//         // services: formData.services,
-//         yearsOfExperience: formData.yearsOfExperience,
-//         licenseNumber: formData.licenseNumber,
-//         role: formData.role,
-//       };
-//       console.log("Cred===>",Credentials)
-//       const res = await updateUserProfile(Credentials);
-//       localStorage.setItem("Elisoft Assist_user", JSON.stringify(res.data.user));
-//       toast.success(res.message || "✅ Profile updated successfully!");
-//     } catch (err) {
-//       console.error("Error updating profile:", err);
-//       toast.error("❌ Failed to update profile");
-//     } finally {
-//       setLoadAction(false);
-//     }
-//   };
-
-//   // ✅ Reset form
-//   const handleReset = () => {
-//     setFormData({
-//       name: UserData?.fullName || "",
-//       phone: UserData?.phone || "",
-//       address: UserData?.address || "",
-//       services: Array.isArray(UserData?.services) ? UserData.services : [],
-//       yearsOfExperience: UserData?.yearsOfExperience || "",
-//       licenseNumber: UserData?.licenseNumber || "",
-//       accountNumber: UserData?.accountNumber || "",
-//       bankName: UserData?.bankName || "",
-//       bankCode: UserData?.bankCode || "",
-//       accountName: UserData?.accountName || "",
-//       role: UserData?.role || "Mechanic",
-//     });
-//     toast.info("🔄 Form reset to current profile");
-//   };
-
-//   const handleServiceUpdate = async () =>{
-//     const res = await UpdateServices()
-//   }
-
-//   const planLimits = { basic: 1, standard: 3, premium: "Unlimited" };
-//   const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
-
-//   // ✅ Return layout
-
-
-
-
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
@@ -205,6 +7,7 @@ import {
   updateUserLocation,
   updateUserProfile,
   UpdateServices,
+  GetMyMembership,
 } from "../../utils/api";
 import { toast } from "react-toastify";
 import ChangePinModal from "../../Auth/ChangePIn";
@@ -248,6 +51,7 @@ export default function ProfilePage() {
   const [loadServices, setLoadServices] = useState(false);
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const userType = user?.role?.toLowerCase();
+  const [usermember, setUsermamber] = useState(null);
 
   // ✅ Fetch user data fresh from backend
   useEffect(() => {
@@ -256,9 +60,12 @@ export default function ProfilePage() {
       setLoading(true);
       try {
         const data = await fetchUsers();
+        const membership = await GetMyMembership()
         if (isMounted && data?.data?.user?.user) {
           const freshUser = data.data.user.user;
           setUserData(freshUser);
+          setUsermamber(membership);  
+          console.log("Membership data:", membership);
           setFormData((prev) => ({
             ...prev,
             name: freshUser.fullName || "",

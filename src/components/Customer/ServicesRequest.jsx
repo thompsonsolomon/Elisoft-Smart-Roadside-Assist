@@ -1,42 +1,55 @@
-import { useEffect, useState } from "react";
-import { mechanicServices } from "../../../data";
+import { useEffect, useState, useCallback } from "react";
+import { mechanicServices, States } from "../../../data";
 import { CreateServiceRequest } from "../../utils/api";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function ServiceRequestForm({ open, onClose, data }) {
   const [selectedService, setSelectedService] = useState("");
+  const [state, setState] = useState("");
   const [description, setDescription] = useState("");
   const [shortAddress, setShortAddress] = useState("");
+  const [locationLoading, setLocationLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
-  
-  // Convert coords to human-readable short address
-  useEffect(() => {
-    const fetchAddr = async () => {
-      try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${data?.latitude}&lon=${data?.longitude}`
-        );
-        const json = await res.json();
-        const { road, suburb, city, town, state, country } = json.address || {};
-        const addr = [road, suburb || city || town, state || country]
-          .filter(Boolean)
-          .join(", ");
-        setShortAddress(addr || "Unknown location");
-      } catch {
-        setShortAddress("Unable to fetch location");
-      }
-    };
-    if (data?.latitude && data?.longitude) fetchAddr();
+  const { user } = useAuth();
+  console.log(user)
+  // 🔹 Fetch human-readable address
+  const fetchAddress = useCallback(async () => {
+    if (!data?.latitude || !data?.longitude) return;
+
+    try {
+      setLocationLoading(true);
+      setShortAddress("");
+
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${data.latitude}&lon=${data.longitude}`
+      );
+
+      const json = await res.json();
+      const { road, suburb, city, town, state, country } = json.address || {};
+
+      const addr = [road, suburb || city || town, state || country]
+        .filter(Boolean)
+        .join(", ");
+
+      setShortAddress(addr || "Unknown location");
+    } catch {
+      setShortAddress("Unable to fetch location");
+    } finally {
+      setLocationLoading(false);
+    }
   }, [data?.latitude, data?.longitude]);
+
+  // 🔹 Auto-fetch when modal opens or coords change
+  useEffect(() => {
+    if (open) fetchAddress();
+  }, [fetchAddress, open]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!selectedService) {
-      alert("Please select a service");
-      return;
-    }
-    if (!description.trim()) {
-      alert("Please enter a description");
+
+    if (!selectedService || !description.trim() || !shortAddress) {
+      alert("Please complete all fields");
       return;
     }
 
@@ -46,6 +59,7 @@ export default function ServiceRequestForm({ open, onClose, data }) {
       location: {
         coordinates: [data.longitude, data.latitude],
       },
+      state: state,
       description,
       mechanicId: data?.mechanicId || null,
     };
@@ -53,16 +67,11 @@ export default function ServiceRequestForm({ open, onClose, data }) {
     try {
       setLoading(true);
       setSuccessMsg("");
-      const res = await CreateServiceRequest(payload);
-      if (res.error) {
-        setSuccessMsg(res.error || "Failed to create request");
-        return;
-      }
+      await CreateServiceRequest(payload);
       setSuccessMsg("Request created successfully!");
       setDescription("");
       setSelectedService("");
-    } catch (err) {
-      console.error(err);
+    } catch {
       setSuccessMsg("Failed to create request");
     } finally {
       setLoading(false);
@@ -74,19 +83,42 @@ export default function ServiceRequestForm({ open, onClose, data }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div className="bg-gray-800 rounded-xl shadow-xl w-96 p-5">
-        <h2 className="text-lg font-semibold mb-3">Request a Service</h2>
+        <h2 className="text-lg font-semibold mb-3 text-white">
+          Request a Service
+        </h2>
 
         <form onSubmit={handleSubmit} className="space-y-3">
-          {/* Service select */}
+          {/* Service */}
           <div>
-            <label className="block text-sm font-medium mb-1">Select Service</label>
+            <label className="block text-sm font-medium mb-1 text-gray-300">
+              Select Service
+            </label>
             <select
               value={selectedService}
               onChange={(e) => setSelectedService(e.target.value)}
               className="w-full border text-black rounded-lg px-3 py-2"
             >
-              <option value="" className="text-black">-- Select Service --</option>
+              <option value="">-- Select Service --</option>
               {mechanicServices.map((svc) => (
+                <option key={svc} value={svc}>
+                  {svc}
+                </option>
+              ))}
+            </select>
+          </div>
+
+           {/* State */}
+          <div>
+            <label className="block text-sm font-medium mb-1 text-gray-300">
+              Select State
+            </label>
+            <select
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              className="w-full border text-black rounded-lg px-3 py-2"
+            >
+              <option value="">-- Select Service --</option>
+              {States.map((svc) => (
                 <option key={svc} value={svc}>
                   {svc}
                 </option>
@@ -96,7 +128,9 @@ export default function ServiceRequestForm({ open, onClose, data }) {
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1 text-gray-300">
+              Description
+            </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -106,34 +140,53 @@ export default function ServiceRequestForm({ open, onClose, data }) {
             />
           </div>
 
-          {/* Address (read-only) */}
+          {/* Location */}
           <div>
-            <label className="block text-sm font-medium mb-1">Location</label>
-            <input
-              type="text"
-              readOnly
-              value={shortAddress || "Detecting location..."}
-              className="w-full border rounded-lg px-3 py-2 bg-gray-50"
-            />
+            <label className="block text-sm font-medium mb-1 text-gray-300">
+              Location
+            </label>
+
+            <div className="flex gap-2">
+              <input
+                type="text"
+                readOnly
+                value={
+                  locationLoading
+                    ? "Fetching location..."
+                    : shortAddress || "Location not available"
+                }
+                className="flex-1 border rounded-lg px-3 py-2 bg-gray-100 text-black"
+              />
+
+              <button
+                type="button"
+                onClick={fetchAddress}
+                disabled={locationLoading}
+                className="bg-yellow-600 text-black px-3 rounded-lg hover:bg-yellow-500 disabled:opacity-50"
+              >
+                ↻
+              </button>
+            </div>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-yellow-600 text-white py-2 rounded-lg hover:bg-yellow-400 disabled:bg-yellow-600"
-            disabled={loading || !shortAddress || !selectedService || !description.trim()}
+            disabled={loading || locationLoading || !shortAddress}
+            className="w-full bg-yellow-600 text-black py-2 rounded-lg hover:bg-yellow-500 disabled:opacity-50"
           >
             {loading ? "Submitting..." : "Submit Request"}
           </button>
         </form>
 
         {successMsg && (
-          <p className="mt-3 text-center text-sm text-green-600">{successMsg}</p>
+          <p className="mt-3 text-center text-sm text-green-400">
+            {successMsg}
+          </p>
         )}
 
         <button
           onClick={onClose}
           className="mt-3 w-full bg-gray-200 text-gray-700 py-2 rounded-lg hover:bg-gray-300"
-
         >
           Close
         </button>

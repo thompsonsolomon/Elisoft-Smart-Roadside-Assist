@@ -146,7 +146,7 @@ export const MechanicGetRequests = () => apiRequest("/api/service-requests/avail
 export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
 export const MyPendingRequests = ( ) => apiRequest(`/api/service-requests/available`, "GET");
 export const MyAcceptedRequests = ( ) => apiRequest(`/api/service-requests?status=Accepted`, "GET");
-export const UpdateServiceRequestStatus = (requestId, data) =>  apiRequest(`/api/services/request/${requestId}/status`, "PUT", data);
+export const UpdateServiceRequestStatus = (requestId, data) =>  apiRequest(`/api/services-request/${requestId}/complete`, "PUT", data);
 export const UpdateServices = (data) => apiRequest("/api/users/mechanic/services", "PUT", data);
 
 
@@ -154,6 +154,7 @@ export const UpdateServices = (data) => apiRequest("/api/users/mechanic/services
 export const CustomerGetAvailableMechanic = (lat, lng) => apiRequest(`/api/users/nearby-mechanics?coordinates=${lng}, ${lat}`, "GET");
 export const CreateServiceRequest = (data) => apiRequest("/api/service-requests", "POST", data);
 export const GetServiceRequest = () => apiRequest(`/api/service-requests/my-requests`);
+export const GetMyMembership = () => apiRequest(`/api/memberships/current`);
 
 
 //payments/membership
