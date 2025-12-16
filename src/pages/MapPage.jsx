@@ -2,12 +2,12 @@ import { useState, useMemo, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { useAuth } from "../contexts/AuthContext"
 import { mechanics, customers } from "../../data"
-import { ArrowLeft, MapPin, Star, Clock, DollarSign, PhoneCall } from "lucide-react"
-import NigeriaMap from "../components/map/marker"
+import { ArrowLeft, MapPin, Star, Clock, DollarSign, PhoneCall, LocateIcon, Locate, LucideLocate } from "lucide-react"
 import { useLocalStorage } from "../helpers/UseLocalStorage"
 import ResponsiveHeader from "../components/common/ResponsiveHeader"
 import { useMapContext } from "../contexts/MapContext"
 import { LocationName } from "../helpers/GetLocationName"
+import MainMap from "../components/map/MainMap"
 
 const MapPage = () => {
   const { user } = useAuth()
@@ -199,7 +199,13 @@ const MapPage = () => {
               </div>
               <div className="py-4">
                 <div className="bg-gold">
-                  <NigeriaMap />
+                  {/* {
+                    user?.role === "Customer"? 
+                    <UberLikeMap /> : 
+                    <MechanicMAp />
+                  } */}
+
+                  <MainMap />
                 </div>
               </div>
             </div>
