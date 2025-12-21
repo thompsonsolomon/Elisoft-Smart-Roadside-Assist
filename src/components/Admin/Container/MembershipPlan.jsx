@@ -74,7 +74,7 @@ const AdminPlans = () => {
       resetForm();
       fetchPlans();
     } catch (err) {
-      console.log("error" + err);
+      console.error("error" + err);
       toast.error("Failed to create plan");
     } finally {
       setLoading(false);

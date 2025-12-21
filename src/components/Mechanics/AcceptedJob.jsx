@@ -13,7 +13,6 @@ function AcceptedJob() {
             setLoading(true);
             try {
                 const res = await MyAcceptedRequests();
-                console.log(res);
                 if (isMounted) setAcceptedJobs(res?.data?.serviceRequests || []);
             } catch (err) {
                 console.error(err);
@@ -37,7 +36,6 @@ function AcceptedJob() {
     }
 
     const OpenMap = (job) => {
-        console.log(job)
         navigate("/map", { state: { job } });
     }
     return (

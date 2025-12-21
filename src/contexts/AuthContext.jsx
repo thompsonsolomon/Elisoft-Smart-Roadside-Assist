@@ -108,9 +108,7 @@ export function AuthProvider({ children }) {
       const response = await loginUser(credentials);
       if (response.status === "success") {
         const data = await response;
-        // Correctly stringify the user object before storing it.
-        console.log(data);
-        
+        // Correctly stringify the user object before storing it.        
         localStorage.setItem("Elisoft Assist_user", JSON.stringify(data.data.user));
         localStorage.setItem("token", data.data.accessToken);
         localStorage.setItem("refreshToken", data.data.refreshToken);

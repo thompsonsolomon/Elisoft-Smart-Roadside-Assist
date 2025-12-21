@@ -24,7 +24,6 @@ export default function CustomerDashboard() {
   // };
 
     const handleSetMapMarker = (job) => {
-        console.log(job)
         navigate("/map", { state: { job } });
     }
 
@@ -32,6 +31,7 @@ export default function CustomerDashboard() {
     const HandleFetchREquest = async () => {
       const res = await GetServiceRequest()
       setAppointments(res.data)
+      
     }
 
     return () => {
@@ -111,12 +111,12 @@ export default function CustomerDashboard() {
                     {appt.mechanicId?.fullName}
                   </h3>
                   <span
-                    className={`text-sm px-3 py-1 rounded-full ${appt.status === "Completed"
+                    className={`text-sm px-3 py-1 rounded-full ${appt.assignedMechanics?.responseStatus === "Completed"
                       ? "bg-green-600"
                       : "bg-yellow-500 text-black"
                       }`}
                   >
-                    {appt.status}
+                    {appt.status || appt.assignedMechanics?.[0].responseStatus}
                   </span>
                 </div>
 

@@ -41,11 +41,7 @@ api.interceptors.response.use(
                         },
                     }
                 );
-                console.log(refreshRes)
-                const newAccessToken = refreshRes.data?.data?.token;
-
-                console.log(newAccessToken);
-                
+                const newAccessToken = refreshRes.data?.data?.token;                
                 if (!newAccessToken) {
                     localStorage.removeItem("token")
                     throw new Error("No access token received");
@@ -159,10 +155,11 @@ export const GetMyMembership = () => apiRequest(`/api/memberships/current`);
 
 //payments/membership
 export const GetPaymentPlans = () => apiRequest("/api/memberships/plans", "GET", null, token);
+export const PurchaseMembership = (payload, token ) => apiRequest(`/api/memberships/purchase/`, "POST", payload , token);
 export const InitializePayment = (payload, token ) => apiRequest("/api/payments/create-intent", "POST",  payload , token);
 export const VerifyPayment = (reference, token ) => apiRequest(`/api/payments/verify/${reference}`, "POST", {} , token);
 export const GetUserPaymentHistory = () => apiRequest("/api/payments/my-payments?page=1&limit=10", "GET", null, token);
-
+export const CancelMembership = (membershipId, token) => apiRequest(`/api/memberships/cancel/${membershipId}`, "POST", {},  token);
 
 //Pricing
 export const createServicePrice = (data) => apiRequest("/api/service-prices/set-price", "POST", data, token);

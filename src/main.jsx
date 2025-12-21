@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App.jsx"
 import "./index.css"
-import { ToastContainer } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import { MapProvider } from "./contexts/MapContext.jsx"
 import { registerSW } from "virtual:pwa-register";
 
@@ -14,7 +14,7 @@ const updateSW = registerSW({
     }
   },
   onOfflineReady() {
-    console.log("App ready to work offline.");
+    toast.info("App ready to work offline.");
   },
 });
 // Error boundary for production

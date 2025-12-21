@@ -3,6 +3,7 @@ import { CustomerGetAvailableMechanic, GetMechanicByID } from "../../utils/api";
 import { toast } from "react-toastify";
 import { LocationName } from "../../helpers/GetLocationName";
 import ServiceRequest from "./ServicesRequest";
+import MechanicProfileModal from "./MechanicProfile";
 
 function AvailableMechanicCard() {
   const [mechanics, setMechanics] = useState([]);
@@ -13,6 +14,8 @@ function AvailableMechanicCard() {
   });
   const [open, setOpen] = useState(false);
   const [serviceData, setServiceData] = useState()
+  const [selectedMechanic, setSelectedMechanic] = useState(null);
+
   // ✅ Get location on mount
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -119,7 +122,7 @@ function AvailableMechanicCard() {
               >
                 Book Now
               </button>
-              <button className="btn btn-secondary w-full" onClick={HandleOPenProfile(mechanic._id)} >View Profile</button>
+              <button className="btn btn-secondary w-full" onClick={() => setSelectedMechanic(mechanic)} >View Profile</button>
             </div>
           </div>
         ))}
@@ -129,6 +132,11 @@ function AvailableMechanicCard() {
         open={open}
         onClose={() => setOpen(false)}
         data={serviceData}
+      />
+
+      <MechanicProfileModal
+        mechanic={selectedMechanic}
+        onClose={() => setSelectedMechanic(null)}
       />
     </div>
   );

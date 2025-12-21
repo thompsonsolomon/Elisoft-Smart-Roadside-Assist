@@ -8,11 +8,13 @@ import {
   updateUserProfile,
   UpdateServices,
   GetMyMembership,
+  CancelMembership,
 } from "../../utils/api";
 import { toast } from "react-toastify";
 import ChangePinModal from "../../Auth/ChangePIn";
 import ResponsiveHeader from "./ResponsiveHeader";
 import { LocationName } from "../../helpers/GetLocationName";
+import MembershipCard from "../Profile/membershipcard";
 
 const mechanicServices = [
   "Fuel Delivery",
@@ -61,11 +63,10 @@ export default function ProfilePage() {
       try {
         const data = await fetchUsers();
         const membership = await GetMyMembership()
+        setUsermamber(membership?.data?.membership);
         if (isMounted && data?.data?.user?.user) {
           const freshUser = data.data.user.user;
           setUserData(freshUser);
-          setUsermamber(membership);  
-          console.log("Membership data:", membership);
           setFormData((prev) => ({
             ...prev,
             name: freshUser.fullName || "",
@@ -210,8 +211,11 @@ export default function ProfilePage() {
     });
     toast.info("🔄 Form reset to current profile");
   };
+  const cancelMembership = async (membershipId) => {
+    await CancelMembership(membershipId);
+    // refetch membership or update UI
+  };
 
-  console.log(user)
   const planLimits = { basic: 1, standard: 3, premium: "Unlimited" };
   const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
   return (
@@ -288,16 +292,16 @@ export default function ProfilePage() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-700">
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-400">Plan</p>
-                  <p className="font-medium">{UserData?.currentPlan || "N/A"}</p>
+                  <p className="text-xs text-gray-100">Plan</p>
+                  <p className="font-medium text-gray-400">{usermember?.planId.name || "N/A"}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-400">Verified</p>
+                  <p className="text-xs text-gray-100">Verified</p>
                   <p className="font-medium">{UserData?.status ? "Yes" : "No"}</p>
                 </div>
 
                 <div className="space-y-1">
-                  <p className="text-xs text-gray-400">Free Assistance</p>
+                  <p className="text-xs text-gray-100">Free Assistance</p>
                   <p className="font-medium">{UserData?.currentPlan === "premium" ? "Unlimited" : `${UserData?.firstAssistance || 0} / ${assistanceLimit}`}</p>
                 </div>
               </div>
@@ -312,6 +316,7 @@ export default function ProfilePage() {
               <ChangePinModal />
             </div>
           </div>
+
 
           {/* Location Card */}
           <div className="card shadow p-6">
@@ -354,6 +359,21 @@ export default function ProfilePage() {
 
         {/* Right: Edit Form (cards) */}
         <div className="lg:col-span-7 space-y-6">
+
+          {
+            user.role === "Customer" && (
+              /* Membership Card */
+
+              <MembershipCard
+                membership={usermember}
+                onCancel={cancelMembership}
+              />
+
+            )
+          }
+
+
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Personal Info Card */}
             <div className="card rounded-2xl shadow p-6">
@@ -452,6 +472,8 @@ export default function ProfilePage() {
           </form>
 
         </div>
+
+
       </div>
       <div className="mt-20 visible md:hidden">
         <ResponsiveHeader />

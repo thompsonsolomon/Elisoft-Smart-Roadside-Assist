@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext"
 import LoadingSpinner from "./components/common/LoadingSpinner"
 import ProtectedRoute from "./components/common/ProtectedRoute"
 import Payment from "./components/CashFlow/Payment"
-import Subscription from "./components/CashFlow/Subscription"
 import { DashCam } from "./components/Sections/DashCam"
 import PaymentVerification from "./components/CashFlow/ValidatePayment"
 // import ProfilePage from "./components/common/Profile"
@@ -22,7 +21,8 @@ const AdminDashboard = lazy(() => import("./components/AdminDashboard"))
 const MapPage = lazy(() => import("./pages/MapPage"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
-function App() {
+
+function App() {  
   return (
     <AuthProvider>
       <div className="min-h-screen bg-black text-white">

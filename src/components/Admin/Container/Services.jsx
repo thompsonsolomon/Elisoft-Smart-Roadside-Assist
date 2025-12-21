@@ -40,7 +40,6 @@ const ServiceRequestsDashboard = () => {
             setMechanics(mechs?.data?.mechanics || []);
 
             const rep = await GetServiceRequestReports();
-            console.log(rep)
             setReports(rep?.data?.reports || []);
 
         } catch (err) {

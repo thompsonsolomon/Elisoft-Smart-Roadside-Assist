@@ -47,7 +47,6 @@ const PaymentVerification = () => {
         setAttempts(attemptsRef.current);
 
         const res = await VerifyPayment(reference);
-        console.log('Verification response:', res);
 
         if (res?.status === 'success' && res?.data?.payment) {
           const p = res.data.payment;

@@ -116,7 +116,6 @@ export default function MainMap() {
   const [directions, setDirections] = useState(null);
 
   if (!isLoaded) return <p>Loading map…</p>;
-  console.log("Rendering MechanicMap, hasJob:", hasJob);
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}

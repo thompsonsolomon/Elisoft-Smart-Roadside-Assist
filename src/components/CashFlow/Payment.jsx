@@ -6,6 +6,7 @@ import {
   GetPaymentPlans,
   GetUserPaymentHistory,
   InitializePayment,
+  PurchaseMembership,
 } from "../../utils/api";
 import { useAuth } from "../../contexts/AuthContext";
 import ResponsiveHeader from "../common/ResponsiveHeader";
@@ -40,9 +41,7 @@ const Payment = () => {
     try {
       setLoadingHistory(true);
       const res = await GetUserPaymentHistory();
-      console.log(res);
       setHistory(res?.data?.payments || []);
-      console.log(history);
 
     } catch {
       toast.error("Failed to fetch payment history");
@@ -55,7 +54,6 @@ const Payment = () => {
     try {
       setLoadingHistory(true);
       const res = []
-      console.log(res);
 
       setHistory(res?.data?.data || []);
     } catch {
@@ -73,17 +71,18 @@ const Payment = () => {
       toast.info("Redirecting to payment...");
       const payload = {
         amount: Number(amount),
+        paymentMethod: "Paystack",
         planId: planId,
       };
-      const res = await InitializePayment(payload);
-      if (res?.data?.authorizationUrl) {
-        window.open(res.data.authorizationUrl, "_self");
+      const res = await PurchaseMembership(payload);
+
+      if (res?.data?.payment?.authorizationUrl) {
+        window.open(res?.data?.payment?.authorizationUrl, "_self");
       } else {
         toast.error("Payment URL missing");
       }
     } catch (err) {
       toast.error("Payment initialization failed");
-      console.log(err);
     }
   };
 

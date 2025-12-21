@@ -53,13 +53,11 @@ const AdminServicePrices = () => {
     };
 
     const handleToggle = async (id, isActive) => {
-        console.log(id);
 
         try {
             setLoading(true);
             if (isActive) {
                 const res = await deactivateServicePrice(id);
-                console.log(res);
                 toast.info("Service deactivated");
             } else {
                 await activateServicePrice(user?.token, id);
@@ -72,7 +70,6 @@ const AdminServicePrices = () => {
             setLoading(false);
         }
     };
-    console.log(servicePrices);
 
     return (
         <div className="min-h-screen py-10 px-5 text-white flex flex-col items-center">

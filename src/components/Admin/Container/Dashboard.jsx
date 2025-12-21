@@ -5,14 +5,18 @@ import DashboardChart from "./Analysis";
 function Dashboard() {
     const [Status, setStatus] = useState()
     const [analytics, getAnalysis] = useState()
+    const [loading, setLoading] = useState(false);
     // ✅ Fetch dashboard details
     useEffect(() => {
+        setLoading(true);
         const fetchDashboard = async () => {
             try {
                 const data = await GetDashboard();
                 setStatus(data?.data);
+                setLoading(false);
             } catch (err) {
                 console.error("Error fetching user:", err);
+                setLoading(false);
             }
         };
         fetchDashboard();
@@ -22,6 +26,7 @@ function Dashboard() {
         totalBookings: Status?.overview?.totalServiceRequests,
         activeMechanics: Status?.overview?.totalMechanics,
         "Monthly Revenue": Status?.monthly?.revenue,
+        "active membership": Status?.overview?.activeMemberships,
     }
 
     //fetch analysis details
@@ -64,18 +69,61 @@ function Dashboard() {
         ],
     };
 
+    const normalizedAnalytics = {
+        revenue:
+            analytics?.revenue?.map((item) => ({
+                date: item.date || item._id?.date,
+                amount: item.amount || item.revenue || 0,
+            })) || [],
+
+        serviceRequests: {
+            pending: analytics?.serviceRequests?.pending || 0,
+            inProgress: analytics?.serviceRequests?.inProgress || 0,
+            completed: analytics?.serviceRequests?.completed || 0,
+            cancelled: analytics?.serviceRequests?.cancelled || 0,
+        },
+
+        userGrowth:
+            analytics?.userGrowth?.map((item) => ({
+                _id: { date: item._id?.date || item.date },
+                count: item.count || 0,
+                role: item._id?.role || "Customer",
+            })) || [],
+    };
 
     return (
         <>
             <h2 className="text-3xl font-semibold text-yellow-400 mb-6">Dashboard Overview</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-                {Object.entries(stats).map(([key, value]) => (
-                    <div key={key} className="bg-gray-800 p-6 rounded-lg shadow text-center">
-                        <div className="text-4xl font-bold text-yellow-400 mb-2">{value}</div>
-                        <div className="text-sm text-gray-300 capitalize">{key.replace(/([A-Z])/g, ' $1')}</div>
+                {loading && (
+                    <div className="col-span-full text-center text-gray-500">
+                        Loading dashboard...
                     </div>
-                ))}
+                )   }
+                {Object.entries(stats).map(([key, value]) => {
+                    const isRevenue = key.toLowerCase().includes("revenue");
+
+                    const displayValue = isRevenue
+                        ? `₦${new Intl.NumberFormat("en-NG").format(value)}`
+                        : value;
+
+                    return (
+                        <div
+                            key={key}
+                            className="bg-gray-800 p-6 rounded-lg shadow text-center"
+                        >
+                            <div className="text-2xl font-bold text-yellow-400 mb-2">
+                                {displayValue}
+                            </div>
+
+                            <div className="text-sm text-gray-300 capitalize">
+                                {key.replace(/([A-Z])/g, " $1")}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
+
             <div className="bg-gray-800 p-6 rounded-lg shadow">
                 <h3 className="text-xl font-semibold text-yellow-400 mb-4">📈 Recent Activity</h3>
                 <ul className="text-gray-300 space-y-2 text-sm">
@@ -88,7 +136,8 @@ function Dashboard() {
                 </ul>
             </div>
 
-            <DashboardChart data={mockAnalysis} />
+            {analytics && <DashboardChart data={normalizedAnalytics} />}
+
         </>
     )
 }

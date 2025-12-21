@@ -52,7 +52,6 @@ const PaymentSection = () => {
             const res = await axios.get(`${API_BASE}/api/memberships/plans`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            console.log(res.data);
             setPlans(res?.data?.data?.plans || []);
             // toast.success("Payment plans loaded", "success");
         } catch (err) {
@@ -100,7 +99,7 @@ const PaymentSection = () => {
             setPaymentHistory(res.data || []);
         } catch (err) {
             toast.error("Could not load payment history", "error");
-            console.log(err);
+            console.error(err);
         }
     };
 
@@ -109,7 +108,6 @@ const PaymentSection = () => {
         getAllPlans();
         getPaymentHistory();
     }, []);
-    console.log(plans);
 
     return (
         <div className="card shadow p-6">
