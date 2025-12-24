@@ -162,11 +162,11 @@ export const GetUserPaymentHistory = () => apiRequest("/api/payments/my-payments
 export const CancelMembership = (membershipId, token) => apiRequest(`/api/memberships/cancel/${membershipId}`, "POST", {},  token);
 
 //Pricing
-export const createServicePrice = (data) => apiRequest("/api/service-prices/set-price", "POST", data, token);
-export const getAllServicePrices = (state) => apiRequest("/api/service-prices/all", "GET", null, token);
+export const createServicePrice = (data) => apiRequest("/api/service-prices", "POST", data, token);
+export const getAllServicePrices = () => apiRequest("/api/service-prices", "GET", null, token);
 export const getServicePriceForState = (state) => apiRequest(`/api/service-prices/state?state=${state}`, "GET", null, token);
-export const activateServicePrice = (id) => apiRequest(`/api/service-prices/${id}/activate`, "PATCH", null, token);
-export const deactivateServicePrice = (id, token ) => apiRequest(`/api/service-prices/${id}/deactivate`, "PATCH", null, token);
+export const activateServicePrice = (id) => apiRequest(`/api/service-prices/${id}/activate`, "PUT", {}, token);
+export const deactivateServicePrice = (id, token ) => apiRequest(`/api/service-prices/${id}/deactivate`, "PUT", {}, token);
 
 
 // Admin Dashboard & Analytics

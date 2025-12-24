@@ -12,6 +12,7 @@ function AdminPaymentHistory() {
     try {
       setLoading(true);
       const res = await GetUserPaymentHistory();
+      console.log(res)
       setHistory(res?.data?.payments || []);
     } catch (err) {
       toast.error("Failed to fetch payment history");

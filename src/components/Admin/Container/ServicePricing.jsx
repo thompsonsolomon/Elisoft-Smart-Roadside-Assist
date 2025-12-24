@@ -20,6 +20,7 @@ const AdminServicePrices = () => {
         try {
             setLoading(true);
             const data = await getAllServicePrices(state);
+            console.log(data);
             setServicePrices(data?.data?.prices || []);
         } catch (err) {
             toast.error("Failed to load service prices");
@@ -41,8 +42,10 @@ const AdminServicePrices = () => {
 
         try {
             setLoading(true);
-            await createServicePrice(newPrice);
-            toast.success("Service price added successfully");
+            const res = await createServicePrice(newPrice);
+            res && toast.success("Service price added successfully");
+            console.log(res);
+
             setNewPrice({ serviceType: "", basePrice: "", state: "" });
             fetchPrices();
         } catch (err) {
@@ -124,13 +127,28 @@ const AdminServicePrices = () => {
                     </select>
 
                     {/* ✅ Amount Input */}
-                    <input
+                    {/* <input
                         type="number"
                         placeholder="Amount (₦)"
                         className="bg-transparent border border-yellow-600/40 px-3 py-2 rounded-md text-white"
                         value={newPrice.basePrice}
-                        onChange={(e) => setNewPrice({ ...newPrice, basePrice: e.target.value })}
+                        onChange={(e) => setNewPrice({Number, ...newPrice, basePrice: e.target.value })}
+                    /> */}
+
+                    <input
+                        type="number"
+                        className="bg-transparent border border-yellow-600/40 px-3 py-2 rounded-md text-white"
+                        placeholder="Amount (₦)"
+                        value={newPrice.basePrice}
+                        onChange={(e) =>
+                            setNewPrice({
+                                ...newPrice,
+                                basePrice: Number(e.target.value),
+                            })
+                        }
                     />
+
+
 
                     {/* ✅ State Dropdown */}
                     <select
@@ -140,11 +158,11 @@ const AdminServicePrices = () => {
                     >
                         <option value="">Select State (optional)</option>
                         {[
-                            "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue",
-                            "Borno", "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu",
-                            "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi",
-                            "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo",
-                            "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara", "FCT - Abuja",
+                            "ABIA", "ADAMAWA", "AKWA IBOM", "ANAMBRA", "BAUCHI", "BAYELSA", "BENUE",
+                            "BORNO", "CROSS RIVER", "DELTA", "EBONYI", "EDO", "EKITI", "ENUGU",
+                            "GOMBE", "IMO", "JIGAWA", "KADUNA", "KANO", "KATSINA", "KEBBI", "KOGI",
+                            "KWARA", "LAGOS", "NASARAWA", "NIGER", "OGUN", "ONDO", "OSUN", "OYO",
+                            "PLATEAU", "RIVERS", "SOKOTO", "TARABA", "YOBE", "ZAMFARA", "FCT - ABUJA",
                         ].map((state, index) => (
                             <option key={index} className="text-black" value={state}>
                                 {state}
