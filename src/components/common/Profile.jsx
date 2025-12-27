@@ -46,6 +46,9 @@ export default function ProfilePage() {
     yearsOfExperience: user?.yearsOfExperience || "",
     licenseNumber: user?.licenseNumber || "",
     role: user?.role || "Mechanic",
+    bankName: user?.bankName || "",
+    accountNumber: user?.accountNumber || "",
+    accountName: user?.accountName || "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -55,41 +58,50 @@ export default function ProfilePage() {
   const userType = user?.role?.toLowerCase();
   const [usermember, setUsermamber] = useState(null);
 
-  // ✅ Fetch user data fresh from backend
+  /* ================= FETCH USER & MEMBERSHIP ================= */
   useEffect(() => {
-    let isMounted = true;
-    const fetchUserData = async () => {
-      setLoading(true);
+    let mounted = true;
+
+    const fetchData = async () => {
       try {
-        const data = await fetchUsers();
-        const membership = await GetMyMembership()
-        setUsermamber(membership?.data?.membership);
-        if (isMounted && data?.data?.user?.user) {
-          const freshUser = data.data.user.user;
+        setLoading(true);
+
+        const userRes = await fetchUsers();
+        const freshUser = userRes?.data?.user?.user;
+
+        if (mounted && freshUser) {
           setUserData(freshUser);
-          setFormData((prev) => ({
-            ...prev,
-            name: freshUser.fullName || "",
+
+          setFormData({
+            fullName: freshUser.fullName || "",
             phone: freshUser.phone || "",
             services: Array.isArray(freshUser.specialties)
-              ? freshUser.services
+              ? freshUser.specialties
               : [],
             yearsOfExperience: freshUser.yearsOfExperience || "",
             licenseNumber: freshUser.licenseNumber || "",
-            role: freshUser.role || "Mechanic",
-          }));
+            bankName: freshUser.bankName || "",
+            accountNumber: freshUser.accountNumber || "",
+            accountName: freshUser.accountName || "",
+          });
+        }
+
+        if (freshUser?.role === "Customer") {
+          const membership = await GetMyMembership();
+          setUsermember(membership?.data?.membership || null);
         }
       } catch (err) {
-        console.error("Error fetching user:", err);
+        toast.error("Failed to fetch profile");
       } finally {
-        if (isMounted) setLoading(false);
+        setLoading(false);
       }
     };
-    fetchUserData();
-    return () => {
-      isMounted = false;
-    };
+
+    fetchData();
+    return () => (mounted = false);
   }, []);
+
+
 
   // ✅ Get geolocation (for location update)
   useEffect(() => {
@@ -166,6 +178,9 @@ export default function ProfilePage() {
         yearsOfExperience: formData.yearsOfExperience,
         licenseNumber: formData.licenseNumber,
         role: formData.role,
+        bankName: formData.bankName,
+        accountNumber: formData.accountNumber,
+        accountName: formData.accountName,
       };
       const res = await updateUserProfile(Credentials);
       localStorage.setItem(
@@ -175,7 +190,7 @@ export default function ProfilePage() {
       toast.success(res.message || "✅ Profile updated successfully!");
     } catch (err) {
       console.error("Error updating profile:", err);
-      toast.error("❌ Failed to update profile");
+      toast.error("Failed to update profile");
     } finally {
       setLoadAction(false);
     }
@@ -203,10 +218,6 @@ export default function ProfilePage() {
       services: Array.isArray(UserData?.services) ? UserData.services : [],
       yearsOfExperience: UserData?.yearsOfExperience || "",
       licenseNumber: UserData?.licenseNumber || "",
-      accountNumber: UserData?.accountNumber || "",
-      bankName: UserData?.bankName || "",
-      bankCode: UserData?.bankCode || "",
-      accountName: UserData?.accountName || "",
       role: UserData?.role || "Mechanic",
     });
     toast.info("🔄 Form reset to current profile");
@@ -218,6 +229,8 @@ export default function ProfilePage() {
 
   const planLimits = { basic: 1, standard: 3, premium: "Unlimited" };
   const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
+
+
   return (
     <div className="min-h-screen bg-black py-8 px-4 sm:px-6 lg:px-8">
       {/* Top bar */}
@@ -374,6 +387,7 @@ export default function ProfilePage() {
 
 
 
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Personal Info Card */}
             <div className="card rounded-2xl shadow p-6">
@@ -381,12 +395,41 @@ export default function ProfilePage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm text-white block mb-2">Full name</label>
-                  <input name="name" value={formData.name} onChange={handleChange} className="w-full border border-gray-200 bg-transparent text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:bg-transparent focus:text-white" />
+                  <input type="text" required placeholder="John Doe" name="name" value={formData.name} onChange={handleChange} className="w-full border border-gray-200 bg-transparent text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:bg-transparent focus:text-white" />
                 </div>
                 <div>
                   <label className="text-sm text-white block mb-2">Phone number</label>
-                  <input name="phone" value={formData.phone} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300" />
+                  <input type="number" required placeholder="+123 123 1234 233" name="phone" value={formData.phone} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300" />
                 </div>
+
+                {
+                  user.role === "Mechanic" &&
+                  <div>
+                    <label className="text-sm text-white block mb-2">Bank Name</label>
+                    <input name="bankName" value={formData.bankName} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300" />
+                  </div>
+
+                }
+
+
+
+                {
+                  user.role === "Mechanic" &&
+                  <div>
+                    <label className="text-sm text-white block mb-2">Account Number</label>
+                    <input name="accountNumber" value={formData.accountNumber} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300" />
+                  </div>
+                }
+
+                {
+                  user.role === "Mechanic" &&
+                  <div>
+                    <label className="text-sm text-white block mb-2">Account Name</label>
+                    <input name="accountName" value={formData.accountName} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300" />
+                  </div>
+                }
+
+
                 <div className="md:col-span-2">
                   <label className="text-sm text-white block mb-2">Address</label>
                   <div className="w-full border border-gray-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300">

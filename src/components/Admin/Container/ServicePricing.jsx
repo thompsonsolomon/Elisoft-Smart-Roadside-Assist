@@ -63,7 +63,7 @@ const AdminServicePrices = () => {
                 const res = await deactivateServicePrice(id);
                 toast.info("Service deactivated");
             } else {
-                await activateServicePrice(user?.token, id);
+                await activateServicePrice(id);
                 toast.success("Service activated");
             }
             fetchPrices();

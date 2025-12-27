@@ -3,13 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import AvailableMechanicCard from "./Customer/AvailableMechanicCard";
 import ResponsiveHeader from "./common/ResponsiveHeader";
-import { User } from "lucide-react";
+import { Loader2, User } from "lucide-react";
 import { useMapContext } from "../contexts/MapContext";
-import { GetServiceRequest } from "../utils/api";
+import { CancleJobRequest, GetServiceRequest } from "../utils/api";
 
 export default function CustomerDashboard() {
   const { user } = useAuth()
   const [searchLocation, setSearchLocation] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setSelectedMechanic, clearSelectedMechanic } = useMapContext();
   const [appointments, setAppointments] = useState();
@@ -23,20 +24,32 @@ export default function CustomerDashboard() {
   //   navigate("/map");
   // };
 
-    const handleSetMapMarker = (job) => {
-        navigate("/map", { state: { job } });
-    }
-
-  useEffect(() => {
-    const HandleFetchREquest = async () => {
+  const handleCancleRequest = async (id) => {
+    const res = await CancleJobRequest(id)
+    if ( res.status === 200  ) {
       const res = await GetServiceRequest()
       setAppointments(res.data)
-      
+    }
+    console.log(res);
+  }
+
+  const handleSetMapMarker = (job) => {
+    navigate("/map", { state: { job } });
+  }
+
+  useEffect(() => {
+    let mounted = true;
+    const HandleFetchREquest = async () => {
+      setLoading(true)
+      const res = await GetServiceRequest()
+      setAppointments(res.data)
+      setLoading(false)
     }
 
-    return () => {
-      HandleFetchREquest()
-    }
+    HandleFetchREquest()
+
+
+    return () => (mounted = false);
   }, [])
 
   return (
@@ -102,6 +115,10 @@ export default function CustomerDashboard() {
         <section>
           <h2 className="text-2xl font-bold text-yellow-400 mb-6">📋 Your Appointments</h2>
           <div className="grid md:grid-cols-2 gap-6">
+
+            {
+              loading && <Loader2 className="animate-spin text-yellow-400" size={32} />
+            }
             {appointments?.serviceRequests?.map((appt) => (
               <div key={appt.id} className="bg-gray-800 p-6 rounded-xl">
 
@@ -138,7 +155,7 @@ export default function CustomerDashboard() {
                     View on Map
                   </button>
                   {appt.status === "Pending" && (
-                    <button className="btn btn-danger w-full">Cancel</button>
+                    <button onClick={() => handleCancleRequest(appt.id)} className="btn btn-danger w-full">Cancel</button>
                   )}
                 </div>
               </div>

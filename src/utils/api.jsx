@@ -41,13 +41,13 @@ api.interceptors.response.use(
                         },
                     }
                 );
-                const newAccessToken = refreshRes.data?.data?.token;                
+                const newAccessToken = refreshRes.data?.data?.token;
                 if (!newAccessToken) {
                     localStorage.removeItem("token")
                     throw new Error("No access token received");
                 }
 
-                
+
                 setAccessToken(newAccessToken);
                 toast.success("Token refreshed successfully");
                 // Update the original request with the new token
@@ -137,12 +137,12 @@ export const updateUserLocation = (data) => apiRequest("/api/users/location", "P
 
 
 // Mechanics
-export const MechanicAvailability = ( data) =>  apiRequest(`/api/users/availability`, "PUT", data);
+export const MechanicAvailability = (data) => apiRequest(`/api/users/availability`, "PUT", data);
 export const MechanicGetRequests = () => apiRequest("/api/service-requests/available", "GET");
 export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
-export const MyPendingRequests = ( ) => apiRequest(`/api/service-requests/available`, "GET");
-export const MyAcceptedRequests = ( ) => apiRequest(`/api/service-requests?status=Accepted`, "GET");
-export const UpdateServiceRequestStatus = (requestId, data) =>  apiRequest(`/api/services-request/${requestId}/complete`, "PUT", data);
+export const MyPendingRequests = () => apiRequest(`/api/service-requests/available`, "GET");
+export const MyAcceptedRequests = () => apiRequest(`/api/service-requests?status=Accepted`, "GET");
+export const UpdateServiceRequestStatus = (requestId, data, token ) => apiRequest(`/api/service-requests/${requestId}/complete`, "POST", data, token );
 export const UpdateServices = (data) => apiRequest("/api/users/mechanic/services", "PUT", data);
 
 
@@ -155,21 +155,21 @@ export const GetMyMembership = () => apiRequest(`/api/memberships/current`);
 
 //payments/membership
 export const GetPaymentPlans = () => apiRequest("/api/memberships/plans", "GET", null, token);
-export const PurchaseMembership = (payload, token ) => apiRequest(`/api/memberships/purchase/`, "POST", payload , token);
-export const InitializePayment = (payload, token ) => apiRequest("/api/payments/create-intent", "POST",  payload , token);
-export const VerifyPayment = (reference, token ) => apiRequest(`/api/payments/verify/${reference}`, "POST", {} , token);
+export const PurchaseMembership = (payload, token) => apiRequest(`/api/memberships/purchase/`, "POST", payload, token);
+export const InitializePayment = (payload, token) => apiRequest("/api/payments/create-intent", "POST", payload, token);
+export const VerifyPayment = (reference, token) => apiRequest(`/api/payments/verify/${reference}`, "POST", {}, token);
 export const GetUserPaymentHistory = (token) => apiRequest("/api/payments/my-payments?page=1&limit=10", "GET", null, token);
 export const GetUserPaymentHistoryAdmin = (token) => apiRequest("/api/payments?page=1&limit=20", "GET", null, token);
 
 // export const GetUserPaymentHistory = () => apiRequest("/api/payments/stats/overview", "GET", null, token);
-export const CancelMembership = (membershipId, token) => apiRequest(`/api/memberships/cancel/${membershipId}`, "POST", {},  token);
+export const CancelMembership = (membershipId, token) => apiRequest(`/api/memberships/cancel/${membershipId}`, "POST", {}, token);
 
 //Pricing
 export const createServicePrice = (data) => apiRequest("/api/service-prices", "POST", data, token);
 export const getAllServicePrices = () => apiRequest("/api/service-prices", "GET", null, token);
 export const getServicePriceForState = (state) => apiRequest(`/api/service-prices/state?state=${state}`, "GET", null, token);
-export const activateServicePrice = (id) => apiRequest(`/api/service-prices/${id}/activate`, "PUT", {}, token);
-export const deactivateServicePrice = (id, token ) => apiRequest(`/api/service-prices/${id}/deactivate`, "PUT", {}, token);
+export const activateServicePrice = (id, token) => apiRequest(`/api/service-prices/${id}/activate`, "PUT", {}, token);
+export const deactivateServicePrice = (id, token) => apiRequest(`/api/service-prices/${id}/deactivate`, "PUT", {}, token);
 
 
 // Admin Dashboard & Analytics
@@ -178,32 +178,33 @@ export const GetAnalysis = () => apiRequest("/api/admin/analytics?period=30days"
 export const GetRevenueAnalysis = () => apiRequest("/api/admin/revenue-analytics?startDate=2024-01-01&endDate=2024-01-31"); // not fetched yet
 export const GetAllUsers = () => apiRequest("/api/admin/users?page=1&limit=20&role=&search="); //admin users start
 export const GetUserById = (id) => apiRequest(`/api/admin/users/${id}`);
-export const UpdateUserStatus = (id, data) =>  apiRequest(`/api/admin/users/${id}/status`, "PUT", data);
+export const UpdateUserStatus = (id, data) => apiRequest(`/api/admin/users/${id}/status`, "PUT", data);
 export const DeleteUser = (id) => apiRequest(`/api/admin/users/${id} `, "DELETE"); //admin users stop
+export const CancleJobRequest = (id, token ) => apiRequest(`/api/service-requests/${id}/cancel`, "PUT", {}, token ); //customer cancle job request
 
 
 export const GetAllMechanics = () => apiRequest("api/admin/mechanics?page=1&limit=20&available="); //mechanic start
 export const GetAvailableMechanics = () => apiRequest("/api/admin/mechanics/available");
-export const UpdateMechanicAvailability = (id, data) =>  apiRequest(`/api/admin/mechanics/${id}/availability`, "PUT", data); //mechanic stop
+export const UpdateMechanicAvailability = (id, data) => apiRequest(`/api/admin/mechanics/${id}/availability`, "PUT", data); //mechanic stop
 
 
 export const GetAllServiceRequests = () => apiRequest("/api/admin/service-requests?page=1&limit=20&status=Pending&serviceType="); //service start
 export const GetPendingServiceRequests = () => apiRequest("/api/admin/service-requests/pending")
-export const AssignMechanicToRequest = (requestId, mechanicId) =>  apiRequest(`/api/admin/service-requests/${requestId}/assign `, "POST", { mechanicId });
-export const ReassignServiceRequest = (requestId, credentials) =>  apiRequest(`/api/admin/service-requests/${requestId}/reassign`, "POST", { credentials }); //fetch nc
+export const AssignMechanicToRequest = (requestId, mechanicId) => apiRequest(`/api/admin/service-requests/${requestId}/assign `, "POST", { mechanicId });
+export const ReassignServiceRequest = (requestId, credentials) => apiRequest(`/api/admin/service-requests/${requestId}/reassign`, "POST", { credentials }); //fetch nc
 export const GetServiceRequestReports = () => apiRequest("/api/admin/reports/service-requests"); //service stop
 
 
 export const GetRevenueReports = () => apiRequest("/api/admin/reports/revenue"); //revenue report start
 export const GetUserActivityReports = () => apiRequest("/api/admin/reports/user-activity");
-export const GetMechanicPerformanceReports = () =>  apiRequest("/api/admin/reports/mechanic-performance");
+export const GetMechanicPerformanceReports = () => apiRequest("/api/admin/reports/mechanic-performance");
 export const GetSystemHealth = () => apiRequest("/api/admin/system/health");
 export const PerformSystemCleanup = () => apiRequest("/api/admin/system/cleanup", "POST");
 export const GetSystemLogs = () => apiRequest("/api/admin/system/logs");
-export const SendNotification = (data) =>  apiRequest("/api/admin/notifications/send", "POST", data);
-export const ToggleMaintenanceMode = (data) =>  apiRequest("/api/admin/system/maintenance", "POST", { data });
+export const SendNotification = (data) => apiRequest("/api/admin/notifications/send", "POST", data);
+export const ToggleMaintenanceMode = (data) => apiRequest("/api/admin/system/maintenance", "POST", { data });
 
 
-export const UpdatePlan = (planId, data) =>  apiRequest(`/api/memberships/plans/${planId}`, "PUT", data);  //Payment plan Start
-export const CreatePlan = (data) =>  apiRequest("/api/memberships/plans", "POST", data);
+export const UpdatePlan = (planId, data) => apiRequest(`/api/memberships/plans/${planId}`, "PUT", data);  //Payment plan Start
+export const CreatePlan = (data) => apiRequest("/api/memberships/plans", "POST", data);
 export const DeletePlan = (planId) => apiRequest(`/api/memberships/plans/${planId}`, "DELETE");

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { MyAcceptedRequests, UpdateServiceRequestStatus } from "../../utils/api"
 import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 function AcceptedJob() {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [loadingComplete, setLoadingComplete] = useState(false)
     const [myAceptedJobs, setAcceptedJobs] = useState([])
     const navigate = useNavigate()
     useEffect(() => {
@@ -30,9 +32,10 @@ function AcceptedJob() {
 
 
     const HandleAcceptJobRequest = async (jobId) => {
-        setLoading(true)
+        setLoadingComplete(true)
         const res = await UpdateServiceRequestStatus(jobId, { status: "Completed" })
-        setLoading(false)
+        console.log(res)
+        setLoadingComplete(false)
     }
 
     const OpenMap = (job) => {
@@ -41,9 +44,13 @@ function AcceptedJob() {
     return (
         <div className="grid md:grid-cols-2 gap-12 items-center">
             {
-                loading ? <p className="text-white">Loading Accepted Jobs...</p> : null
+                loading &&   <Loader2 className="animate-spin text-yellow-400" size={32} /> 
             }
-            {myAceptedJobs?.map((job) => (
+            {
+            
+            
+            
+            myAceptedJobs?.map((job) => (
                 <div key={job.id} className="card">
                     <div className="flex-between" style={{ marginBottom: "15px" }}>
                         <h3 style={{ color: "#FFD700", fontSize: "1.3rem" }}>{job.customerId.fullName}</h3>
@@ -61,9 +68,12 @@ function AcceptedJob() {
                     </div>
                     {job.status === "Accepted" && (
                         <div style={{ display: "flex", gap: "12px" }}>
-                            <button onClick={() => HandleAcceptJobRequest(job.id)} className="btn btn-primary" style={{ flex: 1 }}>
-                                Mark Complete
-                            </button>
+                            {
+                                loadingComplete ?   <Loader2 className="animate-spin text-yellow-400" size={32} /> :
+                                    <button onClick={() => HandleAcceptJobRequest(job.id)} className="btn btn-primary" style={{ flex: 1 }}>
+                                        Mark Complete
+                                    </button>
+                            }
                             <button onClick={() => OpenMap(job)} className="btn btn-secondary" style={{ flex: 1 }}>
                                 View On Map
                             </button>
