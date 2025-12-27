@@ -192,7 +192,11 @@ const AdminServicePrices = () => {
                             {price.serviceType}
                         </h2>
                         <p className="text-gray-300">
-                            <strong>Amount:</strong> ₦{price.basePrice}
+                            <strong>Amount:</strong>
+                            
+                             {                    
+                  `₦ ${ new Intl.NumberFormat("en-NG").format(price.basePrice)}`  
+                  }
                         </p>
                         <p className="text-gray-400">
                             <strong>State:</strong> {price.state || "All States"}

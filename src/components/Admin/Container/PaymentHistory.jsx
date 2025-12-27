@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetUserPaymentHistory } from "../../../utils/api";
+import {  GetUserPaymentHistoryAdmin } from "../../../utils/api";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -11,7 +11,7 @@ function AdminPaymentHistory() {
   const fetchPaymentHistory = async () => {
     try {
       setLoading(true);
-      const res = await GetUserPaymentHistory();
+      const res = await GetUserPaymentHistoryAdmin();
       console.log(res)
       setHistory(res?.data?.payments || []);
     } catch (err) {
@@ -50,12 +50,14 @@ function AdminPaymentHistory() {
               {/* Header */}
               <div className="flex justify-between items-center mb-4">
                 <h4 className="text-yellow-400 font-semibold">
-                  ₦{(payment.amount / 100).toLocaleString()}
+                  {                    
+                  `₦ ${ new Intl.NumberFormat("en-NG").format(payment.amount)}`  
+                  }
                 </h4>
                 <span
                   className={`text-xs px-3 py-1 rounded-full font-medium
                     ${
-                      payment.status === "Success"
+                      payment.status === "Completed"
                         ? "bg-green-600 text-white"
                         : payment.status === "Pending"
                         ? "bg-yellow-500 text-black"
@@ -71,15 +73,25 @@ function AdminPaymentHistory() {
               <div className="text-sm text-gray-400 space-y-1 mb-4">
                 <p>
                   <span className="text-gray-500">User:</span>{" "}
-                  {payment.user?.fullName || "N/A"}
+                  {payment.customerInfo?.fullName || "N/A"}
                 </p>
                 <p>
                   <span className="text-gray-500">Plan:</span>{" "}
-                  {payment.plan?.name || "—"}
+                  {payment.planId?.name || "—"}
                 </p>
+
+                 <p>
+                  <span className="text-gray-500">Type:</span>{" "}
+                  {payment.paymentType || "—"}
+                </p>
+
+
+                
+
+
                 <p>
                   <span className="text-gray-500">Reference:</span>{" "}
-                  {payment.reference}
+                  {payment.paymentReference}
                 </p>
                 <p>
                   <span className="text-gray-500">Date:</span>{" "}

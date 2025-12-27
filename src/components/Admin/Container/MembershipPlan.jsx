@@ -146,9 +146,9 @@ const AdminPlans = () => {
       {/* Plans Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
         {
-          loadFetch && <span className="flex gap-3" > 
-      Loading ...
-      <div className={`loading-spinner size-4 mb-4`}></div>
+          loadFetch && <span className="flex gap-3" >
+            Loading ...
+            <div className={`loading-spinner size-4 mb-4`}></div>
           </span>
         }
         {plans.map((plan) => (
@@ -204,7 +204,9 @@ const AdminPlans = () => {
                   {plan.name}
                 </h2>
                 <p className="text-gray-400 mb-1">
-                  <strong>Price:</strong> ₦{plan.price}
+                  <strong>Price:</strong>
+                  ₦{new Intl.NumberFormat("en-NG").format(plan.price)}
+
                 </p>
                 <p className="text-gray-400 mb-1">
                   <strong>Duration:</strong> {plan.durationMonths} month(s)

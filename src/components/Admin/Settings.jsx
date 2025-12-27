@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext';
 import { PerformSystemCleanup, SendNotification, ToggleMaintenanceMode } from '../../utils/api';
+import { toast } from 'react-toastify';
 
 function Settings() {
     const { logout } = useAuth();

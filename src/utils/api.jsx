@@ -158,7 +158,10 @@ export const GetPaymentPlans = () => apiRequest("/api/memberships/plans", "GET",
 export const PurchaseMembership = (payload, token ) => apiRequest(`/api/memberships/purchase/`, "POST", payload , token);
 export const InitializePayment = (payload, token ) => apiRequest("/api/payments/create-intent", "POST",  payload , token);
 export const VerifyPayment = (reference, token ) => apiRequest(`/api/payments/verify/${reference}`, "POST", {} , token);
-export const GetUserPaymentHistory = () => apiRequest("/api/payments/my-payments?page=1&limit=10", "GET", null, token);
+export const GetUserPaymentHistory = (token) => apiRequest("/api/payments/my-payments?page=1&limit=10", "GET", null, token);
+export const GetUserPaymentHistoryAdmin = (token) => apiRequest("/api/payments?page=1&limit=20", "GET", null, token);
+
+// export const GetUserPaymentHistory = () => apiRequest("/api/payments/stats/overview", "GET", null, token);
 export const CancelMembership = (membershipId, token) => apiRequest(`/api/memberships/cancel/${membershipId}`, "POST", {},  token);
 
 //Pricing
