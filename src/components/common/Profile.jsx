@@ -61,17 +61,15 @@ export default function ProfilePage() {
   /* ================= FETCH USER & MEMBERSHIP ================= */
   useEffect(() => {
     let mounted = true;
-
+    
     const fetchData = async () => {
+      const userRes = await fetchUsers();
+      const freshUser = userRes?.data?.user;
       try {
         setLoading(true);
 
-        const userRes = await fetchUsers();
-        const freshUser = userRes?.data?.user?.user;
-
         if (mounted && freshUser) {
           setUserData(freshUser);
-
           setFormData({
             fullName: freshUser.fullName || "",
             phone: freshUser.phone || "",
@@ -86,9 +84,9 @@ export default function ProfilePage() {
           });
         }
 
-        if (freshUser?.role === "Customer") {
+        if (freshUser?.role === "Customer") {          
           const membership = await GetMyMembership();
-          setUsermember(membership?.data?.membership || null);
+          setUsermamber(membership?.data?.membership || null);
         }
       } catch (err) {
         toast.error("Failed to fetch profile");
@@ -229,7 +227,6 @@ export default function ProfilePage() {
 
   const planLimits = { basic: 1, standard: 3, premium: "Unlimited" };
   const assistanceLimit = planLimits[UserData?.currentPlan] || 1;
-
 
   return (
     <div className="min-h-screen bg-black py-8 px-4 sm:px-6 lg:px-8">
@@ -399,7 +396,9 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <label className="text-sm text-white block mb-2">Phone number</label>
-                  <input type="number" required placeholder="+123 123 1234 233" name="phone" value={formData.phone} onChange={handleChange} className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300" />
+                  <p className="w-full border bg-transparent text-white border-gray-200 rounded px-3 py-2 focus:outline-none focus:bg-transparent focus:text-white  focus:ring-yellow-300">
+                    {user.phone}
+                  </p>
                 </div>
 
                 {

@@ -6,6 +6,7 @@ import ResponsiveHeader from "./common/ResponsiveHeader";
 import { Loader2, User } from "lucide-react";
 import { useMapContext } from "../contexts/MapContext";
 import { CancleJobRequest, GetServiceRequest } from "../utils/api";
+import { toast } from "react-toastify";
 
 export default function CustomerDashboard() {
   const { user } = useAuth()
@@ -114,11 +115,11 @@ export default function CustomerDashboard() {
         {/* Appointments */}
         <section>
           <h2 className="text-2xl font-bold text-yellow-400 mb-6">📋 Your Appointments</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-
             {
               loading && <Loader2 className="animate-spin text-yellow-400" size={32} />
             }
+          <div className="grid md:grid-cols-2 gap-6">
+
             {appointments?.serviceRequests?.map((appt) => (
               <div key={appt.id} className="bg-gray-800 p-6 rounded-xl">
 
@@ -175,7 +176,7 @@ export default function CustomerDashboard() {
               <p className="text-gray-400 mb-4">
                 Bring your vehicle to our partner workshops for expert service
               </p>
-              <button className="btn btn-primary">Find Workshop</button>
+              <button onClick={()=> toast.info("service not available at the moment check back later")} className="btn btn-primary">Find Workshop</button>
             </div>
             <div className="bg-gray-800 p-6 rounded-xl text-center">
               <div className="text-4xl mb-3">🏠</div>
@@ -183,7 +184,7 @@ export default function CustomerDashboard() {
               <p className="text-gray-400 mb-4">
                 Let our professionals come to your location for convenient repairs
               </p>
-              <button className="btn btn-primary">Request Home Service</button>
+              <button  onClick={()=> toast.info("service not available at the moment check back later")} className="btn btn-primary">Request Home Service</button>
             </div>
           </div>
         </section>
