@@ -28,6 +28,22 @@ export default function ServiceRequestForm({ open, onClose, data }) {
     phone: "",
   });
 
+  // /* ----------------------------------------
+  //  * 📍 Get user location (mobile-safe)
+  //  * -------------------------------------- */
+  // const {
+  //   coords,
+  //   isGeolocationAvailable,
+  //   isGeolocationEnabled,
+  // } = useGeolocated({
+  //   positionOptions: {
+  //     enableHighAccuracy: true,
+  //     maximumAge: 1000 * 60 * 2, // cache for 2 mins (mobile friendly)
+  //   },
+  //   userDecisionTimeout: 7000,
+  // });
+
+
   // 📍 Reverse geocode
   const fetchAddress = useCallback(async () => {
     if (!data?.latitude || !data?.longitude) return;
