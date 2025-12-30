@@ -27,7 +27,7 @@ export default function CustomerDashboard() {
 
   const handleCancleRequest = async (id) => {
     const res = await CancleJobRequest(id)
-    if ( res.status === 200  ) {
+    if (res.status === 200) {
       const res = await GetServiceRequest()
       setAppointments(res.data)
     }
@@ -115,9 +115,9 @@ export default function CustomerDashboard() {
         {/* Appointments */}
         <section>
           <h2 className="text-2xl font-bold text-yellow-400 mb-6">📋 Your Appointments</h2>
-            {
-              loading && <Loader2 className="animate-spin text-yellow-400" size={32} />
-            }
+          {
+            loading && <Loader2 className="animate-spin text-yellow-400" size={32} />
+          }
           <div className="grid md:grid-cols-2 gap-6">
 
             {appointments?.serviceRequests?.map((appt) => (
@@ -149,14 +149,31 @@ export default function CustomerDashboard() {
                 {/* Actions */}
 
                 <div className="flex gap-3">
-                  <button
-                    className="btn btn-secondary w-full"
-                    onClick={() => handleSetMapMarker(appt)}
-                  >
-                    View on Map
-                  </button>
+                  {
+                    appt.status === "Completed" && (
+                      <button
+                        className="btn btn-primary w-full"
+                        onClick={() => toast.info("Review feature coming soon")}
+                      >
+                        Leave Review
+                      </button>
+                    )
+                  }
+
+
+
+
                   {appt.status === "Pending" && (
-                    <button onClick={() => handleCancleRequest(appt.id)} className="btn btn-danger w-full">Cancel</button>
+                    <>
+                      <button
+                        className="btn btn-secondary w-full"
+                        onClick={() => handleSetMapMarker(appt)}
+                      >
+                        View on Map
+                      </button>
+
+                      <button onClick={() => handleCancleRequest(appt.id)} className="btn btn-danger w-full">Cancel</button>
+                    </>
                   )}
                 </div>
               </div>
@@ -176,7 +193,7 @@ export default function CustomerDashboard() {
               <p className="text-gray-400 mb-4">
                 Bring your vehicle to our partner workshops for expert service
               </p>
-              <button onClick={()=> toast.info("service not available at the moment check back later")} className="btn btn-primary">Find Workshop</button>
+              <button onClick={() => toast.info("service not available at the moment check back later")} className="btn btn-primary">Find Workshop</button>
             </div>
             <div className="bg-gray-800 p-6 rounded-xl text-center">
               <div className="text-4xl mb-3">🏠</div>
@@ -184,7 +201,7 @@ export default function CustomerDashboard() {
               <p className="text-gray-400 mb-4">
                 Let our professionals come to your location for convenient repairs
               </p>
-              <button  onClick={()=> toast.info("service not available at the moment check back later")} className="btn btn-primary">Request Home Service</button>
+              <button onClick={() => toast.info("service not available at the moment check back later")} className="btn btn-primary">Request Home Service</button>
             </div>
           </div>
         </section>

@@ -75,8 +75,8 @@ const handleSubmit = async (e) => {
   }
 
   return (
-    <div className="register-page flex-center flex justify-center items-center p-4">
-      <div className="register-container fade-in">
+    <div className="register-page flex-center flex justify-center items-center p-4 h-[100dvh]">
+      <div className="register-container fade-in mt-[200px]">
         <div className="card" style={{ maxWidth: "450px", width: "100%" }}>
           <div className="text-center" style={{ marginBottom: "30px" }}>
             <div style={{ fontSize: "3rem", marginBottom: "10px" }}>🔧</div>

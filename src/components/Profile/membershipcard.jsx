@@ -54,7 +54,7 @@ export default function MembershipCard({ membership, onCancel }) {
         <div className="space-y-1">
           <p className="text-xs text-gray-400">Plan Price</p>
           <p className="font-medium">
-            ₦{membership?.planId?.price?.toLocaleString()}
+            ₦{new Intl.NumberFormat("en-NG").format(membership?.planId?.price)}
           </p>
         </div>
 
@@ -69,13 +69,17 @@ export default function MembershipCard({ membership, onCancel }) {
         {/* Credit */}
         <div className="space-y-1">
           <p className="text-xs text-gray-400">Total Credit</p>
-          <p className="font-medium">{membership?.totalCredit}</p>
+          <p className="font-medium">
+            
+                                    ₦{new Intl.NumberFormat("en-NG").format(membership?.totalCredit)}
+
+            </p>
         </div>
 
         <div className="space-y-1">
           <p className="text-xs text-gray-400">Remaining Credit</p>
           <p className="font-medium text-yellow-400">
-            {membership?.remainingCredit}
+                                    ₦{new Intl.NumberFormat("en-NG").format(membership?.remainingCredit)}
           </p>
         </div>
 

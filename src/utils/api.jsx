@@ -139,7 +139,7 @@ export const updateUserLocation = (data) => apiRequest("/api/users/location", "P
 // Mechanics
 export const MechanicAvailability = (data) => apiRequest(`/api/users/availability`, "PUT", data);
 export const MechanicGetRequests = () => apiRequest("/api/service-requests/available", "GET");
-export const GetMechanicByID = (id) => apiRequest(`/api/users/mechanics/${id}`);
+export const GetMechanicByID = (id, token) => apiRequest(`/api/users/mechanics/${id}`, "GET",  {}, token);
 export const MyPendingRequests = () => apiRequest(`/api/service-requests/available`, "GET");
 export const MyAcceptedRequests = () => apiRequest(`/api/service-requests?status=Accepted`, "GET");
 export const UpdateServiceRequestStatus = (requestId, data, token ) => apiRequest(`/api/service-requests/${requestId}/complete`, "POST", data, token );
@@ -184,11 +184,12 @@ export const CancleJobRequest = (id, token ) => apiRequest(`/api/service-request
 
 
 export const GetAllMechanics = () => apiRequest("api/admin/mechanics?page=1&limit=20&available="); //mechanic start
+// export const GetMechanicByID = (id) => apiRequest(`/api/admin/mechanics/${id}`);
 export const GetAvailableMechanics = () => apiRequest("/api/admin/mechanics/available");
 export const UpdateMechanicAvailability = (id, data) => apiRequest(`/api/admin/mechanics/${id}/availability`, "PUT", data); //mechanic stop
 
 
-export const GetAllServiceRequests = () => apiRequest("/api/admin/service-requests?page=1&limit=20&status=Pending&serviceType="); //service start
+export const GetAllServiceRequests = () => apiRequest("/api/admin/service-requests?page=1&limit=20"); //service start
 export const GetPendingServiceRequests = () => apiRequest("/api/admin/service-requests/pending")
 export const AssignMechanicToRequest = (requestId, mechanicId) => apiRequest(`/api/admin/service-requests/${requestId}/assign `, "POST", { mechanicId });
 export const ReassignServiceRequest = (requestId, credentials) => apiRequest(`/api/admin/service-requests/${requestId}/reassign`, "POST", { credentials }); //fetch nc

@@ -32,14 +32,15 @@ const ServiceRequestsDashboard = () => {
             // 🔹 Sequential fetching to avoid 429 errors
             const all = await GetAllServiceRequests();
             setRequests(all?.data?.serviceRequests || []);
-
+            
             const pend = await GetPendingServiceRequests();
             setPending(pend?.data?.pendingRequests || []);
-
+            
             const mechs = await GetAvailableMechanics();
             setMechanics(mechs?.data?.mechanics || []);
-
+            
             const rep = await GetServiceRequestReports();
+            console.log(rep)
             setReports(rep?.data?.reports || []);
 
         } catch (err) {
@@ -58,7 +59,7 @@ const ServiceRequestsDashboard = () => {
                     "mechanicId": mechanicId,
                     "reason": reason
                 }
-                await ReassignServiceRequest(requestId,cred);
+                await ReassignServiceRequest(requestId, cred);
                 toast.success("Service request reassigned!");
             } else {
                 await AssignMechanicToRequest(requestId, mechanicId);
@@ -92,7 +93,7 @@ const ServiceRequestsDashboard = () => {
                     {loading ? (
                         <p>Loading...</p>
                     ) : (
-                        <div className="space-y-4">
+                        <div className=" grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl space-y-4">
                             {requests.map((req) => (
                                 <div key={req._id} className="p-4 border rounded-lg shadow-sm">
                                     <p><strong>ID:</strong> {req._id}</p>
@@ -100,25 +101,30 @@ const ServiceRequestsDashboard = () => {
                                     <p><strong>Customer:</strong> {req.customerId?.fullName}</p>
                                     <p>
                                         <strong>Mechanic:</strong>{" "}
-                                        {req.mechanic ? req.mechanic.fullName : "Not assigned"}
+                                        {req.mechanicId ? req.mechanicId.fullName : "Not assigned"}
                                     </p>
                                     <div className="mt-2">
-                                        <select
-                                            defaultValue=""
-                                            onChange={(e) =>
-                                                handleAssign(req._id, e.target.value, !!req.mechanic)
-                                            }
-                                            className="border bg-yellow-500 rounded p-2"
-                                        >
-                                            <option value="" disabled>
-                                                {req.mechanic ? "Reassign mechanic" : "Assign mechanic"}
-                                            </option>
-                                            {mechanics.map((m) => (
-                                                <option key={m._id} value={m._id}>
-                                                    {m.fullName}
+                                        {
+                                            !req.mechanicId || !req.assignedMechanics &&
+
+                                            <select
+                                                defaultValue=""
+                                                onChange={(e) =>
+                                                    handleAssign(req._id, e.target.value, !!req.mechanic)
+                                                }
+                                                className="border bg-yellow-500 rounded p-2"
+                                            >
+                                                <option value="" disabled>
+                                                    {req.mechanic ? "Reassign mechanic" : "Assign mechanic"}
                                                 </option>
-                                            ))}
-                                        </select>
+                                                {mechanics.map((m) => (
+                                                    <option key={m._id} value={m._id}>
+                                                        {m.fullName}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        }
+
                                     </div>
                                 </div>
                             ))}

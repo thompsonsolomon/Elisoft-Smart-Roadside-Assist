@@ -60,7 +60,7 @@ const handleSubmit = async (e) => {
 
 
     <div
-      className="register-page flex-center flex justify-center items-center p-4"
+      className="register-page flex-center flex justify-center items-center p-4 h-[100dvh]"
     >
       <div className="login-container fade-in">
         <div className="card" style={{ maxWidth: "450px", width: "100%" }}>

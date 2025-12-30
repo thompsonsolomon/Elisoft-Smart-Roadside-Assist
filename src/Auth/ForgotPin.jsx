@@ -25,27 +25,27 @@ const ForgotPin = () => {
             });
         } catch (error) {
             console.error('Forgot Pin error:', error)
-            toast.error('An error occurred while sending the Pin reset email. Please try again.');
+            toast.error('An error occurred while sending the Pin reset code. Please try again.');
         } finally {
             setIsLoading(false);
         }
     };
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4 sm:p-6">
-            <div className="bg-white rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md transition-all duration-300 transform hover:scale-105">
+        <div className="min-h-screen flex flex-col items-center justify-center bg-black-800 p-4 sm:p-6">
+            <div className="bg-gray-800 rounded-xl shadow-2xl p-6 sm:p-8 w-full max-w-md transition-all duration-300 transform hover:scale-105">
                 <div className="flex flex-col items-center mb-6">
                     <div className="p-3 rounded-full bg-yellow-100 text-yellow-600 mb-4">
                         <Phone size={32} />
                     </div>
-                    <h1 className="text-3xl font-extrabold text-gray-800">Forgot Pin</h1>
-                    <p className="text-center text-sm text-gray-500 mt-2">
+                    <h1 className="text-3xl font-extrabold text-gray-100">Forgot Pin</h1>
+                    <p className="text-center text-sm text-gray-400 mt-2">
                         Enter your Phone Number and we'll send you a Pin reset link.
                     </p>
                 </div>
 
                 <form onSubmit={handleForgotPin} className="space-y-4">
                     <div className="space-y-1">
-                        <label htmlFor="number" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="number" className="block text-sm font-medium text-gray-400">
                             Phone Number
                         </label>
                         <input

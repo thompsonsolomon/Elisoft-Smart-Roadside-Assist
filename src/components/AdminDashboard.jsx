@@ -10,6 +10,7 @@ import { Button, MenuButton } from "@headlessui/react"
 import AdminPlans from "./Admin/Container/MembershipPlan"
 import AdminServicePrices from "./Admin/Container/ServicePricing"
 import PaymentHistory from "./Admin/Container/PaymentHistory"
+import AdminMechanicCheckout from "./Admin/Container/MechaniCheckoutPage"
 
 export default function AdminDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState("dashboard")
@@ -23,10 +24,11 @@ export default function AdminDashboard({ user, onLogout }) {
     { id: "reports", label: "📑 Reports Analysis" },
     { id: "users", label: "👥 Users" },
     { id: "mechanics", label: "🔧 Mechanics" },
+    { id: "mechanicCheckout", label: "🧾 Mechanic Checkout" },
     { id: "services", label: "🛠️ Services" },
     { id: "plans", label: "💳 Plans" },
-    {id: "Pricing", label: "💲 Pricing" },
-    { id: "Payments", label: "📅 Payments" },
+    { id: "Pricing", label: "💲 Pricing" },
+    { id: "Paymentshistory", label: "📅 Payment History" },
     { id: "settings", label: "⚙️ Settings" },
 
   ]
@@ -37,10 +39,12 @@ export default function AdminDashboard({ user, onLogout }) {
         return (
           <Dashboard />
         )
+
       case "users":
         return (
           <Users />
         )
+
       case "mechanics":
         return (
           <MechanicsDashboard />
@@ -59,16 +63,18 @@ export default function AdminDashboard({ user, onLogout }) {
         return (
           <AdminPlans />
         )
-         case "Pricing":
+      case "Pricing":
         return (
           <AdminServicePrices />
         )
-        
-
-      case "Payments":
+      case "mechanicCheckout":
         return (
-        <PaymentHistory />
+          <AdminMechanicCheckout />
+        )
 
+      case "Paymentshistory":
+        return (
+          <PaymentHistory />
         )
 
 
