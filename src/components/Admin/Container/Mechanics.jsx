@@ -56,7 +56,7 @@ const MechanicsDashboard = () => {
             {/* All Mechanics */}
             <section>
                 <h2 className="text-xl font-semibold mb-2">All Mechanics</h2>
-                <ul className="space-y-2">
+                <ul className=" grid md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl space-y-2">
                     {mechanics.map((m) => (
                         <li key={m._id} className="flex justify-between items-center border p-3 rounded-lg shadow-sm">
                             <span>{m.fullName} ({m.isAvailable ? "Available" : "Unavailable"})</span>

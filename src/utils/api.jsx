@@ -139,10 +139,10 @@ export const updateUserLocation = (data) => apiRequest("/api/users/location", "P
 // Mechanics
 export const MechanicAvailability = (data) => apiRequest(`/api/users/availability`, "PUT", data);
 export const MechanicGetRequests = () => apiRequest("/api/service-requests/available", "GET");
-export const GetMechanicByID = (id, token) => apiRequest(`/api/users/mechanics/${id}`, "GET",  {}, token);
+export const GetMechanicByID = (id, token) => apiRequest(`/api/admin/users/${id}`, "GET", {}, token);
 export const MyPendingRequests = () => apiRequest(`/api/service-requests/available`, "GET");
 export const MyAcceptedRequests = () => apiRequest(`/api/service-requests?status=Accepted`, "GET");
-export const UpdateServiceRequestStatus = (requestId, data, token ) => apiRequest(`/api/service-requests/${requestId}/complete`, "POST", data, token );
+export const UpdateServiceRequestStatus = (requestId, data, token) => apiRequest(`/api/service-requests/${requestId}/complete`, "POST", data, token);
 export const UpdateServices = (data) => apiRequest("/api/users/mechanic/services", "PUT", data);
 
 
@@ -177,13 +177,13 @@ export const GetDashboard = () => apiRequest("/api/admin/dashboard");
 export const GetAnalysis = () => apiRequest("/api/admin/analytics?period=30days");
 export const GetRevenueAnalysis = () => apiRequest("/api/admin/revenue-analytics?startDate=2024-01-01&endDate=2024-01-31"); // not fetched yet
 export const GetAllUsers = () => apiRequest("/api/admin/users?page=1&limit=20&role=&search="); //admin users start
-export const GetUserById = (id) => apiRequest(`/api/admin/users/${id}`);
+export const GetUserById = (id, token) => apiRequest(`/api/admin/users/${id}`, "GET", {}, token);
 export const UpdateUserStatus = (id, data) => apiRequest(`/api/admin/users/${id}/status`, "PUT", data);
 export const DeleteUser = (id) => apiRequest(`/api/admin/users/${id} `, "DELETE"); //admin users stop
-export const CancleJobRequest = (id, token ) => apiRequest(`/api/service-requests/${id}/cancel`, "PUT", {}, token ); //customer cancle job request
+export const CancleJobRequest = (id, token) => apiRequest(`/api/service-requests/${id}/cancel`, "PUT", {}, token); //customer cancle job request
 
 
-export const GetAllMechanics = () => apiRequest("api/admin/mechanics?page=1&limit=20&available="); //mechanic start
+export const GetAllMechanics = () => apiRequest("api/admin/mechanics?page=1&limit=20"); //mechanic start
 // export const GetMechanicByID = (id) => apiRequest(`/api/admin/mechanics/${id}`);
 export const GetAvailableMechanics = () => apiRequest("/api/admin/mechanics/available");
 export const UpdateMechanicAvailability = (id, data) => apiRequest(`/api/admin/mechanics/${id}/availability`, "PUT", data); //mechanic stop

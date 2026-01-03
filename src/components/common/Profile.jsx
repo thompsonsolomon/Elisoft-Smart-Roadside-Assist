@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { Link } from "react-router-dom";
 import {
@@ -15,6 +15,7 @@ import ChangePinModal from "../../Auth/ChangePIn";
 import ResponsiveHeader from "./ResponsiveHeader";
 import { LocationName } from "../../helpers/GetLocationName";
 import MembershipCard from "../Profile/membershipcard";
+import { useGeolocated } from "react-geolocated";
 
 const mechanicServices = [
   "Fuel Delivery",
@@ -57,11 +58,17 @@ export default function ProfilePage() {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const userType = user?.role?.toLowerCase();
   const [usermember, setUsermamber] = useState(null);
+  const { coords, isGeolocationAvailable, isGeolocationEnabled, } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: true, maximumAge: 1000 * 60 * 2, // cache 2 mins
+    },
+    userDecisionTimeout: 7000,
+  });
 
   /* ================= FETCH USER & MEMBERSHIP ================= */
   useEffect(() => {
     let mounted = true;
-    
+
     const fetchData = async () => {
       const userRes = await fetchUsers();
       const freshUser = userRes?.data?.user;
@@ -84,7 +91,7 @@ export default function ProfilePage() {
           });
         }
 
-        if (freshUser?.role === "Customer") {          
+        if (freshUser?.role === "Customer") {
           const membership = await GetMyMembership();
           setUsermamber(membership?.data?.membership || null);
         }
@@ -100,27 +107,26 @@ export default function ProfilePage() {
   }, []);
 
 
+  const handleFetch = useCallback(() => {
+    if (!coords?.latitude || !coords?.longitude) return;
 
-  // ✅ Get geolocation (for location update)
+    setLocation({
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+    });
+  }, [coords]);
+
   useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        ({ coords }) => {
-          setLocation({
-            latitude: coords.latitude,
-            longitude: coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          toast.warn("Unable to fetch location. Please allow location access.");
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
-    } else {
-      toast.error("Geolocation is not supported on this device.");
+    handleFetch();
+  }, [handleFetch]);
+  useEffect(() => {
+    if (!isGeolocationAvailable) {
+      toast.error("Geolocation not supported");
     }
-  }, []);
+    if (!isGeolocationEnabled) {
+      toast.error("Please enable location");
+    }
+  }, [isGeolocationAvailable, isGeolocationEnabled]);
 
   // ✅ Handle input change
   const handleChange = (e) => {
