@@ -181,7 +181,7 @@ export const GetUserById = (id, token) => apiRequest(`/api/admin/users/${id}`, "
 export const UpdateUserStatus = (id, data) => apiRequest(`/api/admin/users/${id}/status`, "PUT", data);
 export const DeleteUser = (id) => apiRequest(`/api/admin/users/${id} `, "DELETE"); //admin users stop
 export const CancleJobRequest = (id, token) => apiRequest(`/api/service-requests/${id}/cancel`, "PUT", {}, token); //customer cancle job request
-
+export const AdminUpdateJobPaymentStatus = (id, data, token ) => apiRequest(`/api/admin/service-requests/${id}/payment-status`, "PUT", data, token ); //admin mark job as paid
 
 export const GetAllMechanics = () => apiRequest("api/admin/mechanics?page=1&limit=20"); //mechanic start
 // export const GetMechanicByID = (id) => apiRequest(`/api/admin/mechanics/${id}`);

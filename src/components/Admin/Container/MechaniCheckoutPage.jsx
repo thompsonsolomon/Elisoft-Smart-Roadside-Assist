@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader2, Copy } from "lucide-react";
-import { GetAllMechanics, GetAllServiceRequests, GetMechanicByID, GetUserById } from "../../../utils/api";
+import { AdminUpdateJobPaymentStatus, GetAllMechanics, GetAllServiceRequests, GetMechanicByID, GetUserById } from "../../../utils/api";
 
 function AdminMechanicCheckout() {
   const [jobs, setJobs] = useState([]);
@@ -54,7 +54,6 @@ function AdminMechanicCheckout() {
         mechanicIds.map(async (id) => {
           try {
             const mechRes = await GetUserById(id);
-            console.log(mechRes);
             mechanicsMap[id] = mechRes?.data?.user;
           } catch (err) {
             console.error("Failed to fetch mechanic:", id, err);
@@ -78,96 +77,11 @@ function AdminMechanicCheckout() {
     }
   };
 
-  //  const fetchReports = async () => {
-  //     try {
-  //       setLoading(true);
-
-  //       const res = await GetAllServiceRequests();
-  //       const serviceRequests = res?.data?.serviceRequests || [];
-
-  //       // 1️⃣ Collect unique mechanic IDs
-  //       const mechanicIds = [
-  //         ...new Set(
-  //           serviceRequests
-  //             .map((job) => job.mechanicId?._id || job.mechanicId?.id)
-  //             .filter(Boolean)
-  //         ),
-  //       ];
-
-  //       // 2️⃣ Fetch mechanics in parallel
-  //       const mechanicsMap = {};
-
-  //       await Promise.all(
-  //         mechanicIds.map(async (id) => {
-  //           try {
-  //             const mechRes = await GetMechanicByID(id);
-  //             mechanicsMap[id] = mechRes?.data?.mechanic;
-  //           } catch (err) {
-  //             console.error("Failed to fetch mechanic:", id, err);
-  //           }
-  //         })
-  //       );
-
-  //       // 3️⃣ Merge mechanic into job
-  //       const enrichedJobs = serviceRequests.map((job) => ({
-  //         ...job,
-  //         mechanic:
-  //           mechanicsMap[job.mechanicId?._id || job.mechanicId?.id] || null,
-  //       }));
-
-  //       setJobs(enrichedJobs);
-  //     } catch (err) {
-  //       console.error(err);
-  //       toast.error("Failed to load service reports");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
 
   useEffect(() => {
     fetchReports();
   }, []);
 
-  //   const fetchReports = async () => {
-  //   try {
-  //     setLoading(true);
-
-  //     // Fetch both in parallel (faster)
-  //     const [serviceRes, mechanicRes] = await Promise.all([
-  //       GetAllServiceRequests(),
-  //       GetAllMechanics(),
-  //     ]);
-
-  //     const serviceRequests = serviceRes?.data?.serviceRequests || [];
-  //     const mechanics = mechanicRes?.data?.mechanics || [];
-
-  //     // 🔑 Build a lookup map: mechanicId => mechanic
-  //     const mechanicsMap = {};
-  //     mechanics.forEach((mech) => {
-  //       const id = mech._id || mech.id;
-  //       if (id) {
-  //         mechanicsMap[id] = mech;
-  //       }
-  //     });
-
-  //     // 🔗 Attach mechanic to each job
-  //     const enrichedJobs = serviceRequests.map((job) => {
-  //       const mechanicId = job.mechanicId?._id || job.mechanicId?.id;
-
-  //       return {
-  //         ...job,
-  //         mechanic: mechanicId ? mechanicsMap[mechanicId] || null : null,
-  //       };
-  //     });
-
-  //     setJobs(enrichedJobs);
-  //   } catch (err) {
-  //     console.error(err);
-  //     toast.error("Failed to load service reports");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   useEffect(() => {
     fetchReports();
@@ -184,7 +98,8 @@ function AdminMechanicCheckout() {
   const markAsPaid = async (jobId) => {
     try {
       setUpdatingId(jobId);
-      // await AdminUpdateJobPaymentStatus(jobId);
+      const data = { paymentStatus: "Paid" };
+      await AdminUpdateJobPaymentStatus(jobId, data);
       toast.success("Payment marked as paid");
       fetchReports(); // refresh list
     } catch (err) {
@@ -208,7 +123,7 @@ function AdminMechanicCheckout() {
    * ---------------------------------- */
   const completedJobs = jobs.filter(
     (job) => job.status === "Completed" && job.paymentStatus === "Pending"
-  );
+  );  
 
   return (
     <div className="p-6">
@@ -270,7 +185,7 @@ function AdminMechanicCheckout() {
               <div>
                 <p><strong>Service Type:</strong> {job.serviceType}</p>
                 <p><strong>Address:</strong> {job.address}</p>
-                <p><strong>Amount:</strong> {job.finalPrice}</p>
+                <p><strong>Amount:</strong> {job.price}</p>
               </div>
 
             </div>
