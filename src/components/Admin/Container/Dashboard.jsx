@@ -41,6 +41,7 @@ function Dashboard() {
         };
         FetchAnalysis();
     }, []);
+    console.log(analytics);
 
     const mockAnalysis = {
         revenue: [
@@ -69,7 +70,32 @@ function Dashboard() {
         ],
     };
 
+    const statusBreakdown = analytics?.serviceRequests?.statusBreakdown || [];
+
+    const statusCounts = statusBreakdown.reduce(
+        (acc, item) => {
+            const status = item.status?.toLowerCase();
+
+            if (status === "pending") acc.pending += item.count;
+            if (status === "completed") acc.completed += item.count;
+            if (status === "cancelled") acc.cancelled += item.count;
+            if (status === "inprogress" || status === "in progress")
+                acc.inProgress += item.count;
+
+            return acc;
+        },
+        {
+            pending: 0,
+            inProgress: 0,
+            completed: 0,
+            cancelled: 0,
+        }
+    );
+
+
     const normalizedAnalytics = {
+
+
         revenue:
             analytics?.revenue?.map((item) => ({
                 date: item.date || item._id?.date,
@@ -77,10 +103,10 @@ function Dashboard() {
             })) || [],
 
         serviceRequests: {
-            pending: analytics?.serviceRequests?.pending || 0,
-            inProgress: analytics?.serviceRequests?.inProgress || 0,
-            completed: analytics?.serviceRequests?.completed || 0,
-            cancelled: analytics?.serviceRequests?.cancelled || 0,
+            pending: statusCounts.pending,
+            inProgress: statusCounts.inProgress,
+            completed: statusCounts.completed,
+            cancelled: statusCounts.cancelled,
         },
 
         userGrowth:
@@ -90,7 +116,6 @@ function Dashboard() {
                 role: item._id?.role || "Customer",
             })) || [],
     };
-
     return (
         <>
             <h2 className="text-3xl font-semibold text-yellow-400 mb-6">Dashboard Overview</h2>
@@ -99,7 +124,7 @@ function Dashboard() {
                     <div className="col-span-full text-center text-gray-500">
                         Loading dashboard...
                     </div>
-                )   }
+                )}
                 {Object.entries(stats).map(([key, value]) => {
                     const isRevenue = key.toLowerCase().includes("revenue");
 

@@ -174,7 +174,7 @@ export const deactivateServicePrice = (id, token) => apiRequest(`/api/service-pr
 
 // Admin Dashboard & Analytics
 export const GetDashboard = () => apiRequest("/api/admin/dashboard");
-export const GetAnalysis = () => apiRequest("/api/admin/analytics?period=30days");
+export const GetAnalysis = () => apiRequest("/api/admin/analytics?period=90days");
 export const GetRevenueAnalysis = () => apiRequest("/api/admin/revenue-analytics?startDate=2024-01-01&endDate=2024-01-31"); // not fetched yet
 export const GetAllUsers = () => apiRequest("/api/admin/users?page=1&limit=20&role=&search="); //admin users start
 export const GetUserById = (id, token) => apiRequest(`/api/admin/users/${id}`, "GET", {}, token);
