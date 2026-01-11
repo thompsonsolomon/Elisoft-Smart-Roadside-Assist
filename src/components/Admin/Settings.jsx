@@ -21,7 +21,12 @@ function Settings() {
     const handleSendNotification = async () => {
         if (!notification) return toast.warning("Enter a message!");
         try {
-            await SendNotification({ message: notification });
+            await SendNotification({
+                message: notification,
+                recipients: "all",
+                type: "info",
+                title: "Admin Notification"
+            });
             toast.success("Notification sent!");
             setNotification("");
         } catch (err) {

@@ -197,12 +197,12 @@ export const GetServiceRequestReports = () => apiRequest("/api/admin/reports/ser
 
 
 export const GetRevenueReports = () => apiRequest("/api/admin/reports/revenue"); //revenue report start
-export const GetUserActivityReports = () => apiRequest("/api/admin/reports/user-activity");
-export const GetMechanicPerformanceReports = () => apiRequest("/api/admin/reports/mechanic-performance");
+export const GetUserActivityReports = (token) => apiRequest("/api/admin/reports/user-activity", "GET", null , token);
+export const GetMechanicPerformanceReports = (token) => apiRequest("/api/admin/reports/mechanic-performance", "GET", null , token);
 export const GetSystemHealth = () => apiRequest("/api/admin/system/health");
 export const PerformSystemCleanup = () => apiRequest("/api/admin/system/cleanup", "POST");
-export const GetSystemLogs = () => apiRequest("/api/admin/system/logs");
-export const SendNotification = (data) => apiRequest("/api/admin/notifications/send", "POST", data);
+export const GetSystemLogs = (token) => apiRequest("/api/admin/system/logs", "GET", null, token);
+export const SendNotification = (data, token) => apiRequest("/api/admin/notifications/send", "POST", data, token );
 export const ToggleMaintenanceMode = (data) => apiRequest("/api/admin/system/maintenance", "POST", { data });
 
 

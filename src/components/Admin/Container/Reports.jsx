@@ -9,6 +9,7 @@ import {
     GetSystemLogs,
     SendNotification,
     ToggleMaintenanceMode,
+    GetDashboard,
 } from "../../../utils/api";
 
 import {
@@ -23,23 +24,23 @@ function SystemDashboard() {
     const [logs, setLogs] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    
+
     useEffect(() => {
         const fetchDashboard = async () => {
             try {
                 const [rev, act, mech, health, logs] = await Promise.all([
-                    GetRevenueReports(),
+                    GetDashboard(),
                     GetUserActivityReports(),
                     GetMechanicPerformanceReports(),
                     GetSystemHealth(),
                     GetSystemLogs(),
                 ]);
 
-                setRevenue(rev?.data || []);
+                setRevenue(Status?.monthly?.revenue|| []);
                 setUserActivity(act?.data || []);
                 setMechanicPerf(mech?.data || []);
-                setSystemHealth(health?.data || {});
-                setLogs(logs?.data || []);
+                setSystemHealth(health?.data || {}); //checked
+                setLogs(logs?.data || []); //checked
             } catch (err) {
                 console.error("Error loading dashboard:", err);
             }
@@ -47,6 +48,8 @@ function SystemDashboard() {
 
         fetchDashboard();
     }, []);
+    console.log(revenue);
+
 
     return (
         <div className="p-6 space-y-6">
@@ -57,15 +60,20 @@ function SystemDashboard() {
             {/* Revenue Reports */}
             <div className="bg-gray-800 p-5 rounded-2xl shadow">
                 <h3 className="text-xl text-yellow-300 mb-4">Revenue Reports</h3>
-                <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={revenue}>
-                        <XAxis dataKey="month" stroke="#fff" />
-                        <YAxis stroke="#fff" />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="revenue" fill="#facc15" />
-                    </BarChart>
-                </ResponsiveContainer>
+                {revenue.length > 0 ? (
+                    <ResponsiveContainer width="100%" height={300}>
+                        <LineChart data={revenue}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line type="monotone" dataKey="amount" stroke="#ffc658" />
+                        </LineChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <p className="text-gray-500">No revenue data available</p>
+                )}
             </div>
 
             {/* User Activity */}

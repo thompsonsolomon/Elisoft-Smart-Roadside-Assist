@@ -51,7 +51,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
   const tabList = [
     { id: "dashboard", label: "📊 Dashboard" },
-    { id: "reports", label: "📑 Reports Analysis" },
+    // { id: "reports", label: "📑 Reports Analysis" },
     { id: "users", label: "👥 Users" },
     { id: "mechanics", label: "🔧 Mechanics" },
     { id: "mechanicCheckout", label: "🧾 Mechanic Checkout" },
@@ -85,10 +85,10 @@ export default function AdminDashboard({ user, onLogout }) {
           <ServiceRequestsDashboard />
         )
 
-      case "reports":
-        return (
-          <SystemDashboard />
-        )
+      // case "reports":
+      //   return (
+      //     <SystemDashboard />
+      //   )
       case "plans":
         return (
           <AdminPlans />
