@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GetAnalysis, GetDashboard } from "../../../utils/api";
+import { GetAllServiceRequests, GetAnalysis, GetDashboard } from "../../../utils/api";
 import DashboardChart from "./Analysis";
 
 function Dashboard() {
@@ -41,7 +41,6 @@ function Dashboard() {
         };
         FetchAnalysis();
     }, []);
-    console.log(analytics);
 
     const mockAnalysis = {
         revenue: [
@@ -91,8 +90,6 @@ function Dashboard() {
             cancelled: 0,
         }
     );
-
-
     const normalizedAnalytics = {
 
 
@@ -116,6 +113,12 @@ function Dashboard() {
                 role: item._id?.role || "Customer",
             })) || [],
     };
+
+
+
+
+
+
     return (
         <>
             <h2 className="text-3xl font-semibold text-yellow-400 mb-6">Dashboard Overview</h2>

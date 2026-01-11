@@ -1,32 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Loader2, Copy } from "lucide-react";
-import { AdminUpdateJobPaymentStatus, GetAllMechanics, GetAllServiceRequests, GetMechanicByID, GetUserById } from "../../../utils/api";
+import { AdminUpdateJobPaymentStatus, GetAllServiceRequests, GetUserById } from "../../../utils/api";
 
 function AdminMechanicCheckout() {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [updatingId, setUpdatingId] = useState(null);
-
-  // /* ----------------------------------
-  //  * 📦 Fetch completed service jobs
-  //  * ---------------------------------- */
-  // const fetchReports = async () => {
-  //  try {
-  //   setLoading(true);
-  //   const res = await GetAllServiceRequests();
-  //   setJobs(res?.data?.serviceRequests?.assignedMechanics || []);
-  //   // const mechanic = await GetMechanicByID(res?.data?.serviceRequests.mechanicId.id)
-  //   // console.log(mechanic);
-
-  //  } catch (err) {
-  //   console.error(err);
-  //   toast.error("Failed to load service reports");
-  //  } finally {
-  //   setLoading(false);
-  //  }
-  // };
-
 
   /* ----------------------------------------
     * 📦 Fetch reports + mechanics

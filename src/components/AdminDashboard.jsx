@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import Dashboard from "./Admin/Container/Dashboard"
 import Users from "./Admin/Container/Users"
@@ -11,12 +11,42 @@ import AdminPlans from "./Admin/Container/MembershipPlan"
 import AdminServicePrices from "./Admin/Container/ServicePricing"
 import PaymentHistory from "./Admin/Container/PaymentHistory"
 import AdminMechanicCheckout from "./Admin/Container/MechaniCheckoutPage"
+import { GetAllServiceRequests } from "../utils/api"
 
 export default function AdminDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState("dashboard")
   const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [completedJObList, setCompletedJobList] = useState([])
 
 
+  /* ----------------------------------------
+    * 📦 Fetch Mechanic CheckOut report
+    * -------------------------------------- */
+  const fetchReports = async () => {
+    try {
+      setLoading(true);
+
+      const res = await GetAllServiceRequests();
+      const serviceRequests = res?.data?.serviceRequests || [];
+      const completedJobs = serviceRequests.filter(
+        (job) => job.status === "Completed" && job.paymentStatus === "Pending"
+      );
+      // console.log(completedJobs);
+      setCompletedJobList(completedJobs);
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to load service reports");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  useEffect(() => {
+    fetchReports();
+  }, []);
 
 
   const tabList = [
@@ -112,10 +142,20 @@ export default function AdminDashboard({ user, onLogout }) {
               }}
               className={`block w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition ${activeTab === tab.id
                 ? "bg-yellow-400 text-black"
-                : "hover:bg-gray-700 text-gray-300"
+                : "hover:bg-gray-700 text-gray-300 relative"
                 }`}
             >
               {tab.label}
+              {tab.label.includes("Checkout") && completedJObList.length > 0 && (
+                <span
+                  className="absolute right-5 mb-4 flex items-center justify-center
+               w-5 h-5 text-xs font-bold text-white
+               bg-red-500 rounded-full"
+                >
+                  {completedJObList.length}
+                </span>
+              )}
+
             </button>
           ))}
         </aside>
