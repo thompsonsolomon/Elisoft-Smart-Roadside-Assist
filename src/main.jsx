@@ -2,9 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import { BrowserRouter } from "react-router-dom"
 import App from "./App.jsx"
-import "./index.css"
 import { toast, ToastContainer } from 'react-toastify'
-import { MapProvider } from "./contexts/MapContext.jsx"
 import { registerSW } from "virtual:pwa-register";
 
 const updateSW = registerSW({
@@ -54,14 +52,12 @@ class ErrorBoundary extends React.Component {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ErrorBoundary>
-      <MapProvider>
         <BrowserRouter>
           <div className="overflow-x-hidden">
             <App />
           </div>
           <ToastContainer position="top-right" autoClose={3000} />
         </BrowserRouter>
-      </MapProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 )
